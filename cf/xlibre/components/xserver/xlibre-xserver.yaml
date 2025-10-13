@@ -1,4 +1,3 @@
---
 name: xlibre-xserver
 provides: xserver-sdk
 sources:

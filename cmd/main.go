@@ -4,18 +4,16 @@ import (
 	"log"
 
 	"github.com/metux/mpbt/core"
-//	"github.com/metux/go-nebulon/webapi/servers"
 )
 
 func main() {
-	_, err := core.LoadComponent("../cf/xlibre/components/system-libs/font-util.yaml")
+	list := make([]core.Component, 0)
+	err := core.LoadComponents("../cf/xlibre/components", &list)
 	if err != nil {
-		log.Println("err %s", err)
+		log.Fatalf("error opening components directory: %s\n", err)
 	}
 
-//	server, err := servers.BootServer(flag_conffile, flag_serverid)
-//	if err != nil {
-//		panic(err)
-//	}
-//	server.Serve()
+	for _,c := range list {
+		log.Printf("Component: %+v\n", c)
+	}
 }
