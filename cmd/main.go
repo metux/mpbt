@@ -21,4 +21,9 @@ func main() {
 	for n,c := range db.Provides {
 		log.Printf("Provides: %s => %+v\n", n, c)
 	}
+
+	sol := core.Solution{}
+	sol.LoadYaml("../cf/xlibre/solutions/devuan.yaml")
+
+	log.Printf("Solution: %+v\n", sol)
 }

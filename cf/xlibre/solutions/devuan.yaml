@@ -1,12 +1,12 @@
 
-component-map:
-    x11/font-util: system/font-util
-    libdrm: system/libdrm
-    x11/libxcb-util: system/libxcb-util
-    x11/libxcb-wm: system/libxcb-wm
-    x11/libxcvt: system/libxcvt
-    x11/libx11: system/libx11
-    x11/xcbproto: system/xcbproto
+component-mapping:
+    x11/font-util:     system/font-util
+    libdrm:            system/libdrm
+    x11/libxcb-util:   system/libxcb-util
+    x11/libxcb-wm:     system/libxcb-wm
+    x11/libxcvt:       system/libxcvt
+    x11/libx11:        system/libx11
+    x11/xcbproto:      system/xcbproto
     x11/xfree86-type1: system/xfree86-type1
-    x11/xkbcomp: system/xkbcomp
-    x11/xorgproto: system/xorgproto
+    x11/xkbcomp:       system/xkbcomp
+    x11/xorgproto:     system/xorgproto
