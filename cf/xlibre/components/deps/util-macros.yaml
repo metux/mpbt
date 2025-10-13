@@ -1,0 +1,7 @@
+name: deps/util-macros
+provides: x11/util-macros
+type: bundle
+source:
+    git:
+        url: https://gitlab.freedesktop.org/xorg/util/macros.git
+        ref: util-macros-1.20.2

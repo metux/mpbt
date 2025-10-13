@@ -1,0 +1,7 @@
+name: deps/xfree86-type1
+provides: x11/xfree86-type1
+type: bundle
+source:
+    git:
+        url: https://gitlab.freedesktop.org/xorg/font/xfree86-type1.git
+        ref: font-xfree86-type1-1.0.5

@@ -1,0 +1,4 @@
+name: system/xkbcomp
+provides: x11/xkbcomp
+type: system
+pkg-config: xkbcomp

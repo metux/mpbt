@@ -1,0 +1,47 @@
+--
+name: xlibre-xserver
+provides: xserver-sdk
+sources:
+    git:
+        type: git
+        url:  git@github.com:X11Libre/xserver.git
+        # fixme: add extra repos ?
+buildsystem: meson
+
+# flags are always boolean, default is true
+flags:
+    xorg:
+    xephyr:
+    xfbdev:
+    glamor:
+    xnest:
+    xvfb:
+    glx:
+    pciaccess:
+        # extra dependencies when enabled
+        depend-on:
+            - libpciaccess
+    udev:
+        depend-on:
+            - libudev
+    udev_kms:
+    dpms:
+    xf86bigfont:
+    screensaver:
+    xres:
+    xselinux:
+    namespace:
+    xinerama:
+    xv:
+    linux_apm:
+    linux_acpi:
+    mitshm:
+    tests:
+    dri1:
+    dri2:
+    dri3:
+    drm:
+    libunwind:
+    docs:
+    devel-docs:
+    docs-pdf:

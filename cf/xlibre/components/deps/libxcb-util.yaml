@@ -1,0 +1,9 @@
+name: deps/libxcb-util
+provides: x11/libxcb-util
+type: bundle
+source:
+    git:
+        url: https://gitlab.freedesktop.org/xorg/lib/libxcb-util.git
+        ref: xcb-util-0.4.1-gitlab
+build-depends:
+    - libxcb

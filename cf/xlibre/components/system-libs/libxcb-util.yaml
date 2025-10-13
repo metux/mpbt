@@ -1,0 +1,4 @@
+name: system/libxcb-util
+provides: x11/libxcb-util
+type: system
+pkg-config: libxcb-util

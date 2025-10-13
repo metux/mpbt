@@ -1,0 +1,7 @@
+name: deps/font-util
+provides: x11/font-util
+type: bundle
+source:
+    git:
+        url: https://gitlab.freedesktop.org/xorg/font/util.git
+        ref: font-util-1.4.1

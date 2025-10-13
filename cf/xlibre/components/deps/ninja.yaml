@@ -1,0 +1,7 @@
+name: deps/ninja
+provides: buildtool/ninja
+type: bundle
+source:
+    git:
+        url: https://github.com/ninja-build/ninja.git
+        ref: release

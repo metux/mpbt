@@ -1,0 +1,4 @@
+name: system/xcbproto
+provides: x11/xcbproto
+type: system
+pkg-config: xpbproto

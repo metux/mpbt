@@ -1,0 +1,9 @@
+name: deps/libxcb-wm
+provides: x11/libxcb-wm
+type: bundle
+source:
+    git:
+        url: https://gitlab.freedesktop.org/xorg/lib/libxcb-wm.git
+        ref: xcb-util-wm-0.4.2
+build-depends:
+    - libxcb
