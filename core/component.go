@@ -13,7 +13,7 @@ type Component struct {
 	Filename string `yaml:"_"`
 }
 
-type ComponentList = []Component
+type ComponentMap = map[string]*Component
 
 func (c *Component) LoadYaml(fn string) error {
 	err := LoadYaml(fn, c)
@@ -22,17 +22,26 @@ func (c *Component) LoadYaml(fn string) error {
 }
 
 type ComponentsDB struct {
-	Components map[string]Component
-	Provides map[string]ComponentList
+	Components ComponentMap
+	Provides map[string]ComponentMap
 }
 
-func (db * ComponentsDB) Add(comp Component) {
+func (db * ComponentsDB) Add(comp *Component) {
 	if db.Components == nil {
-		db.Components = make(map[string]Component)
+		db.Components = make(ComponentMap)
 	}
 	db.Components[comp.Name] = comp
 	if db.Provides == nil {
-		db.Provides = make(map[string]ComponentList)
+		db.Provides = make(map[string]ComponentMap)
+	}
+	// FIXME: add support for multiple ones
+	if val, ok := db.Provides[comp.Provides]; ok {
+		// already have it
+		val[comp.Name] = comp
+	} else {
+		newlist := make(ComponentMap)
+		newlist[comp.Name] = comp
+		db.Provides[comp.Provides] = newlist
 	}
 }
 
@@ -55,7 +64,7 @@ func (db * ComponentsDB) LoadComponents(dirname string) error {
 					log.Printf("load error on %s: %s\n", dirname+"/"+n, err)
 					return err
 				}
-				db.Add(comp)
+				db.Add(&comp)
 			}
 		}
 	}

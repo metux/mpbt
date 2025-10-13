@@ -17,4 +17,8 @@ func main() {
 	for n,c := range db.Components {
 		log.Printf("Component: %s => %+v\n", n, c)
 	}
+
+	for n,c := range db.Provides {
+		log.Printf("Provides: %s => %+v\n", n, c)
+	}
 }
