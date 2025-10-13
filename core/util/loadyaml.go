@@ -1,0 +1,21 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+package util
+
+import (
+	"gopkg.in/yaml.v3"
+	"log"
+	"os"
+)
+
+func LoadYaml(fn string, obj interface{}) error {
+	yamlFile, err := os.ReadFile(fn)
+	if err != nil {
+		return err
+	}
+	err = yaml.Unmarshal(yamlFile, obj)
+	if err != nil {
+		log.Fatalf("Unmarshal: %v", err)
+		return err
+	}
+	return nil
+}
