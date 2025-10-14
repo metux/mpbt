@@ -1,4 +1,4 @@
-name: system/xfree86-type1
+name: os-installed/xfree86-type1
 provides: x11/xfree86-type1
 type: system
 pkg-config: xfree86-type1

@@ -1,0 +1,4 @@
+name: system/libdrm
+provides: sys/libdrm
+type: system
+pkg-config: x11

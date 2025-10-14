@@ -10,6 +10,8 @@ component-mapping:
     x11/xfree86-type1: system/xfree86-type1
     x11/xkbcomp:       system/xkbcomp
     x11/xorgproto:     system/xorgproto
+    buildtool/c-compiler: os-installed/gcc
 
 build:
-    - xlibre-xserver
+    - xserver-sdk
+#    - xlibre-xserver

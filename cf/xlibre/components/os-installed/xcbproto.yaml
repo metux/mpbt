@@ -1,4 +1,4 @@
-name: system/xcbproto
+name: os-installed/xcbproto
 provides: x11/xcbproto
 type: system
 pkg-config: xpbproto

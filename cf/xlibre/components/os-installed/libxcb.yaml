@@ -2,4 +2,3 @@ name: system/libxcb
 provides: x11/libxcb
 type: system
 pkg-config: libxcb
-

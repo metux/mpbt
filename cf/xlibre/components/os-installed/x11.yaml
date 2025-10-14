@@ -1,4 +1,4 @@
-name: system/x11
+name: os-installed/x11
 provides: x11/libx11
 type: system
 pkg-config: x11

@@ -1,13 +1,17 @@
 package core
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strings"
 )
+
+type ProvidesMap map[string]ComponentMap
+
 type Project struct {
 	Components ComponentMap
-	Provides map[string]ComponentMap
+	Provides ProvidesMap
 	Solution Solution
 }
 
@@ -21,7 +25,6 @@ func (db * Project) Add(comp *Component) {
 	}
 
 	for _, prov := range comp.Provides {
-		// FIXME: add support for multiple ones
 		if val, ok := db.Provides[prov]; ok {
 			// already have it
 			val[comp.Name] = comp
@@ -36,7 +39,6 @@ func (db * Project) Add(comp *Component) {
 func (db * Project) LoadComponents(dirname string) error {
 	entries, err := os.ReadDir(dirname)
 	if err != nil {
-		log.Printf("readdir() error on %s: %s\n", dirname, err)
 		return err
 	}
 
@@ -49,7 +51,6 @@ func (db * Project) LoadComponents(dirname string) error {
 				comp := Component{}
 				err = comp.LoadYaml(dirname + "/" + n)
 				if err != nil {
-					log.Printf("load error on %s: %s\n", dirname+"/"+n, err)
 					return err
 				}
 				db.Add(&comp)
@@ -63,8 +64,64 @@ func (prj * Project) LoadSolution(fn string) error {
 	return prj.Solution.LoadYaml(fn)
 }
 
+func (prj * Project) LookupComponent(name string) *Component {
+	// apply mapping from solution
+	name = prj.Solution.GetMapped(name)
+
+	// try to find by exact package name
+	if comp, ok := prj.Components[name]; ok {
+		return comp
+	}
+
+	// try by provides
+	if complist, ok := prj.Provides[name]; ok {
+		if (len(complist) == 1) {
+			for _, v := range complist {
+				return v
+			}
+		} else {
+			log.Printf("ERR: multiple results\n");
+			return nil
+		}
+	}
+
+	log.Printf("NOT FOUND %s\n", name)
+	return nil
+}
+
+func (prj * Project) ResolvePkg(name string) error {
+	log.Printf("need to build: %s\n", name)
+
+	comp := prj.LookupComponent(name)
+	if comp == nil {
+		return fmt.Errorf("Cant resolve component %s\n", name)
+	}
+
+	log.Printf("Resolved component %s --> %+v\n", name, *comp)
+
+	for _, dep := range comp.BuildDepend {
+		log.Printf("Build depend: %s\n", dep)
+		if err := prj.ResolvePkg(dep); err != nil {
+			return err
+		}
+	}
+
+	for _, dep := range comp.Depend {
+		log.Printf("depend: %s\n", dep)
+		if err := prj.ResolvePkg(dep); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// FIXME: yet need to check for recursion and feature flags
 func (prj * Project) Resolve() {
 	for _,b := range prj.Solution.Build {
-		log.Printf("need to build: %s\n", b)
+		err := prj.ResolvePkg(b);
+		if err != nil {
+			log.Printf("ERR on %s: %s\n", b, err)
+		}
 	}
 }

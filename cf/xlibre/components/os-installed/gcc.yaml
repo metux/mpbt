@@ -1,0 +1,4 @@
+name: os-installed/gcc
+provides: buildtool/c-compiler
+type: system
+pkg-config: xkbcomp

@@ -11,3 +11,13 @@ func (c *Solution) LoadYaml(fn string) error {
 	c.Filename = fn
 	return err
 }
+
+func (c *Solution) GetMapped(name string) string {
+	if c.ComponentMapping == nil {
+		return name
+	}
+	if val, ok := c.ComponentMapping[name]; ok {
+		return val
+	}
+	return name
+}

@@ -1,4 +1,4 @@
-name: system/xproto
+name: os-installed/xproto
 provides: x11/xproto
 type: system
 check:

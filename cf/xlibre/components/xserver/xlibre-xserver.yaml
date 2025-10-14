@@ -1,11 +1,19 @@
 name: xlibre-xserver
-provides: xserver-sdk
+provides:
+    - xserver-sdk
+    - xlibre-xserver
 sources:
     git:
         type: git
         url:  git@github.com:X11Libre/xserver.git
         # fixme: add extra repos ?
 buildsystem: meson
+
+depends:
+    - sys/pciaccess
+
+build-depends:
+    - buildtool/c-compiler
 
 # flags are always boolean, default is true
 flags:
@@ -19,10 +27,10 @@ flags:
     pciaccess:
         # extra dependencies when enabled
         depend-on:
-            - libpciaccess
+            - sys/pciaccess
     udev:
         depend-on:
-            - libudev
+            - sys/libudev
     udev_kms:
     dpms:
     xf86bigfont:

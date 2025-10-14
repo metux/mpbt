@@ -1,0 +1,4 @@
+name: os-installed/pciaccess
+provides: sys/pciaccess
+type: system
+pkg-config: pciaccess
