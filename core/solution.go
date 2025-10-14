@@ -3,7 +3,7 @@ package core
 type Solution struct {
 	ComponentMapping map[string]string `yaml:"component-mapping"`
 	Filename string `yaml:"_"`
-	Build []string `yaml:"build"`
+	Build StringList `yaml:"build"`
 }
 
 func (c *Solution) LoadYaml(fn string) error {

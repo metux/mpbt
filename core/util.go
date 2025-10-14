@@ -3,7 +3,7 @@ package core
 import (
     "os"
     "log"
-    "gopkg.in/yaml.v2"
+    "gopkg.in/yaml.v3"
 )
 
 func LoadYaml(fn string, obj interface{}) error {
