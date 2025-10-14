@@ -2,7 +2,7 @@ package core
 
 type Component struct {
 	Name     string `yaml:"name"`
-	Provides string `yaml:"provides"`
+	Provides StringList `yaml:"provides"`
 	Type     string `yaml:"type"`
 	Filename string `yaml:"_"`
 }

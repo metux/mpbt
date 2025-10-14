@@ -19,14 +19,17 @@ func (db * Project) Add(comp *Component) {
 	if db.Provides == nil {
 		db.Provides = make(map[string]ComponentMap)
 	}
-	// FIXME: add support for multiple ones
-	if val, ok := db.Provides[comp.Provides]; ok {
-		// already have it
-		val[comp.Name] = comp
-	} else {
-		newlist := make(ComponentMap)
-		newlist[comp.Name] = comp
-		db.Provides[comp.Provides] = newlist
+
+	for _, prov := range comp.Provides {
+		// FIXME: add support for multiple ones
+		if val, ok := db.Provides[prov]; ok {
+			// already have it
+			val[comp.Name] = comp
+		} else {
+			newlist := make(ComponentMap)
+			newlist[comp.Name] = comp
+			db.Provides[prov] = newlist
+		}
 	}
 }
 
