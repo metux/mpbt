@@ -119,8 +119,7 @@ func (prj * Project) ResolvePkg(name string) error {
 // FIXME: yet need to check for recursion and feature flags
 func (prj * Project) Resolve() {
 	for _,b := range prj.Solution.Build {
-		err := prj.ResolvePkg(b);
-		if err != nil {
+		if err := prj.ResolvePkg(b); err != nil {
 			log.Printf("ERR on %s: %s\n", b, err)
 		}
 	}
