@@ -1,11 +1,5 @@
 package core
 
-import (
-//	"log"
-//	"os"
-//	"strings"
-)
-
 type Solution struct {
 	ComponentMapping map[string]string `yaml:"component-mapping"`
 	Filename string `yaml:"_"`

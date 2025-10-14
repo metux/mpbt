@@ -7,23 +7,23 @@ import (
 )
 
 func main() {
-	db := core.ComponentsDB{}
+	prj := core.Project{}
 
-	err := db.LoadComponents("../cf/xlibre/components")
+	err := prj.LoadComponents("../cf/xlibre/components")
 	if err != nil {
 		log.Fatalf("error opening components directory: %s\n", err)
 	}
 
-	for n,c := range db.Components {
+	for n,c := range prj.Components {
 		log.Printf("Component: %s => %+v\n", n, c)
 	}
 
-	for n,c := range db.Provides {
+	for n,c := range prj.Provides {
 		log.Printf("Provides: %s => %+v\n", n, c)
 	}
 
-	sol := core.Solution{}
-	sol.LoadYaml("../cf/xlibre/solutions/devuan.yaml")
+	prj.LoadSolution("../cf/xlibre/solutions/devuan.yaml")
 
-	log.Printf("Solution: %+v\n", sol)
+	log.Printf("Solution: %+v\n", prj.Solution)
+	prj.Resolve()
 }

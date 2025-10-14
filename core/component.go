@@ -21,12 +21,13 @@ func (c *Component) LoadYaml(fn string) error {
 	return err
 }
 
-type ComponentsDB struct {
+type Project struct {
 	Components ComponentMap
 	Provides map[string]ComponentMap
+	Solution Solution
 }
 
-func (db * ComponentsDB) Add(comp *Component) {
+func (db * Project) Add(comp *Component) {
 	if db.Components == nil {
 		db.Components = make(ComponentMap)
 	}
@@ -45,7 +46,7 @@ func (db * ComponentsDB) Add(comp *Component) {
 	}
 }
 
-func (db * ComponentsDB) LoadComponents(dirname string) error {
+func (db * Project) LoadComponents(dirname string) error {
 	entries, err := os.ReadDir(dirname)
 	if err != nil {
 		log.Printf("readdir() error on %s: %s\n", dirname, err)
@@ -69,4 +70,14 @@ func (db * ComponentsDB) LoadComponents(dirname string) error {
 		}
 	}
 	return nil
+}
+
+func (prj * Project) LoadSolution(fn string) error {
+	return prj.Solution.LoadYaml(fn)
+}
+
+func (prj * Project) Resolve() {
+	for _,b := range prj.Solution.Build {
+		log.Printf("need to build: %s\n", b)
+	}
 }
