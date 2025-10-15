@@ -5,23 +5,25 @@ import (
 	"log"
 	"os"
 	"strings"
+
+	"github.com/metux/mpbt/core/model"
 )
 
-type ProvidesMap map[string]ComponentMap
+type ProvidesMap map[string]model.ComponentMap
 
 type Project struct {
-	Components ComponentMap
+	Components model.ComponentMap
 	Provides ProvidesMap
-	Solution Solution
+	Solution model.Solution
 }
 
-func (db * Project) Add(comp *Component) {
+func (db * Project) Add(comp *model.Component) {
 	if db.Components == nil {
-		db.Components = make(ComponentMap)
+		db.Components = make(model.ComponentMap)
 	}
 	db.Components[comp.Name] = comp
 	if db.Provides == nil {
-		db.Provides = make(map[string]ComponentMap)
+		db.Provides = make(map[string]model.ComponentMap)
 	}
 
 	for _, prov := range comp.Provides {
@@ -29,7 +31,7 @@ func (db * Project) Add(comp *Component) {
 			// already have it
 			val[comp.Name] = comp
 		} else {
-			newlist := make(ComponentMap)
+			newlist := make(model.ComponentMap)
 			newlist[comp.Name] = comp
 			db.Provides[prov] = newlist
 		}
@@ -48,7 +50,7 @@ func (db * Project) LoadComponents(dirname string) error {
 			db.LoadComponents(dirname+"/"+n)
 		} else {
 			if strings.HasSuffix(n, ".yaml") || strings.HasSuffix(n, ".yml") {
-				comp := Component{}
+				comp := model.Component{}
 				err = comp.LoadYaml(dirname + "/" + n)
 				if err != nil {
 					return err
@@ -64,7 +66,7 @@ func (prj * Project) LoadSolution(fn string) error {
 	return prj.Solution.LoadYaml(fn)
 }
 
-func (prj * Project) LookupComponent(name string) *Component {
+func (prj * Project) LookupComponent(name string) *model.Component {
 	// apply mapping from solution
 	name = prj.Solution.GetMapped(name)
 
@@ -112,7 +114,7 @@ func (prj * Project) ResolvePkg(name string) error {
 	return prj.CloneComponent(comp)
 }
 
-func (prj * Project) CloneComponent(comp * Component) error {
+func (prj * Project) CloneComponent(comp * model.Component) error {
 	log.Printf("cloning component %s\n%+v\n", comp.Name, comp)
 	return nil
 }

@@ -1,13 +1,17 @@
-package core
+package model
+
+import (
+	"github.com/metux/mpbt/core/util"
+)
 
 type Solution struct {
 	ComponentMapping map[string]string `yaml:"component-mapping"`
 	Filename string `yaml:"_"`
-	Build StringList `yaml:"build"`
+	Build util.StringList `yaml:"build"`
 }
 
 func (c *Solution) LoadYaml(fn string) error {
-	err := LoadYaml(fn, c)
+	err := util.LoadYaml(fn, c)
 	c.Filename = fn
 	return err
 }
