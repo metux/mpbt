@@ -1,0 +1,10 @@
+name: deps/xorgproto
+provides: x11/xorgproto
+type: bundle
+sources:
+    git:
+        url:    https://gitlab.freedesktop.org/xorg/proto/xorgproto.git
+        ref:    origin/master
+        depth:  7
+        fetch:
+          - refs/heads/master:refs/remotes/origin/master

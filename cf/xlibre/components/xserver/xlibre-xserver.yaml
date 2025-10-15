@@ -17,6 +17,8 @@ depends:
 
 build-depends:
     - buildtool/c-compiler
+    - x11/xorgproto
+    - x11/xcbproto
 
 # flags are always boolean, default is true
 flags:

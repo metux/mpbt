@@ -1,7 +1,7 @@
 name: deps/font-util
 provides: x11/font-util
 type: bundle
-source:
+sources:
     git:
         url: https://gitlab.freedesktop.org/xorg/lib/libxcvt.git
         ref: libxcvt-0.1.0

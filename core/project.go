@@ -14,17 +14,20 @@ type Project struct {
 
 // resolve what we need to clone
 func (prj *Project) ResolvePkg(name string) error {
+	log.Printf("NAME=%s\n", name)
 	comp := prj.LookupComponent(name)
 	if comp == nil {
 		return fmt.Errorf("Cant resolve component %s\n", name)
 	}
 
 	for _, dep := range comp.GetAllDeps() {
+		log.Printf("DEP: %s\n", dep)
 		if err := prj.ResolvePkg(dep); err != nil {
 			return err
 		}
 	}
 
+	log.Printf("[%s] cloning component\n", name)
 	return prj.CloneComponent(comp)
 }
 
@@ -34,6 +37,7 @@ func (prj *Project) CloneComponent(comp *model.Component) error {
 	remotename := "origin"
 
 	if gitspec == nil {
+		log.Printf("[%s] no gitspec - nothing to clone here\n", comp.Name)
 		return nil
 	}
 

@@ -1,7 +1,10 @@
-name: deps/font-util
-provides: x11/font-util
+name: deps/xcbproto
+provides: x11/xcbproto
 type: bundle
-source:
+sources:
     git:
-        url: https://gitlab.freedesktop.org/xorg/proto/xcbproto
-        git: xcb-proto-1.17.0
+        url:    https://gitlab.freedesktop.org/xorg/proto/xcbproto.git
+        ref:    xcb-proto-1.17.0
+        depth:  7
+        fetch:
+          - refs/heads/master:refs/remotes/origin/master

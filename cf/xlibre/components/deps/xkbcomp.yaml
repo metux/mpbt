@@ -1,7 +1,7 @@
 name: deps/xkbcomp
 provides: x11/xkbcomp
 type: bundle
-source:
+sources:
     git:
         url: https://gitlab.freedesktop.org/xorg/app/xkbcomp.git
         ref: xkbcomp-1.4.7
