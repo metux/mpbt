@@ -89,30 +89,31 @@ func (prj * Project) LookupComponent(name string) *Component {
 	return nil
 }
 
+// resolve what we need to clone
 func (prj * Project) ResolvePkg(name string) error {
-	log.Printf("need to build: %s\n", name)
-
 	comp := prj.LookupComponent(name)
 	if comp == nil {
 		return fmt.Errorf("Cant resolve component %s\n", name)
 	}
 
-	log.Printf("Resolved component %s --> %+v\n", name, *comp)
-
 	for _, dep := range comp.BuildDepend {
-		log.Printf("Build depend: %s\n", dep)
 		if err := prj.ResolvePkg(dep); err != nil {
 			return err
 		}
 	}
 
 	for _, dep := range comp.Depend {
-		log.Printf("depend: %s\n", dep)
 		if err := prj.ResolvePkg(dep); err != nil {
 			return err
 		}
 	}
 
+	log.Printf("HANDLING: %s\n", name)
+	return prj.CloneComponent(comp)
+}
+
+func (prj * Project) CloneComponent(comp * Component) error {
+	log.Printf("cloning component %s\n%+v\n", comp.Name, comp)
 	return nil
 }
 

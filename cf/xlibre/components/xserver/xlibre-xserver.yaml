@@ -4,8 +4,8 @@ provides:
     - xlibre-xserver
 sources:
     git:
-        type: git
         url:  git@github.com:X11Libre/xserver.git
+        ref:  master
         # fixme: add extra repos ?
 buildsystem: meson
 

@@ -1,5 +1,9 @@
 package core
 
+import (
+	"github.com/metux/mpbt/core/model/sources"
+)
+
 type Component struct {
 	Name     string `yaml:"name"`
 	Provides StringList `yaml:"provides"`
@@ -7,6 +11,7 @@ type Component struct {
 	Filename string `yaml:"_"`
 	BuildDepend StringList `yaml:"build-depends"`
 	Depend StringList `yaml:"depends"`
+	Sources * sources.Sources `yaml:"sources"`
 }
 
 type ComponentMap = map[string]*Component
