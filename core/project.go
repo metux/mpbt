@@ -116,6 +116,12 @@ func (prj * Project) ResolvePkg(name string) error {
 
 func (prj * Project) CloneComponent(comp * model.Component) error {
 	log.Printf("cloning component %s\n%+v\n", comp.Name, comp)
+	if (comp.Sources == nil) {
+		log.Printf("no need to clone it\n");
+	} else {
+		log.Println("should clone it\n");
+	}
+
 	return nil
 }
 
