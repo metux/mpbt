@@ -46,18 +46,17 @@ func (prj *Project) CloneComponent(comp *model.Component) error {
 	log.Printf("depths=%d\n", gitspec.Depth)
 	log.Printf("fetch=%v+\n", gitspec.Fetch)
 
-	util.ExecCmd([]string{"git", "init", comp.CloneDir})
-	util.ExecCmd([]string{"git", "-C", comp.CloneDir, "config", "remote." + remotename + ".url", gitspec.Url})
+	repo := util.GitRepo{Dir: comp.CloneDir}
+	repo.Init()
+	repo.SetRemoteUrl(remotename, gitspec.Url)
+	repo.Fetch(gitspec.Depth, remotename, gitspec.Fetch...)
 
-	c1 := []string{"git", "-C", comp.CloneDir, "fetch"}
-	if gitspec.Depth > 0 {
-		c1 = append(c1, fmt.Sprintf("--depth=%d", gitspec.Depth))
+	if r := repo.IsCheckedOut(); r {
+		log.Printf("repo is checked out\n")
+	} else {
+		log.Printf("repo not checked out yet\n")
+		repo.SimpleCheckout(gitspec.Ref)
 	}
-
-	c1 = append(c1, "origin")
-	c1 = append(c1, gitspec.Fetch...)
-
-	util.ExecCmd(c1)
 	return nil
 }
 
