@@ -4,8 +4,11 @@ provides:
     - xlibre-xserver
 sources:
     git:
-        url:  git@github.com:X11Libre/xserver.git
-        ref:  master
+        url:    git@github.com:X11Libre/xserver.git
+        ref:    refs/heads/master
+        depth:  5
+        fetch:
+          - refs/heads/master:refs/remotes/origin/master
         # fixme: add extra repos ?
 buildsystem: meson
 

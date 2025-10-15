@@ -10,11 +10,12 @@ type ProvidesMap map[string]ComponentMap
 
 type Project struct {
 	Components ComponentMap
-	Provides ProvidesMap
-	Solution Solution
+	Provides   ProvidesMap
+	Solution   Solution
+	SourceRoot string
 }
 
-func (prj * Project) AddComponent(comp *Component) {
+func (prj *Project) AddComponent(comp *Component) {
 	if prj.Components == nil {
 		prj.Components = make(ComponentMap)
 	}
@@ -35,7 +36,7 @@ func (prj * Project) AddComponent(comp *Component) {
 	}
 }
 
-func (prj * Project) LoadComponents(dirname string) error {
+func (prj *Project) LoadComponents(dirname string) error {
 	entries, err := os.ReadDir(dirname)
 	if err != nil {
 		return err
@@ -44,7 +45,7 @@ func (prj * Project) LoadComponents(dirname string) error {
 	for _, entry := range entries {
 		n := entry.Name()
 		if entry.IsDir() {
-			prj.LoadComponents(dirname+"/"+n)
+			prj.LoadComponents(dirname + "/" + n)
 		} else {
 			if strings.HasSuffix(n, ".yaml") || strings.HasSuffix(n, ".yml") {
 				comp := Component{}
@@ -58,11 +59,11 @@ func (prj * Project) LoadComponents(dirname string) error {
 	return nil
 }
 
-func (prj * Project) LoadSolution(fn string) error {
+func (prj *Project) LoadSolution(fn string) error {
 	return prj.Solution.LoadYaml(fn)
 }
 
-func (prj * Project) LookupComponent(name string) *Component {
+func (prj *Project) LookupComponent(name string) *Component {
 	// apply mapping from solution
 	name = prj.Solution.GetMapped(name)
 
@@ -73,12 +74,12 @@ func (prj * Project) LookupComponent(name string) *Component {
 
 	// try by provides
 	if complist, ok := prj.Provides[name]; ok {
-		if (len(complist) == 1) {
+		if len(complist) == 1 {
 			for _, v := range complist {
 				return v
 			}
 		} else {
-			log.Printf("ERR: multiple results\n");
+			log.Printf("ERR: multiple results\n")
 			return nil
 		}
 	}

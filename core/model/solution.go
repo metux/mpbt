@@ -6,8 +6,8 @@ import (
 
 type Solution struct {
 	ComponentMapping map[string]string `yaml:"component-mapping"`
-	Filename string `yaml:"_"`
-	Build util.StringList `yaml:"build"`
+	Filename         string            `yaml:"-"`
+	Build            util.StringList   `yaml:"build"`
 }
 
 func (c *Solution) LoadYaml(fn string) error {
