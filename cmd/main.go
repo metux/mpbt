@@ -3,11 +3,15 @@ package main
 import (
 	"log"
 
-	"github.com/metux/mpbt/core"
+//	"github.com/metux/mpbt/core"
+	"github.com/metux/mpbt/core/model"
+	"github.com/metux/mpbt/core/workflow"
 )
 
 func main() {
-	prj := core.Project{ }
+	prj := model.Project{
+		SourceRoot: "sources",
+	}
 
 	err := prj.LoadComponents("../cf/xlibre/components")
 	if err != nil {
@@ -15,5 +19,6 @@ func main() {
 	}
 
 	prj.LoadSolution("../cf/xlibre/solutions/devuan.yaml")
-	prj.Resolve()
+
+	workflow.FetchSource(&prj)
 }
