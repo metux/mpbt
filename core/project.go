@@ -32,7 +32,6 @@ func (prj *Project) ResolvePkg(name string) error {
 }
 
 func (prj *Project) CloneComponent(comp *model.Component) error {
-
 	gitspec := comp.Sources.Git
 	remotename := "origin"
 
@@ -43,22 +42,17 @@ func (prj *Project) CloneComponent(comp *model.Component) error {
 
 	comp.CloneDir = prj.SourceRoot + "/" + comp.Name
 
-	log.Printf("should clone: %s\n", comp.Name)
-	log.Printf("clonedir %s\n", comp.CloneDir)
-	log.Printf("url=%s\n", gitspec.Url)
-	log.Printf("ref=%s\n", gitspec.Ref)
-	log.Printf("depths=%d\n", gitspec.Depth)
-	log.Printf("fetch=%v+\n", gitspec.Fetch)
-
 	repo := util.GitRepo{Dir: comp.CloneDir}
-	repo.Init()
-	repo.SetRemoteUrl(remotename, gitspec.Url)
-	repo.Fetch(gitspec.Depth, remotename, gitspec.Fetch...)
-
-	if r := repo.IsCheckedOut(); r {
-		log.Printf("repo is checked out\n")
-	} else {
-		log.Printf("repo not checked out yet\n")
+	if err := repo.Init(); err != nil {
+		return err
+	}
+	if err := repo.SetRemoteUrl(remotename, gitspec.Url); err != nil {
+		return err
+	}
+	if err := repo.Fetch(gitspec.Depth, remotename, gitspec.Fetch...); err != nil {
+		return err
+	}
+	if !repo.IsCheckedOut() {
 		repo.SimpleCheckout(gitspec.Ref)
 	}
 	return nil
