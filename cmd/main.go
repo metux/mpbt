@@ -17,9 +17,9 @@ func main() {
 	}
 
 	// FIXME: shall these also be defined in the solution ?
-	err := prj.LoadPackages("../cf/xlibre/components")
+	err := prj.LoadPackages("../cf/xlibre/packages")
 	if err != nil {
-		log.Fatalf("error opening components directory: %s\n", err)
+		log.Fatalf("error loading packages from %s\n", err)
 	}
 
 	prj.LoadSolution("../cf/xlibre/solutions/devuan.yaml")

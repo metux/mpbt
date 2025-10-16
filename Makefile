@@ -25,3 +25,6 @@ swagger-serve: swagger
 	swagger serve -F=swagger swagger.json
 
 .PHONY: swagger swagger-serve proto
+
+run:
+	$(MAKE) -C cmd run
