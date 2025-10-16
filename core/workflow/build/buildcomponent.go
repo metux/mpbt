@@ -21,43 +21,38 @@ func BuildComponent(comp model.Package) error {
 	log.Printf("build system: %s\n", comp.BuildSystem)
 
 	if comp.BuildSystem == "meson" {
-		return BuildMeson(comp)
+		return BuildWithBuilder(comp, &MesonBuilder{Package: &comp})
 	}
 	if comp.BuildSystem == "autotools" {
-		return BuildAutotools(comp)
+		return BuildWithBuilder(comp, &AutotoolsBuilder{Package: &comp})
 	}
 
 	return fmt.Errorf("%s: no known build system defined: %s", comp.Name, comp.BuildSystem)
 }
 
-func BuildMeson(comp model.Package) error {
-	log.Printf("building via meson: %s\n", comp.Name)
-	return nil
-}
-
-func BuildAutotools(comp model.Package) error {
+func BuildWithBuilder(comp model.Package, b IBuilder) error {
 	if _, err := os.Stat(comp.SourceDir + "/.DONE"); err == nil {
 		fmt.Println("Package %s already built.", comp.Name)
 		return nil
 	}
 
-	if err := util.ExecCmd([]string{"./autogen.sh"}, comp.SourceDir); err != nil {
-		fmt.Println("Error:", err)
+	if err := b.RunPrepare(); err != nil {
+		fmt.Println("Prepare error:", err)
 		return err
 	}
 
-	if err := util.ExecCmd([]string{"./configure", fmt.Sprintf("--prefix=%s", comp.InstallPrefix)}, comp.SourceDir); err != nil {
-		fmt.Println("Error:", err)
+	if err := b.RunConfigure(); err != nil {
+		fmt.Println("Configure error:", err)
 		return err
 	}
 
-	if err := util.ExecCmd([]string{"make"}, comp.SourceDir); err != nil {
-		fmt.Println("Error:", err)
+	if err := b.RunBuild(); err != nil {
+		fmt.Println("Build error:", err)
 		return err
 	}
 
-	if err := util.ExecCmd([]string{"make", "install"}, comp.SourceDir); err != nil {
-		fmt.Println("Error:", err)
+	if err := b.RunInstall(); err != nil {
+		fmt.Println("Install error:", err)
 		return err
 	}
 
