@@ -5,7 +5,7 @@ import (
 	"github.com/metux/mpbt/core/util"
 )
 
-type Component struct {
+type Package struct {
 	Name        string          `yaml:"name"`
 	Provides    util.StringList `yaml:"provides"`
 	Type        string          `yaml:"type"`
@@ -20,24 +20,24 @@ type Component struct {
 	InstallPrefix string `yaml:"-"`
 }
 
-type ComponentMap = map[string]*Component
+type PackageMap = map[string]*Package
 
-func (c *Component) LoadYaml(fn string) error {
+func (c *Package) LoadYaml(fn string) error {
 	err := util.LoadYaml(fn, c)
 	c.Filename = fn
 	return err
 }
 
-func (c Component) GetAllDeps() util.StringList {
+func (c Package) GetAllDeps() util.StringList {
 	return append(c.BuildDepend, c.Depend...)
 }
 
 // tell wether the component should/can be built
 // eg. "system" type has nothing to build at all
-func (c Component) IsBuildable() bool {
+func (c Package) IsBuildable() bool {
 	return c.Type != "system" && c.Type != "fetchonly"
 }
 
-func (c Component) IsFetchable() bool {
+func (c Package) IsFetchable() bool {
 	return c.Sources.Git != nil
 }

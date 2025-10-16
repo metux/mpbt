@@ -7,27 +7,27 @@ import (
 	"path/filepath"
 )
 
-type ProvidesMap map[string]ComponentMap
+type ProvidesMap map[string]PackageMap
 
 type Project struct {
-	Components ComponentMap
+	Components PackageMap
 	Provides   ProvidesMap
 	Solution   Solution
 	SourceRoot string
 	Prefix string
 }
 
-func (prj *Project) AddComponent(comp *Component) {
+func (prj *Project) AddComponent(comp *Package) {
 	// init internal Component fields
 	comp.SourceDir, _ = filepath.Abs(prj.SourceRoot + "/" + comp.Name)
 	comp.InstallPrefix, _ = filepath.Abs(prj.Prefix)
 
 	if prj.Components == nil {
-		prj.Components = make(ComponentMap)
+		prj.Components = make(PackageMap)
 	}
 	prj.Components[comp.Name] = comp
 	if prj.Provides == nil {
-		prj.Provides = make(map[string]ComponentMap)
+		prj.Provides = make(map[string]PackageMap)
 	}
 
 	for _, prov := range comp.Provides {
@@ -35,7 +35,7 @@ func (prj *Project) AddComponent(comp *Component) {
 			// already have it
 			val[comp.Name] = comp
 		} else {
-			newlist := make(ComponentMap)
+			newlist := make(PackageMap)
 			newlist[comp.Name] = comp
 			prj.Provides[prov] = newlist
 		}
@@ -54,7 +54,7 @@ func (prj *Project) LoadComponents(dirname string) error {
 			prj.LoadComponents(dirname + "/" + n)
 		} else {
 			if strings.HasSuffix(n, ".yaml") || strings.HasSuffix(n, ".yml") {
-				comp := Component{}
+				comp := Package{}
 				if e := comp.LoadYaml(dirname + "/" + n); e != nil {
 					return e
 				}
@@ -69,7 +69,7 @@ func (prj *Project) LoadSolution(fn string) error {
 	return prj.Solution.LoadYaml(fn)
 }
 
-func (prj *Project) LookupComponent(name string) *Component {
+func (prj *Project) LookupComponent(name string) *Package {
 	// apply mapping from solution
 	name = prj.Solution.GetMapped(name)
 

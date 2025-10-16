@@ -7,7 +7,7 @@ import (
 	"github.com/metux/mpbt/core/util"
 )
 
-func CloneComponent(comp model.Component) error {
+func CloneComponent(comp model.Package) error {
 	gitspec := comp.Sources.Git
 	remotename := "origin"
 

@@ -11,7 +11,7 @@ import (
 //	"github.com/metux/go-metabuild/util/jobs"
 )
 
-func BuildComponent(comp model.Component) error {
+func BuildComponent(comp model.Package) error {
 	if !comp.IsBuildable() {
 		log.Printf("%s is not buildable\n", comp.Name)
 		return nil
@@ -30,12 +30,12 @@ func BuildComponent(comp model.Component) error {
 	return fmt.Errorf("%s: no known build system defined: %s", comp.Name, comp.BuildSystem)
 }
 
-func BuildMeson(comp model.Component) error {
+func BuildMeson(comp model.Package) error {
 	log.Printf("building via meson: %s\n", comp.Name)
 	return nil
 }
 
-func BuildAutotools(comp model.Component) error {
+func BuildAutotools(comp model.Package) error {
 	if _, err := os.Stat(comp.SourceDir + "/.DONE"); err == nil {
 		fmt.Println("Package %s already built.", comp.Name)
 		return nil
