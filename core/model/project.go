@@ -52,6 +52,7 @@ func (prj *Project) LoadComponents(dirname string) error {
 				if e := comp.LoadYaml(dirname + "/" + n); e != nil {
 					return e
 				}
+				comp.SourceDir = prj.SourceRoot + "/" + comp.Name
 				prj.AddComponent(&comp)
 			}
 		}

@@ -7,7 +7,7 @@ import (
 	"github.com/metux/mpbt/core/util"
 )
 
-func CloneComponent(comp model.Component, prefix string) error {
+func CloneComponent(comp model.Component) error {
 	gitspec := comp.Sources.Git
 	remotename := "origin"
 
@@ -16,9 +16,7 @@ func CloneComponent(comp model.Component, prefix string) error {
 		return nil
 	}
 
-	comp.CloneDir = prefix + "/" + comp.Name
-
-	repo := util.GitRepo{Dir: comp.CloneDir}
+	repo := util.GitRepo{Dir: comp.SourceDir}
 	if err := repo.Init(); err != nil {
 		return err
 	}

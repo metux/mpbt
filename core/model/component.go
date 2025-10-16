@@ -16,7 +16,7 @@ type Component struct {
 
 	// internal only, not in YAML
 	Filename string `yaml:"-"`
-	CloneDir string `yaml:"-"`
+	SourceDir string `yaml:"-"`
 }
 
 type ComponentMap = map[string]*Component

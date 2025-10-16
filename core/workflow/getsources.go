@@ -25,7 +25,7 @@ func fetchComponent(prj * model.Project, name string) error {
 	}
 
 	log.Printf("[%s] cloning component\n", name)
-	return CloneComponent(*comp, prj.SourceRoot)
+	return CloneComponent(*comp)
 }
 
 // FIXME: not honoring build flags yet
