@@ -12,6 +12,7 @@ type Component struct {
 	BuildDepend util.StringList `yaml:"build-depends"`
 	Depend      util.StringList `yaml:"depends"`
 	Sources     sources.Sources `yaml:"sources"`
+	Buildsystem string          `yaml:"buildsystem"`
 
 	// internal only, not in YAML
 	Filename string `yaml:"-"`

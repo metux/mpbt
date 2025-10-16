@@ -1,19 +1,13 @@
-package core
+package workflow
 
 import (
 	"fmt"
 	"log"
 
 	"github.com/metux/mpbt/core/model"
-	"github.com/metux/mpbt/core/workflow"
 )
 
-type Project struct {
-	model.Project
-}
-
-// resolve what we need to clone
-func (prj *Project) ResolvePkg(name string) error {
+func fetchComponent(prj * model.Project, name string) error {
 	comp := prj.LookupComponent(name)
 	if comp == nil {
 		return fmt.Errorf("Cant resolve component %s\n", name)
@@ -21,7 +15,7 @@ func (prj *Project) ResolvePkg(name string) error {
 
 	for _, dep := range comp.GetAllDeps() {
 		log.Printf("[%s] DEP: %s\n", comp.Name, dep)
-		if err := prj.ResolvePkg(dep); err != nil {
+		if err := fetchComponent(prj, dep); err != nil {
 			return err
 		}
 	}
@@ -31,15 +25,20 @@ func (prj *Project) ResolvePkg(name string) error {
 	}
 
 	log.Printf("[%s] cloning component\n", name)
-	return workflow.CloneComponent(*comp, prj.SourceRoot)
+	return CloneComponent(*comp, prj.SourceRoot)
 }
 
-// FIXME: yet need to check for recursion and feature flags
-func (prj *Project) Resolve() {
-	prj.SourceRoot = "sources"
+// FIXME: not honoring build flags yet
+func FetchSource(prj * model.Project) error {
+	if prj.SourceRoot == "" {
+		panic("prj.SourceRoot must not be empty")
+	}
+
 	for _, b := range prj.Solution.Build {
-		if err := prj.ResolvePkg(b); err != nil {
+		if err := fetchComponent(prj, b); err != nil {
 			log.Printf("ERR on %s: %s\n", b, err)
 		}
 	}
+
+	return nil
 }

@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	prj := core.Project{}
+	prj := core.Project{ }
 
 	err := prj.LoadComponents("../cf/xlibre/components")
 	if err != nil {
