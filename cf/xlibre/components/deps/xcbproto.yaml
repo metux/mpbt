@@ -8,3 +8,4 @@ sources:
         depth:  7
         fetch:
           - refs/heads/master:refs/remotes/origin/master
+buildsystem: autotools

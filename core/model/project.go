@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"path/filepath"
 )
 
 type ProvidesMap map[string]ComponentMap
@@ -13,9 +14,14 @@ type Project struct {
 	Provides   ProvidesMap
 	Solution   Solution
 	SourceRoot string
+	Prefix string
 }
 
 func (prj *Project) AddComponent(comp *Component) {
+	// init internal Component fields
+	comp.SourceDir, _ = filepath.Abs(prj.SourceRoot + "/" + comp.Name)
+	comp.InstallPrefix, _ = filepath.Abs(prj.Prefix)
+
 	if prj.Components == nil {
 		prj.Components = make(ComponentMap)
 	}
@@ -52,7 +58,6 @@ func (prj *Project) LoadComponents(dirname string) error {
 				if e := comp.LoadYaml(dirname + "/" + n); e != nil {
 					return e
 				}
-				comp.SourceDir = prj.SourceRoot + "/" + comp.Name
 				prj.AddComponent(&comp)
 			}
 		}

@@ -17,6 +17,7 @@ type Component struct {
 	// internal only, not in YAML
 	Filename string `yaml:"-"`
 	SourceDir string `yaml:"-"`
+	InstallPrefix string `yaml:"-"`
 }
 
 type ComponentMap = map[string]*Component
@@ -29,4 +30,14 @@ func (c *Component) LoadYaml(fn string) error {
 
 func (c Component) GetAllDeps() util.StringList {
 	return append(c.BuildDepend, c.Depend...)
+}
+
+// tell wether the component should/can be built
+// eg. "system" type has nothing to build at all
+func (c Component) IsBuildable() bool {
+	return c.Type != "system" && c.Type != "fetchonly"
+}
+
+func (c Component) IsFetchable() bool {
+	return c.Sources.Git != nil
 }

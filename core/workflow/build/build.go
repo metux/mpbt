@@ -14,13 +14,11 @@ func buildComponent(prj * model.Project, name string) error {
 	}
 
 	for _, dep := range comp.GetAllDeps() {
-		log.Printf("[%s] DEP: %s\n", comp.Name, dep)
 		if err := buildComponent(prj, dep); err != nil {
 			return err
 		}
 	}
 
-	log.Printf("[%s] building component\n", name)
 	return BuildComponent(*comp)
 }
 

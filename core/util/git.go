@@ -9,19 +9,19 @@ type GitRepo struct {
 }
 
 func (g GitRepo) IsCheckedOut() bool {
-	return ExecRetcode([]string{"git", "-C", g.Dir, "rev-parse", "HEAD"}) == 0
+	return ExecRetcode([]string{"git", "rev-parse", "HEAD"}, g.Dir) == 0
 }
 
 func (g GitRepo) Init() error {
-	return ExecCmd([]string{"git", "init", g.Dir})
+	return ExecCmd([]string{"git", "init", g.Dir}, "")
 }
 
 func (g GitRepo) SetRemoteUrl(remote string, url string) error {
-	return ExecCmd([]string{"git", "-C", g.Dir, "config", "remote." + remote + ".url", url})
+	return ExecCmd([]string{"git", "config", "remote." + remote + ".url", url}, g.Dir)
 }
 
 func (g GitRepo) Fetch(depth int, remote string, refs... string) error {
-	c1 := []string{"git", "-C", g.Dir, "fetch"}
+	c1 := []string{"git", "fetch"}
 	if depth > 0 {
 		c1 = append(c1, fmt.Sprintf("--depth=%d", depth))
 	}
@@ -29,9 +29,9 @@ func (g GitRepo) Fetch(depth int, remote string, refs... string) error {
 	c1 = append(c1, remote)
 	c1 = append(c1, refs...)
 
-	return ExecCmd(c1)
+	return ExecCmd(c1, g.Dir)
 }
 
 func (g GitRepo) SimpleCheckout(refname string) error {
-	return ExecCmd([]string{"git", "-C", g.Dir, "checkout", refname})
+	return ExecCmd([]string{"git", "checkout", refname}, g.Dir)
 }

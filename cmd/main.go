@@ -11,9 +11,12 @@ import (
 
 func main() {
 	prj := model.Project{
+		// FIXME: move this into the solution ?
 		SourceRoot: "sources",
+		Prefix: "DESTDIR",
 	}
 
+	// FIXME: shall these also be defined in the solution ?
 	err := prj.LoadComponents("../cf/xlibre/components")
 	if err != nil {
 		log.Fatalf("error opening components directory: %s\n", err)

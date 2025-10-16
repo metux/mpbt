@@ -8,11 +8,12 @@ import (
 	"os/exec"
 )
 
-func ExecCmd(cmdline []string) error {
+func ExecCmd(cmdline []string, wd string) error {
 	log.Printf("EXEC: %s\n", cmdline)
 	cmd := exec.Command(cmdline[0], cmdline[1:]...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
+	cmd.Dir = wd
 	return cmd.Run()
 }
 
@@ -24,8 +25,9 @@ func ExecOut(cmdline []string) string {
 	return strings.TrimSpace(string(out))
 }
 
-func ExecRetcode(cmdline []string) int {
+func ExecRetcode(cmdline []string, wd string) int {
 	cmd := exec.Command(cmdline[0], cmdline[1:]...)
+	cmd.Dir = wd
 	if err := cmd.Run(); err != nil {
 		if exitErr, ok := err.(*exec.ExitError); ok {
 			return exitErr.ExitCode()
