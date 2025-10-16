@@ -17,7 +17,7 @@ func main() {
 	}
 
 	// FIXME: shall these also be defined in the solution ?
-	err := prj.LoadComponents("../cf/xlibre/components")
+	err := prj.LoadPackages("../cf/xlibre/components")
 	if err != nil {
 		log.Fatalf("error opening components directory: %s\n", err)
 	}

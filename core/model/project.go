@@ -10,11 +10,11 @@ import (
 type ProvidesMap map[string]PackageMap
 
 type Project struct {
-	Components PackageMap
+	Packages   PackageMap
 	Provides   ProvidesMap
 	Solution   Solution
 	SourceRoot string
-	Prefix string
+	Prefix     string
 }
 
 func (prj *Project) AddComponent(comp *Package) {
@@ -22,10 +22,10 @@ func (prj *Project) AddComponent(comp *Package) {
 	comp.SourceDir, _ = filepath.Abs(prj.SourceRoot + "/" + comp.Name)
 	comp.InstallPrefix, _ = filepath.Abs(prj.Prefix)
 
-	if prj.Components == nil {
-		prj.Components = make(PackageMap)
+	if prj.Packages == nil {
+		prj.Packages = make(PackageMap)
 	}
-	prj.Components[comp.Name] = comp
+	prj.Packages[comp.Name] = comp
 	if prj.Provides == nil {
 		prj.Provides = make(map[string]PackageMap)
 	}
@@ -42,7 +42,7 @@ func (prj *Project) AddComponent(comp *Package) {
 	}
 }
 
-func (prj *Project) LoadComponents(dirname string) error {
+func (prj *Project) LoadPackages(dirname string) error {
 	entries, err := os.ReadDir(dirname)
 	if err != nil {
 		return err
@@ -51,7 +51,7 @@ func (prj *Project) LoadComponents(dirname string) error {
 	for _, entry := range entries {
 		n := entry.Name()
 		if entry.IsDir() {
-			prj.LoadComponents(dirname + "/" + n)
+			prj.LoadPackages(dirname + "/" + n)
 		} else {
 			if strings.HasSuffix(n, ".yaml") || strings.HasSuffix(n, ".yml") {
 				comp := Package{}
@@ -74,7 +74,7 @@ func (prj *Project) LookupComponent(name string) *Package {
 	name = prj.Solution.GetMapped(name)
 
 	// try to find by exact package name
-	if comp, ok := prj.Components[name]; ok {
+	if comp, ok := prj.Packages[name]; ok {
 		return comp
 	}
 
