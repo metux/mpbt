@@ -1,4 +1,4 @@
-package workflow
+package fetch
 
 import (
 	"log"
@@ -17,6 +17,12 @@ func CloneComponent(comp model.Component) error {
 	}
 
 	repo := util.GitRepo{Dir: comp.SourceDir}
+
+	// FIXME: dont fetch if already checked-out
+	if repo.IsCheckedOut() {
+		return nil
+	}
+
 	if err := repo.Init(); err != nil {
 		return err
 	}

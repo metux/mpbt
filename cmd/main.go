@@ -5,7 +5,8 @@ import (
 
 //	"github.com/metux/mpbt/core"
 	"github.com/metux/mpbt/core/model"
-	"github.com/metux/mpbt/core/workflow"
+	"github.com/metux/mpbt/core/workflow/fetch"
+	"github.com/metux/mpbt/core/workflow/build"
 )
 
 func main() {
@@ -20,5 +21,6 @@ func main() {
 
 	prj.LoadSolution("../cf/xlibre/solutions/devuan.yaml")
 
-	workflow.FetchSource(&prj)
+	fetch.FetchSource(&prj)
+	build.Build(&prj)
 }
