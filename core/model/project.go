@@ -6,12 +6,15 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/metux/go-magicdict/magic"
+	"github.com/metux/go-magicdict/api"
 	"github.com/metux/mpbt/core/util"
 )
 
 type ProvidesMap map[string]PackageMap
 
 type Project struct {
+	magic.MagicDict
 	Packages     PackageMap
 	Provides     ProvidesMap
 	Solution     Solution
@@ -74,7 +77,12 @@ func (prj *Project) LoadPackages(dirname string, prefix string) error {
 }
 
 func (prj *Project) LoadSolution(fn string) error {
-	return prj.Solution.LoadYaml(fn)
+	if err := prj.Solution.LoadYaml(fn); err != nil {
+		return err
+	}
+
+	prj.Solution.Put("@PROJECT", prj)
+	return nil
 }
 
 func (prj *Project) LookupPackage(name string) *Package {
@@ -100,4 +108,10 @@ func (prj *Project) LookupPackage(name string) *Package {
 
 	log.Printf("NOT FOUND %s\n", name)
 	return nil
+}
+
+func (prj *Project) Init() {
+	prj.MagicDict.Init()
+	machine := util.ExecOut([]string{"gcc", "-dumpmachine"})
+	api.SetStr(prj, "@machine", machine)
 }

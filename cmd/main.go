@@ -29,6 +29,7 @@ func main() {
 		SourceRoot:   util.AppendPath(rootdir, "BUILD/sources"),
 		Prefix:       util.AppendPath(rootdir, "BUILD/DESTDIR"),
 	}
+	prj.Init()
 
 	// FIXME: shall these also be defined in the solution ?
 	if err := prj.LoadPackages(util.AppendPath(rootdir, "cf/xlibre/packages"), ""); err != nil {
@@ -36,13 +37,14 @@ func main() {
 	}
 
 	prj.LoadSolution(util.AppendPath(rootdir, "cf/xlibre/solutions/devuan.yaml"))
-	api.SetStr(prj.Solution, "@rootdir", rootdir)
-	api.SetStr(prj.Solution, "@workdir", util.AppendPath(rootdir, "BUILD"))
-	api.SetStr(prj.Solution, "@machine", machine)
+
+	api.SetStr(prj, "@rootdir", rootdir)
+	api.SetStr(prj, "@workdir", "${@rootdir}/BUILD")
+	api.SetStr(prj, "@machine", machine)
 
 	for _,k := range api.GetKeys(prj.Solution, "env") {
 		val := api.GetStr(prj.Solution, api.Key("env::"+string(k)))
-		log.Printf("key=%s --> %s\n", string(k), val)
+		log.Printf("ENV: %s=%s\n", string(k), val)
 		os.Setenv(string(k), val)
 	}
 

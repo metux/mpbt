@@ -1,8 +1,8 @@
 
 pathes:
-    PREFIX: ${@workdir}/DESTDIR
+    PREFIX: ${@PROJECT::@workdir}/DESTDIR
     ACLOCAL_PATH: ${pathes::PREFIX}/share/aclocal
-    SRCROOT: ${@workdir}/sources
+    SRCROOT: ${@PROJECT::@workdir}/sources
 
 package-mapping:
     x11/font-util:        system/font-util
@@ -21,5 +21,5 @@ build:
     - xserver/xf86-input-joystick
 
 env:
-    PKG_CONFIG_PATH: ${pathes::PREFIX}/share/pkgconfig:${pathes::PREFIX}/lib/pkgconfig:${pathes::PREFIX}/lib/${@machine}/pkgconfig/
+    PKG_CONFIG_PATH: ${pathes::PREFIX}/share/pkgconfig:${pathes::PREFIX}/lib/pkgconfig:${pathes::PREFIX}/lib/${@PROJECT::@machine}/pkgconfig/
     ACLOCAL_PATH: ${pathes::PREFIX}/share/aclocal
