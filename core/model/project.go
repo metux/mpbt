@@ -112,6 +112,29 @@ func (prj *Project) LookupPackage(name string) *Package {
 
 func (prj *Project) Init() {
 	prj.MagicDict.Init()
-	machine := util.ExecOut([]string{"gcc", "-dumpmachine"})
+	prj.SetMachine(util.ExecOut([]string{"gcc", "-dumpmachine"}))
+	prj.SetRoot(".")
+	prj.SetWorkdir("${@rootdir}/BUILD")
+	prj.SetSourceRoot("${@workdir}/sources")
+}
+
+func (prj *Project) SetWorkdir(wd string) {
+	api.SetStr(prj, "@workdir", wd)
+}
+
+func (prj *Project) SetRoot(rootdir string) {
+	r, _ := filepath.Abs(rootdir)
+	api.SetStr(prj, "@rootdir", r)
+}
+
+func (prj *Project) SetMachine(machine string) {
 	api.SetStr(prj, "@machine", machine)
+}
+
+func (prj *Project) SetSourceRoot(dir string) {
+	api.SetStr(prj, "@sourceroot", dir)
+}
+
+func (prj *Project) GetSourceRoot() string {
+	return api.GetStr(prj, "@sourceroot")
 }

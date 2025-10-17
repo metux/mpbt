@@ -30,17 +30,15 @@ func main() {
 		Prefix:       util.AppendPath(rootdir, "BUILD/DESTDIR"),
 	}
 	prj.Init()
+	prj.SetRoot(rootdir)
+	prj.LoadSolution(util.AppendPath(rootdir, "cf/xlibre/solutions/devuan.yaml"))
+
+	log.Printf("sourceroot=%s\n", prj.GetSourceRoot())
 
 	// FIXME: shall these also be defined in the solution ?
 	if err := prj.LoadPackages(util.AppendPath(rootdir, "cf/xlibre/packages"), ""); err != nil {
 		panic(fmt.Sprintf("error loading packages from %s\n", err))
 	}
-
-	prj.LoadSolution(util.AppendPath(rootdir, "cf/xlibre/solutions/devuan.yaml"))
-
-	api.SetStr(prj, "@rootdir", rootdir)
-	api.SetStr(prj, "@workdir", "${@rootdir}/BUILD")
-	api.SetStr(prj, "@machine", machine)
 
 	for _,k := range api.GetKeys(prj.Solution, "env") {
 		val := api.GetStr(prj.Solution, api.Key("env::"+string(k)))
