@@ -1,4 +1,3 @@
-name: deps/libxcb-util
 provides: x11/libxcb-util
 type: bundle
 sources:

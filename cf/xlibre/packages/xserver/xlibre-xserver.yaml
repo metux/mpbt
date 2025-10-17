@@ -1,4 +1,3 @@
-name: xlibre-xserver
 provides:
     - x11/xserver-sdk
     - xlibre-xserver

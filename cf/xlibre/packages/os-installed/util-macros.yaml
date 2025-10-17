@@ -1,4 +1,3 @@
-name: os-installed/util-macros
 provides: x11/util-macros
 type: system
 pkg-config: util-macros

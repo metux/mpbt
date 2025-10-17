@@ -7,7 +7,6 @@ import (
 
 	"github.com/metux/mpbt/core/model"
 	"github.com/metux/mpbt/core/util"
-	//	"github.com/metux/go-metabuild/util/jobs"
 )
 
 func BuildPackage(comp model.Package) error {
@@ -15,9 +14,6 @@ func BuildPackage(comp model.Package) error {
 		log.Printf("%s is not buildable\n", comp.Name)
 		return nil
 	}
-
-	log.Printf("building: %s\n", comp.Name)
-	log.Printf("build system: %s\n", comp.BuildSystem)
 
 	if comp.BuildSystem == "meson" {
 		return BuildWithBuilder(comp, &MesonBuilder{Package: &comp})

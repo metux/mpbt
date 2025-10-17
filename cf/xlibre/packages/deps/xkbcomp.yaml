@@ -1,4 +1,3 @@
-name: deps/xkbcomp
 provides: x11/xkbcomp
 type: bundle
 sources:

@@ -1,4 +1,3 @@
-name: xlibre-input-libinput
 provides:
     - xserver-xf86-input-libinput
 sources:

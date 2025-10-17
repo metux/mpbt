@@ -1,3 +1,2 @@
-name: system/ninja
 provides: buildtool/ninja
 type: system

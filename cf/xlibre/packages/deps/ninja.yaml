@@ -1,4 +1,3 @@
-name: deps/ninja
 provides: buildtool/ninja
 type: bundle
 sources:

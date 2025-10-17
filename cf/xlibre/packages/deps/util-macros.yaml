@@ -1,4 +1,3 @@
-name: deps/util-macros
 provides: x11/util-macros
 type: bundle
 sources:

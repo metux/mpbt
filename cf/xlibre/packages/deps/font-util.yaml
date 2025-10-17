@@ -1,4 +1,3 @@
-name: deps/font-util
 provides: x11/font-util
 type: bundle
 sources:

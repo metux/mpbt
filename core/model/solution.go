@@ -3,9 +3,9 @@ package model
 import (
 	"log"
 
-	"github.com/metux/mpbt/core/util"
 	"github.com/metux/go-magicdict/api"
 	"github.com/metux/go-magicdict/magic"
+	"github.com/metux/mpbt/core/util"
 )
 
 type Solution struct {

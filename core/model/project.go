@@ -51,19 +51,22 @@ func (prj *Project) LoadPackages(dirname string, prefix string) error {
 	if err != nil {
 		return err
 	}
-
-	log.Printf("LoadPackages: prefix=%s\n", prefix)
 	for _, entry := range entries {
 		n := entry.Name()
 		if entry.IsDir() {
-			prj.LoadPackages(util.AppendPath(dirname, n), util.AppendPath(prefix, n))
+			if err := prj.LoadPackages(util.AppendPath(dirname, n), util.AppendPath(prefix, n)); err != nil {
+				return err
+			}
 		} else {
-			if strings.HasSuffix(n, ".yaml") || strings.HasSuffix(n, ".yml") {
-				comp := Package{}
-				if e := comp.LoadYaml(dirname + "/" + n); e != nil {
+			ext := filepath.Ext(n)
+			bn := strings.TrimSuffix(n, ext)
+			if ext == ".yaml" || ext == ".yml" {
+				pkg := Package{}
+				if e := pkg.LoadYaml(util.AppendPath(dirname, n)); e != nil {
 					return e
 				}
-				prj.AddPackage(&comp)
+				pkg.Name = util.AppendPath(prefix, bn)
+				prj.AddPackage(&pkg)
 			}
 		}
 	}
