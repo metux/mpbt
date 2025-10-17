@@ -33,3 +33,7 @@ func (c *Solution) GetBuildList() []string {
 func (c *Solution) GetPackageSpecDirs() []string {
 	return api.GetStrList(c, "packages")
 }
+
+func (c *Solution) GetPackageConfig(pkgname string) api.Entry {
+	return api.GetEntry(c, api.Key("package-config::"+pkgname))
+}

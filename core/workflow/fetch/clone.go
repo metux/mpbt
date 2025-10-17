@@ -5,9 +5,10 @@ import (
 
 	"github.com/metux/mpbt/core/model"
 	"github.com/metux/mpbt/core/util"
+	"github.com/metux/go-magicdict/api"
 )
 
-func ClonePackage(comp model.Package) error {
+func ClonePackage(comp model.Package, config api.Entry) error {
 	gitspec := comp.Sources.Git
 	remotename := "origin"
 

@@ -23,7 +23,7 @@ func fetchPackage(prj *model.Project, name string) error {
 		return nil
 	}
 
-	return ClonePackage(*comp)
+	return ClonePackage(*comp, prj.Solution.GetPackageConfig(comp.Name))
 }
 
 // FIXME: not honoring build flags yet

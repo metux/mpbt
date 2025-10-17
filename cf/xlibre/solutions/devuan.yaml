@@ -15,9 +15,9 @@ package-mapping:
     x11/xkbcomp:          system/xkbcomp
     buildtool/c-compiler: os-installed/gcc
 
-config:
+package-config:
     xserver/xlibre-xserver:
-        meson-opts: -Dxvfb=true
+        meson-args: -Dxvfb=true
 
 build:
     - x11/xserver-sdk

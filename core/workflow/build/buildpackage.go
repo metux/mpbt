@@ -5,26 +5,32 @@ import (
 	"log"
 	"os"
 
+	"github.com/metux/go-magicdict/api"
 	"github.com/metux/mpbt/core/model"
 	"github.com/metux/mpbt/core/util"
 )
 
-func BuildPackage(comp model.Package) error {
-	if !comp.IsBuildable() {
+func BuildPackage(pkg * model.Package, cf api.Entry) error {
+	if !pkg.IsBuildable() {
 		return nil
 	}
 
-	if comp.BuildSystem == "meson" {
-		return BuildWithBuilder(comp, &MesonBuilder{Package: &comp})
+	if pkg.BuildSystem == "meson" {
+		return BuildWithBuilder(pkg, cf, &MesonBuilder{})
 	}
-	if comp.BuildSystem == "autotools" {
-		return BuildWithBuilder(comp, &AutotoolsBuilder{Package: &comp})
+	if pkg.BuildSystem == "autotools" {
+		return BuildWithBuilder(pkg, cf, &AutotoolsBuilder{})
 	}
 
-	return fmt.Errorf("%s: no known build system defined: %s", comp.Name, comp.BuildSystem)
+	return fmt.Errorf("%s: no known build system defined: %s", pkg.Name, pkg.BuildSystem)
 }
 
-func BuildWithBuilder(pkg model.Package, b model.IBuilder) error {
+func BuildWithBuilder(pkg * model.Package, cf api.Entry, b model.IBuilder) error {
+	b.Init(pkg, cf)
+
+	arg := api.GetStr(cf, "meson-args")
+	log.Printf("meson-args: %s\n", arg)
+
 	if _, err := os.Stat(pkg.SourceDir + "/.DONE"); err == nil {
 		log.Printf("[%s] Package already built\n", pkg.Name)
 		return nil

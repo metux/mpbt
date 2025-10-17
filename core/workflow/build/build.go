@@ -19,7 +19,7 @@ func buildPackage(prj *model.Project, name string) error {
 		}
 	}
 
-	return BuildPackage(*comp)
+	return BuildPackage(comp, prj.Solution.GetPackageConfig(comp.Name))
 }
 
 // FIXME: not honoring build flags yet
