@@ -6,3 +6,4 @@ sources:
         ref: util-macros-1.20.2
         fetch:
           - refs/heads/master:refs/remotes/origin/master
+buildsystem: autotools

@@ -6,5 +6,5 @@ sources:
         ref:    xcb-proto-1.17.0
         depth:  1
         fetch:
-          - refs/heads/master:refs/remotes/origin/master
+          - refs/tags/*:refs/tags/*
 buildsystem: autotools

@@ -26,6 +26,13 @@ func main() {
 		Prefix:       abspath("../BUILD/DESTDIR"),
 	}
 
+	// FIXME: shall these also be defined in the solution ?
+	if err := prj.LoadPackages("../cf/xlibre/packages", ""); err != nil {
+		panic(fmt.Sprintf("error loading packages from %s\n", err))
+	}
+
+	prj.LoadSolution("../cf/xlibre/solutions/devuan.yaml")
+
 	pkgconf := fmt.Sprintf(
 		"%s/share/pkgconfig:%s/lib/pkgconfig:%s/lib/%s/pkgconfig/",
 		prj.Prefix,
@@ -35,14 +42,10 @@ func main() {
 
 	log.Printf("machine=%s\npkgconf=%s\n", prj.BuildMachine, pkgconf)
 
+	aclocal := fmt.Sprintf("%s/share/aclocal", prj.Prefix)
+
 	os.Setenv("PKG_CONFIG_PATH", pkgconf)
-
-	// FIXME: shall these also be defined in the solution ?
-	if err := prj.LoadPackages("../cf/xlibre/packages", ""); err != nil {
-		panic(fmt.Sprintf("error loading packages from %s\n", err))
-	}
-
-	prj.LoadSolution("../cf/xlibre/solutions/devuan.yaml")
+	os.Setenv("ACLOCAL_PATH", aclocal)
 
 	if err := fetch.FetchSource(&prj); err != nil {
 		panic(fmt.Sprintf("fetch failed: %s\n", err))
