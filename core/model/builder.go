@@ -1,11 +1,7 @@
-package build
-
-import (
-	"github.com/metux/mpbt/core/model"
-)
+package model
 
 type IBuilder interface {
-	SetPackage(p *model.Package)
+	SetPackage(p *Package)
 	RunPrepare() error // eg. autogen.sh
 	RunConfigure() error
 	RunBuild() error

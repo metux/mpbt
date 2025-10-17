@@ -25,7 +25,7 @@ func BuildPackage(comp model.Package) error {
 	return fmt.Errorf("%s: no known build system defined: %s", comp.Name, comp.BuildSystem)
 }
 
-func BuildWithBuilder(pkg model.Package, b IBuilder) error {
+func BuildWithBuilder(pkg model.Package, b model.IBuilder) error {
 	if _, err := os.Stat(pkg.SourceDir + "/.DONE"); err == nil {
 		log.Printf("[%s] Package already built\n", pkg.Name)
 		return nil
