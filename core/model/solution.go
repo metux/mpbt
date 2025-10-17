@@ -8,8 +8,8 @@ import (
 )
 
 type Solution struct {
-	Dict magic.MagicDict `yaml:"-"`
-	Filename         string           `yaml:"-"`
+	magic.MagicDict
+	Filename         string
 }
 
 func (c *Solution) LoadYaml(fn string) error {
@@ -19,12 +19,12 @@ func (c *Solution) LoadYaml(fn string) error {
 		log.Printf("failed loading magic dict %s -> %s\n", fn, err)
 		return err
 	}
-	c.Dict = d
+	c.MagicDict = d
 	return nil
 }
 
 func (c *Solution) GetMapped(name string) string {
-	p1 := api.GetStr(c.Dict, api.Key("package-mapping::"+name))
+	p1 := api.GetStr(c, api.Key("package-mapping::"+name))
 	if p1 == "" {
 		log.Printf("not mapped: %s\n", name)
 		return name
@@ -35,5 +35,5 @@ func (c *Solution) GetMapped(name string) string {
 }
 
 func (c *Solution) GetBuildList() [] string {
-	return api.GetStrList(c.Dict, "build")
+	return api.GetStrList(c, "build")
 }
