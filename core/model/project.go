@@ -18,30 +18,28 @@ type Project struct {
 	Packages     PackageMap
 	Provides     ProvidesMap
 	Solution     Solution
-//	SourceRoot   string
-	Prefix       string
 }
 
-func (prj *Project) AddPackage(comp *Package) {
+func (prj *Project) AddPackage(pkg *Package) {
 	// init internal Package fields
-	comp.SourceDir, _ = filepath.Abs(prj.GetSourceRoot() + "/" + comp.Name)
-	comp.InstallPrefix, _ = filepath.Abs(prj.Prefix)
+	pkg.SourceDir = util.AppendPath(prj.GetSourceRoot(), pkg.Name)
+	pkg.InstallPrefix = prj.GetInstallPrefix()
 
 	if prj.Packages == nil {
 		prj.Packages = make(PackageMap)
 	}
-	prj.Packages[comp.Name] = comp
+	prj.Packages[pkg.Name] = pkg
 	if prj.Provides == nil {
 		prj.Provides = make(map[string]PackageMap)
 	}
 
-	for _, prov := range comp.Provides {
+	for _, prov := range pkg.Provides {
 		if val, ok := prj.Provides[prov]; ok {
 			// already have it
-			val[comp.Name] = comp
+			val[pkg.Name] = pkg
 		} else {
 			newlist := make(PackageMap)
-			newlist[comp.Name] = comp
+			newlist[pkg.Name] = pkg
 			prj.Provides[prov] = newlist
 		}
 	}
@@ -88,14 +86,14 @@ func (prj *Project) LookupPackage(name string) *Package {
 	name = prj.Solution.GetMapped(name)
 
 	// try to find by exact package name
-	if comp, ok := prj.Packages[name]; ok {
-		return comp
+	if pkg, ok := prj.Packages[name]; ok {
+		return pkg
 	}
 
 	// try by provides
-	if complist, ok := prj.Provides[name]; ok {
-		if len(complist) == 1 {
-			for _, v := range complist {
+	if pkglist, ok := prj.Provides[name]; ok {
+		if len(pkglist) == 1 {
+			for _, v := range pkglist {
 				return v
 			}
 		} else {
@@ -114,6 +112,7 @@ func (prj *Project) Init() {
 	prj.SetRoot(".")
 	prj.SetWorkdir("${@rootdir}/BUILD")
 	prj.SetSourceRoot("${@workdir}/sources")
+	prj.SetInstallPrefix("${@workdir}/DESTDIR")
 }
 
 func (prj *Project) SetWorkdir(wd string) {
@@ -133,6 +132,20 @@ func (prj *Project) SetSourceRoot(dir string) {
 	api.SetStr(prj, "@sourceroot", dir)
 }
 
+func (prj *Project) SetInstallPrefix(dir string) {
+	api.SetStr(prj, "@installprefix", dir)
+}
+
 func (prj *Project) GetSourceRoot() string {
 	return api.GetStr(prj, "@sourceroot")
+}
+
+func (prj *Project) GetInstallPrefix() string {
+	return api.GetStr(prj, "@installprefix")
+}
+
+func MakeProject() Project {
+	prj := Project{}
+	prj.Init()
+	return prj
 }

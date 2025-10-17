@@ -22,12 +22,7 @@ func main() {
 
 	rootdir := abspath("../")
 
-	prj := model.Project{
-		// FIXME: move this into the solution ?
-//		SourceRoot:   util.AppendPath(rootdir, "BUILD/sources"),
-		Prefix:       util.AppendPath(rootdir, "BUILD/DESTDIR"),
-	}
-	prj.Init()
+	prj := model.MakeProject()
 	prj.SetRoot(rootdir)
 	prj.LoadSolution(util.AppendPath(rootdir, "cf/xlibre/solutions/devuan.yaml"))
 
