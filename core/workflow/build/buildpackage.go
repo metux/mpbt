@@ -11,7 +11,6 @@ import (
 
 func BuildPackage(comp model.Package) error {
 	if !comp.IsBuildable() {
-		log.Printf("%s is not buildable\n", comp.Name)
 		return nil
 	}
 

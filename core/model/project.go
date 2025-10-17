@@ -46,6 +46,7 @@ func (prj *Project) AddPackage(pkg *Package) {
 }
 
 func (prj *Project) LoadPackages(dirname string, prefix string) error {
+	log.Printf("[PROJECT] loading packages dir=%s prefix=%s\n", dirname, prefix)
 	entries, err := os.ReadDir(dirname)
 	if err != nil {
 		return err
@@ -72,7 +73,7 @@ func (prj *Project) LoadPackages(dirname string, prefix string) error {
 	return nil
 }
 
-func (prj *Project) LoadSolution(fn string) error {
+func (prj *Project) LoadSolutionYAML(fn string) error {
 	if err := prj.Solution.LoadYaml(fn); err != nil {
 		return err
 	}
@@ -80,6 +81,22 @@ func (prj *Project) LoadSolution(fn string) error {
 	prj.Solution.Put("@PROJECT", prj)
 	return nil
 }
+
+func (prj *Project) LoadSolution(fn string) error {
+	if err := prj.LoadSolutionYAML(fn); err != nil {
+		return nil
+	}
+
+	pkglist := prj.Solution.GetPackageSpecDirs()
+	for _, p := range pkglist {
+		if err := prj.LoadPackages(p, ""); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 
 func (prj *Project) LookupPackage(name string) *Package {
 	// apply mapping from solution
@@ -124,6 +141,10 @@ func (prj *Project) SetRoot(rootdir string) {
 	api.SetStr(prj, "@rootdir", r)
 }
 
+func (prj *Project) GetRoot() string {
+	return api.GetStr(prj, "@rootdir")
+}
+
 func (prj *Project) SetMachine(machine string) {
 	api.SetStr(prj, "@machine", machine)
 }
@@ -142,6 +163,14 @@ func (prj *Project) GetSourceRoot() string {
 
 func (prj *Project) GetInstallPrefix() string {
 	return api.GetStr(prj, "@installprefix")
+}
+
+func (prj *Project) PushEnv() {
+	for _,k := range api.GetKeys(prj.Solution, "env") {
+		val := api.GetStr(prj.Solution, api.Key("env::"+string(k)))
+		log.Printf("[PROJECT] ENV: %s=%s\n", string(k), val)
+		os.Setenv(string(k), val)
+	}
 }
 
 func MakeProject() Project {

@@ -23,3 +23,6 @@ build:
 env:
     PKG_CONFIG_PATH: ${pathes::PREFIX}/share/pkgconfig:${pathes::PREFIX}/lib/pkgconfig:${pathes::PREFIX}/lib/${@PROJECT::@machine}/pkgconfig/
     ACLOCAL_PATH: ${pathes::PREFIX}/share/aclocal
+
+packages:
+    - ${@PROJECT::@rootdir}/cf/xlibre/packages

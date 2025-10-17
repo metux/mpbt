@@ -2,42 +2,22 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"os"
-	"path/filepath"
 
-	"github.com/metux/go-magicdict/api"
 	"github.com/metux/mpbt/core/model"
 	"github.com/metux/mpbt/core/util"
 	"github.com/metux/mpbt/core/workflow/build"
 	"github.com/metux/mpbt/core/workflow/fetch"
 )
 
-func abspath(p string) string {
-	p2, _ := filepath.Abs(p)
-	return p2
-}
-
 func main() {
-
-	rootdir := abspath("../")
-
 	prj := model.MakeProject()
-	prj.SetRoot(rootdir)
-	prj.LoadSolution(util.AppendPath(rootdir, "cf/xlibre/solutions/devuan.yaml"))
+	prj.SetRoot("../")
 
-	log.Printf("sourceroot=%s\n", prj.GetSourceRoot())
-
-	// FIXME: shall these also be defined in the solution ?
-	if err := prj.LoadPackages(util.AppendPath(rootdir, "cf/xlibre/packages"), ""); err != nil {
-		panic(fmt.Sprintf("error loading packages from %s\n", err))
+	if err := prj.LoadSolution(util.AppendPath(prj.GetRoot(), "cf/xlibre/solutions/devuan.yaml")); err != nil {
+		panic(fmt.Sprintf("failed loading solution: %s", err))
 	}
 
-	for _,k := range api.GetKeys(prj.Solution, "env") {
-		val := api.GetStr(prj.Solution, api.Key("env::"+string(k)))
-		log.Printf("ENV: %s=%s\n", string(k), val)
-		os.Setenv(string(k), val)
-	}
+	prj.PushEnv()
 
 	if err := fetch.FetchSource(&prj); err != nil {
 		panic(fmt.Sprintf("fetch failed: %s\n", err))

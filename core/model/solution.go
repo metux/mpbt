@@ -29,3 +29,7 @@ func (c *Solution) GetMapped(name string) string {
 func (c *Solution) GetBuildList() []string {
 	return api.GetStrList(c, "build")
 }
+
+func (c *Solution) GetPackageSpecDirs() []string {
+	return api.GetStrList(c, "packages")
+}
