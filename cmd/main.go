@@ -22,8 +22,8 @@ func main() {
 	prj := model.Project{
 		// FIXME: move this into the solution ?
 		BuildMachine: util.ExecOut([]string{"gcc", "-dumpmachine"}),
-		SourceRoot:   abspath("sources"),
-		Prefix:       abspath("DESTDIR"),
+		SourceRoot:   abspath("../BUILD/sources"),
+		Prefix:       abspath("../BUILD/DESTDIR"),
 	}
 
 	pkgconf := fmt.Sprintf(
@@ -38,13 +38,16 @@ func main() {
 	os.Setenv("PKG_CONFIG_PATH", pkgconf)
 
 	// FIXME: shall these also be defined in the solution ?
-	err := prj.LoadPackages("../cf/xlibre/packages", "")
-	if err != nil {
-		log.Fatalf("error loading packages from %s\n", err)
+	if err := prj.LoadPackages("../cf/xlibre/packages", ""); err != nil {
+		panic(fmt.Sprintf("error loading packages from %s\n", err))
 	}
 
 	prj.LoadSolution("../cf/xlibre/solutions/devuan.yaml")
 
-	fetch.FetchSource(&prj)
-	build.Build(&prj)
+	if err := fetch.FetchSource(&prj); err != nil {
+		panic(fmt.Sprintf("fetch failed: %s\n", err))
+	}
+	if err := build.Build(&prj); err != nil {
+		panic(fmt.Sprintf("build failed: %s\n", err))
+	}
 }

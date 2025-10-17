@@ -1,19 +1,16 @@
 
 package-mapping:
     x11/font-util:        system/font-util
-    libdrm:               system/libdrm
     x11/libxcb-util:      system/libxcb-util
     x11/libxcb-wm:        system/libxcb-wm
-    x11/libxcvt:          deps/libxcvt
+    x11/libxcvt:          3rdparty/libxcvt
     x11/libx11:           system/libx11
-    x11/xcbproto:         deps/xcbproto
+    x11/xcbproto:         3rdparty/xcbproto
     x11/xfree86-type1:    system/xfree86-type1
     x11/xkbcomp:          system/xkbcomp
-#    x11/xorgproto:        deps/xorgproto
     buildtool/c-compiler: os-installed/gcc
 
 build:
-#    - x11/xserver-sdk
-    - xserver/xlibre-input-libinput
-
-foo: test123
+    - x11/xserver-sdk
+    - xserver/xf86-input-libinput
+    - xserver/xf86-input-joystick

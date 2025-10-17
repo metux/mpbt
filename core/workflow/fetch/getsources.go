@@ -35,6 +35,7 @@ func FetchSource(prj *model.Project) error {
 	for _, b := range prj.Solution.GetBuildList() {
 		if err := fetchPackage(prj, b); err != nil {
 			log.Printf("ERR on %s: %s\n", b, err)
+			return err
 		}
 	}
 

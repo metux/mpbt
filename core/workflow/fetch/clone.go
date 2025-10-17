@@ -33,7 +33,7 @@ func ClonePackage(comp model.Package) error {
 		return err
 	}
 	if !repo.IsCheckedOut() {
-		repo.SimpleCheckout(gitspec.Ref)
+		return repo.SimpleCheckout(gitspec.Ref)
 	}
 	return nil
 }

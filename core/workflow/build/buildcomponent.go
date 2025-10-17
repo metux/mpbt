@@ -25,34 +25,34 @@ func BuildPackage(comp model.Package) error {
 	return fmt.Errorf("%s: no known build system defined: %s", comp.Name, comp.BuildSystem)
 }
 
-func BuildWithBuilder(comp model.Package, b IBuilder) error {
-	if _, err := os.Stat(comp.SourceDir + "/.DONE"); err == nil {
-		log.Printf("[%s] Package already built\n", comp.Name)
+func BuildWithBuilder(pkg model.Package, b IBuilder) error {
+	if _, err := os.Stat(pkg.SourceDir + "/.DONE"); err == nil {
+		log.Printf("[%s] Package already built\n", pkg.Name)
 		return nil
 	}
 
 	if err := b.RunPrepare(); err != nil {
-		log.Println("Prepare error:", err)
+		log.Printf("[%s] Prepare error: %s\n", pkg.Name, err)
 		return err
 	}
 
 	if err := b.RunConfigure(); err != nil {
-		log.Println("Configure error:", err)
+		log.Printf("[%s] Configure error: %s\n", pkg.Name, err)
 		return err
 	}
 
 	if err := b.RunBuild(); err != nil {
-		log.Println("Build error:", err)
+		log.Printf("[%s] Build error: %s\n",pkg.Name,  err)
 		return err
 	}
 
 	if err := b.RunInstall(); err != nil {
-		log.Println("Install error:", err)
+		log.Printf("[%s] Install error: %s\n", pkg.Name, err)
 		return err
 	}
 
-	if err := util.ExecCmd([]string{"touch", ".DONE"}, comp.SourceDir); err != nil {
-		log.Println("Error:", err)
+	if err := util.ExecCmd([]string{"touch", ".DONE"}, pkg.SourceDir); err != nil {
+		log.Printf("[%s] Error: %s\n", pkg.Name, err)
 		return err
 	}
 

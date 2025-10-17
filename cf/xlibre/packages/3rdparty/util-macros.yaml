@@ -4,3 +4,5 @@ sources:
     git:
         url: https://gitlab.freedesktop.org/xorg/util/macros.git
         ref: util-macros-1.20.2
+        fetch:
+          - refs/heads/master:refs/remotes/origin/master

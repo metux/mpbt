@@ -4,7 +4,7 @@ sources:
     git:
         url:    https://gitlab.freedesktop.org/xorg/proto/xcbproto.git
         ref:    xcb-proto-1.17.0
-        depth:  7
+        depth:  1
         fetch:
           - refs/heads/master:refs/remotes/origin/master
 buildsystem: autotools
