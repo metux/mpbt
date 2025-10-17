@@ -3,6 +3,7 @@ package model
 import (
 	"log"
 
+	"github.com/metux/mpbt/core/util"
 	"github.com/metux/go-magicdict/api"
 	"github.com/metux/go-magicdict/magic"
 )
@@ -24,14 +25,7 @@ func (c *Solution) LoadYaml(fn string) error {
 }
 
 func (c *Solution) GetMapped(name string) string {
-	p1 := api.GetStr(c, api.Key("package-mapping::"+name))
-	if p1 == "" {
-		log.Printf("not mapped: %s\n", name)
-		return name
-	}
-
-	log.Printf("mapped %s => %s\n", name, p1)
-	return p1
+	return util.StrOr(api.GetStr(c, api.Key("package-mapping::"+name)), name)
 }
 
 func (c *Solution) GetBuildList() []string {

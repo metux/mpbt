@@ -5,6 +5,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/metux/mpbt/core/util"
 )
 
 type ProvidesMap map[string]PackageMap
@@ -44,16 +46,17 @@ func (prj *Project) AddPackage(comp *Package) {
 	}
 }
 
-func (prj *Project) LoadPackages(dirname string) error {
+func (prj *Project) LoadPackages(dirname string, prefix string) error {
 	entries, err := os.ReadDir(dirname)
 	if err != nil {
 		return err
 	}
 
+	log.Printf("LoadPackages: prefix=%s\n", prefix)
 	for _, entry := range entries {
 		n := entry.Name()
 		if entry.IsDir() {
-			prj.LoadPackages(dirname + "/" + n)
+			prj.LoadPackages(util.AppendPath(dirname, n), util.AppendPath(prefix, n))
 		} else {
 			if strings.HasSuffix(n, ".yaml") || strings.HasSuffix(n, ".yml") {
 				comp := Package{}

@@ -38,7 +38,7 @@ func main() {
 	os.Setenv("PKG_CONFIG_PATH", pkgconf)
 
 	// FIXME: shall these also be defined in the solution ?
-	err := prj.LoadPackages("../cf/xlibre/packages")
+	err := prj.LoadPackages("../cf/xlibre/packages", "")
 	if err != nil {
 		log.Fatalf("error loading packages from %s\n", err)
 	}
