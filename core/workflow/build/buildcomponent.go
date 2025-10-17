@@ -11,7 +11,7 @@ import (
 //	"github.com/metux/go-metabuild/util/jobs"
 )
 
-func BuildComponent(comp model.Package) error {
+func BuildPackage(comp model.Package) error {
 	if !comp.IsBuildable() {
 		log.Printf("%s is not buildable\n", comp.Name)
 		return nil
