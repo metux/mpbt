@@ -15,6 +15,10 @@ package-mapping:
     x11/xkbcomp:          system/xkbcomp
     buildtool/c-compiler: os-installed/gcc
 
+config:
+    xserver/xlibre-xserver:
+        meson-opts: -Dxvfb=true
+
 build:
     - x11/xserver-sdk
     - xserver/xf86-input-libinput

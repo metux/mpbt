@@ -1,6 +1,7 @@
 package model
 
 import (
+	"github.com/metux/go-magicdict/api"
 	"github.com/metux/mpbt/core/model/sources"
 	"github.com/metux/mpbt/core/util"
 )
@@ -18,6 +19,8 @@ type Package struct {
 	Filename      string `yaml:"-"`
 	SourceDir     string `yaml:"-"`
 	InstallPrefix string `yaml:"-"`
+
+	Config api.Entry `yaml:"-"`
 }
 
 type PackageMap = map[string]*Package
