@@ -1,4 +1,9 @@
 
+pathes:
+    PREFIX: ${@workdir}/DESTDIR
+    ACLOCAL_PATH: ${pathes::PREFIX}/share/aclocal
+    SRCROOT: ${@workdir}/sources
+
 package-mapping:
     x11/font-util:        system/font-util
     x11/libxcb-util:      system/libxcb-util
@@ -14,3 +19,7 @@ build:
     - x11/xserver-sdk
     - xserver/xf86-input-libinput
     - xserver/xf86-input-joystick
+
+env:
+    PKG_CONFIG_PATH: ${pathes::PREFIX}/share/pkgconfig:${pathes::PREFIX}/lib/pkgconfig:${pathes::PREFIX}/lib/${@machine}/pkgconfig/
+    ACLOCAL_PATH: ${pathes::PREFIX}/share/aclocal

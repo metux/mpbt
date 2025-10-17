@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/metux/go-magicdict/api"
 	"github.com/metux/mpbt/core/model"
 	"github.com/metux/mpbt/core/util"
 	"github.com/metux/mpbt/core/workflow/build"
@@ -19,37 +20,36 @@ func abspath(p string) string {
 
 func main() {
 
+	rootdir := abspath("../")
+	machine := util.ExecOut([]string{"gcc", "-dumpmachine"})
+
 	prj := model.Project{
 		// FIXME: move this into the solution ?
-		BuildMachine: util.ExecOut([]string{"gcc", "-dumpmachine"}),
-		SourceRoot:   abspath("../BUILD/sources"),
-		Prefix:       abspath("../BUILD/DESTDIR"),
+		BuildMachine: machine,
+		SourceRoot:   util.AppendPath(rootdir, "BUILD/sources"),
+		Prefix:       util.AppendPath(rootdir, "BUILD/DESTDIR"),
 	}
 
 	// FIXME: shall these also be defined in the solution ?
-	if err := prj.LoadPackages("../cf/xlibre/packages", ""); err != nil {
+	if err := prj.LoadPackages(util.AppendPath(rootdir, "cf/xlibre/packages"), ""); err != nil {
 		panic(fmt.Sprintf("error loading packages from %s\n", err))
 	}
 
-	prj.LoadSolution("../cf/xlibre/solutions/devuan.yaml")
+	prj.LoadSolution(util.AppendPath(rootdir, "cf/xlibre/solutions/devuan.yaml"))
+	api.SetStr(prj.Solution, "@rootdir", rootdir)
+	api.SetStr(prj.Solution, "@workdir", util.AppendPath(rootdir, "BUILD"))
+	api.SetStr(prj.Solution, "@machine", machine)
 
-	pkgconf := fmt.Sprintf(
-		"%s/share/pkgconfig:%s/lib/pkgconfig:%s/lib/%s/pkgconfig/",
-		prj.Prefix,
-		prj.Prefix,
-		prj.Prefix,
-		prj.BuildMachine)
-
-	log.Printf("machine=%s\npkgconf=%s\n", prj.BuildMachine, pkgconf)
-
-	aclocal := fmt.Sprintf("%s/share/aclocal", prj.Prefix)
-
-	os.Setenv("PKG_CONFIG_PATH", pkgconf)
-	os.Setenv("ACLOCAL_PATH", aclocal)
+	for _,k := range api.GetKeys(prj.Solution, "env") {
+		val := api.GetStr(prj.Solution, api.Key("env::"+string(k)))
+		log.Printf("key=%s --> %s\n", string(k), val)
+		os.Setenv(string(k), val)
+	}
 
 	if err := fetch.FetchSource(&prj); err != nil {
 		panic(fmt.Sprintf("fetch failed: %s\n", err))
 	}
+
 	if err := build.Build(&prj); err != nil {
 		panic(fmt.Sprintf("build failed: %s\n", err))
 	}
