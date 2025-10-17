@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/metux/go-magicdict/magic"
 	"github.com/metux/go-magicdict/api"
+	"github.com/metux/go-magicdict/magic"
 	"github.com/metux/mpbt/core/util"
 )
 
@@ -15,9 +15,9 @@ type ProvidesMap map[string]PackageMap
 
 type Project struct {
 	magic.MagicDict
-	Packages     PackageMap
-	Provides     ProvidesMap
-	Solution     Solution
+	Packages PackageMap
+	Provides ProvidesMap
+	Solution Solution
 }
 
 func (prj *Project) AddPackage(pkg *Package) {
@@ -97,7 +97,6 @@ func (prj *Project) LoadSolution(fn string) error {
 	return nil
 }
 
-
 func (prj *Project) LookupPackage(name string) *Package {
 	// apply mapping from solution
 	name = prj.Solution.GetMapped(name)
@@ -166,7 +165,7 @@ func (prj *Project) GetInstallPrefix() string {
 }
 
 func (prj *Project) PushEnv() {
-	for _,k := range api.GetKeys(prj.Solution, "env") {
+	for _, k := range api.GetKeys(prj.Solution, "env") {
 		val := api.GetStr(prj.Solution, api.Key("env::"+string(k)))
 		log.Printf("[PROJECT] ENV: %s=%s\n", string(k), val)
 		os.Setenv(string(k), val)

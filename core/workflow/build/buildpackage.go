@@ -41,7 +41,7 @@ func BuildWithBuilder(pkg model.Package, b model.IBuilder) error {
 	}
 
 	if err := b.RunBuild(); err != nil {
-		log.Printf("[%s] Build error: %s\n",pkg.Name,  err)
+		log.Printf("[%s] Build error: %s\n", pkg.Name, err)
 		return err
 	}
 
