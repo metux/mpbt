@@ -1,5 +1,5 @@
 
-component-mapping:
+package-mapping:
     x11/font-util:        system/font-util
     libdrm:               system/libdrm
     x11/libxcb-util:      system/libxcb-util

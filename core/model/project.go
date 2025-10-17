@@ -19,8 +19,8 @@ type Project struct {
 	HostMachine  string
 }
 
-func (prj *Project) AddComponent(comp *Package) {
-	// init internal Component fields
+func (prj *Project) AddPackage(comp *Package) {
+	// init internal Package fields
 	comp.SourceDir, _ = filepath.Abs(prj.SourceRoot + "/" + comp.Name)
 	comp.InstallPrefix, _ = filepath.Abs(prj.Prefix)
 
@@ -60,7 +60,7 @@ func (prj *Project) LoadPackages(dirname string) error {
 				if e := comp.LoadYaml(dirname + "/" + n); e != nil {
 					return e
 				}
-				prj.AddComponent(&comp)
+				prj.AddPackage(&comp)
 			}
 		}
 	}

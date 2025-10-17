@@ -5,9 +5,9 @@ import (
 )
 
 type Solution struct {
-	ComponentMapping map[string]string `yaml:"component-mapping"`
-	Filename         string            `yaml:"-"`
-	Build            util.StringList   `yaml:"build"`
+	PackageMapping map[string]string  `yaml:"package-mapping"`
+	Filename         string           `yaml:"-"`
+	Build            util.StringList  `yaml:"build"`
 }
 
 func (c *Solution) LoadYaml(fn string) error {
@@ -17,10 +17,10 @@ func (c *Solution) LoadYaml(fn string) error {
 }
 
 func (c *Solution) GetMapped(name string) string {
-	if c.ComponentMapping == nil {
+	if c.PackageMapping == nil {
 		return name
 	}
-	if val, ok := c.ComponentMapping[name]; ok {
+	if val, ok := c.PackageMapping[name]; ok {
 		return val
 	}
 	return name
