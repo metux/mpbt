@@ -1,3 +1,5 @@
+github.com/metux/go-magicdict v0.3.0 h1:VELeoeNp2R3wNm22O7SvVDD2Ssm+OY9mudnep54xkTc=
+github.com/metux/go-magicdict v0.3.0/go.mod h1:43AzfCso5IjWHGL9HEFksEJ5JMjdPP7RbkSVoLaaaMM=
 github.com/metux/go-metabuild v0.0.0-20240118143255-d9ed5ab697f9 h1:dtoBsBKqgfsAC3ZZL/1XO+9oGLZquaM36lFiaS94jYU=
 github.com/metux/go-metabuild v0.0.0-20240118143255-d9ed5ab697f9/go.mod h1:xpSILPi9/S1e7AMpE4FBZFb/Pbx98nTqNjKgxVAzXl8=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
