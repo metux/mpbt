@@ -14,6 +14,7 @@ buildsystem: meson
 
 depends:
     - sys/pciaccess
+    - x11/libxcvt
 
 build-depends:
     - buildtool/c-compiler

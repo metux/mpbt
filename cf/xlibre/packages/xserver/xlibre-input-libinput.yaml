@@ -9,7 +9,7 @@ sources:
         fetch:
           - refs/heads/master:refs/remotes/origin/master
         # fixme: add extra repos ?
-buildsystem: meson
+buildsystem: autotools
 
 depends:
     - sys/pciaccess

@@ -1,7 +1,11 @@
-name: deps/font-util
-provides: x11/font-util
+name: deps/libxcvt
+provides: x11/libxcvt
 type: bundle
 sources:
     git:
         url: https://gitlab.freedesktop.org/xorg/lib/libxcvt.git
         ref: libxcvt-0.1.0
+        depth: 1
+        fetch:
+          - refs/tags/*:refs/tags/*
+buildsystem: meson
