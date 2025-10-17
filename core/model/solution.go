@@ -3,13 +3,13 @@ package model
 import (
 	"log"
 
-	"github.com/metux/go-magicdict/magic"
 	"github.com/metux/go-magicdict/api"
+	"github.com/metux/go-magicdict/magic"
 )
 
 type Solution struct {
 	magic.MagicDict
-	Filename         string
+	Filename string
 }
 
 func (c *Solution) LoadYaml(fn string) error {
@@ -34,6 +34,6 @@ func (c *Solution) GetMapped(name string) string {
 	return p1
 }
 
-func (c *Solution) GetBuildList() [] string {
+func (c *Solution) GetBuildList() []string {
 	return api.GetStrList(c, "build")
 }

@@ -1,15 +1,15 @@
 package main
 
 import (
-	"log"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 
-	"github.com/metux/mpbt/core/util"
 	"github.com/metux/mpbt/core/model"
-	"github.com/metux/mpbt/core/workflow/fetch"
+	"github.com/metux/mpbt/core/util"
 	"github.com/metux/mpbt/core/workflow/build"
+	"github.com/metux/mpbt/core/workflow/fetch"
 )
 
 func abspath(p string) string {
@@ -22,8 +22,8 @@ func main() {
 	prj := model.Project{
 		// FIXME: move this into the solution ?
 		BuildMachine: util.ExecOut([]string{"gcc", "-dumpmachine"}),
-		SourceRoot: abspath("sources"),
-		Prefix: abspath("DESTDIR"),
+		SourceRoot:   abspath("sources"),
+		Prefix:       abspath("DESTDIR"),
 	}
 
 	pkgconf := fmt.Sprintf(

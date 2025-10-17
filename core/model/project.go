@@ -3,18 +3,18 @@ package model
 import (
 	"log"
 	"os"
-	"strings"
 	"path/filepath"
+	"strings"
 )
 
 type ProvidesMap map[string]PackageMap
 
 type Project struct {
-	Packages   PackageMap
-	Provides   ProvidesMap
-	Solution   Solution
-	SourceRoot string
-	Prefix     string
+	Packages     PackageMap
+	Provides     ProvidesMap
+	Solution     Solution
+	SourceRoot   string
+	Prefix       string
 	BuildMachine string
 	HostMachine  string
 }

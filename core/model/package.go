@@ -15,8 +15,8 @@ type Package struct {
 	BuildSystem string          `yaml:"buildsystem"`
 
 	// internal only, not in YAML
-	Filename string `yaml:"-"`
-	SourceDir string `yaml:"-"`
+	Filename      string `yaml:"-"`
+	SourceDir     string `yaml:"-"`
 	InstallPrefix string `yaml:"-"`
 }
 

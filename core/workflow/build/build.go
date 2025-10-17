@@ -7,7 +7,7 @@ import (
 	"github.com/metux/mpbt/core/model"
 )
 
-func buildPackage(prj * model.Project, name string) error {
+func buildPackage(prj *model.Project, name string) error {
 	comp := prj.LookupPackage(name)
 	if comp == nil {
 		return fmt.Errorf("Cant resolve component %s\n", name)
@@ -23,7 +23,7 @@ func buildPackage(prj * model.Project, name string) error {
 }
 
 // FIXME: not honoring build flags yet
-func Build(prj * model.Project) error {
+func Build(prj *model.Project) error {
 	if prj.SourceRoot == "" {
 		panic("prj.SourceRoot must not be empty")
 	}

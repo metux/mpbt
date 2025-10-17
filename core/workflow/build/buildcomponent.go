@@ -7,8 +7,7 @@ import (
 
 	"github.com/metux/mpbt/core/model"
 	"github.com/metux/mpbt/core/util"
-
-//	"github.com/metux/go-metabuild/util/jobs"
+	//	"github.com/metux/go-metabuild/util/jobs"
 )
 
 func BuildPackage(comp model.Package) error {

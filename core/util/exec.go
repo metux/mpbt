@@ -3,9 +3,9 @@ package util
 import (
 	"fmt"
 	"log"
-	"strings"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 func ExecCmd(cmdline []string, wd string) error {

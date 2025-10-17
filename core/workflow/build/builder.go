@@ -5,7 +5,7 @@ import (
 )
 
 type IBuilder interface {
-	SetPackage(p * model.Package)
+	SetPackage(p *model.Package)
 	RunPrepare() error // eg. autogen.sh
 	RunConfigure() error
 	RunBuild() error
