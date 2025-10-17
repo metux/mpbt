@@ -28,7 +28,7 @@ func Build(prj * model.Project) error {
 		panic("prj.SourceRoot must not be empty")
 	}
 
-	for _, b := range prj.Solution.Build {
+	for _, b := range prj.Solution.GetBuildList() {
 		if err := buildPackage(prj, b); err != nil {
 			log.Printf("BUILD ERR on %s: %s\n", b, err)
 			return err

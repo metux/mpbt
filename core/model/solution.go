@@ -1,27 +1,39 @@
 package model
 
 import (
-	"github.com/metux/mpbt/core/util"
+	"log"
+
+	"github.com/metux/go-magicdict/magic"
+	"github.com/metux/go-magicdict/api"
 )
 
 type Solution struct {
-	PackageMapping map[string]string  `yaml:"package-mapping"`
+	Dict magic.MagicDict `yaml:"-"`
 	Filename         string           `yaml:"-"`
-	Build            util.StringList  `yaml:"build"`
 }
 
 func (c *Solution) LoadYaml(fn string) error {
-	err := util.LoadYaml(fn, c)
 	c.Filename = fn
-	return err
+	d, err := magic.YamlLoad(fn, "")
+	if err != nil {
+		log.Printf("failed loading magic dict %s -> %s\n", fn, err)
+		return err
+	}
+	c.Dict = d
+	return nil
 }
 
 func (c *Solution) GetMapped(name string) string {
-	if c.PackageMapping == nil {
+	p1 := api.GetStr(c.Dict, api.Key("package-mapping::"+name))
+	if p1 == "" {
+		log.Printf("not mapped: %s\n", name)
 		return name
 	}
-	if val, ok := c.PackageMapping[name]; ok {
-		return val
-	}
-	return name
+
+	log.Printf("mapped %s => %s\n", name, p1)
+	return p1
+}
+
+func (c *Solution) GetBuildList() [] string {
+	return api.GetStrList(c.Dict, "build")
 }

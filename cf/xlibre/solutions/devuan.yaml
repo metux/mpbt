@@ -15,3 +15,5 @@ package-mapping:
 build:
 #    - x11/xserver-sdk
     - xlibre-input-libinput
+
+foo: test123
