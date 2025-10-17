@@ -32,32 +32,32 @@ func BuildComponent(comp model.Package) error {
 
 func BuildWithBuilder(comp model.Package, b IBuilder) error {
 	if _, err := os.Stat(comp.SourceDir + "/.DONE"); err == nil {
-		fmt.Printf("[%s] Package already built.", comp.Name)
+		log.Printf("[%s] Package already built\n", comp.Name)
 		return nil
 	}
 
 	if err := b.RunPrepare(); err != nil {
-		fmt.Println("Prepare error:", err)
+		log.Println("Prepare error:", err)
 		return err
 	}
 
 	if err := b.RunConfigure(); err != nil {
-		fmt.Println("Configure error:", err)
+		log.Println("Configure error:", err)
 		return err
 	}
 
 	if err := b.RunBuild(); err != nil {
-		fmt.Println("Build error:", err)
+		log.Println("Build error:", err)
 		return err
 	}
 
 	if err := b.RunInstall(); err != nil {
-		fmt.Println("Install error:", err)
+		log.Println("Install error:", err)
 		return err
 	}
 
 	if err := util.ExecCmd([]string{"touch", ".DONE"}, comp.SourceDir); err != nil {
-		fmt.Println("Error:", err)
+		log.Println("Error:", err)
 		return err
 	}
 
