@@ -2,19 +2,40 @@ package main
 
 import (
 	"log"
+	"fmt"
+	"os"
+	"path/filepath"
 
-//	"github.com/metux/mpbt/core"
+	"github.com/metux/mpbt/core/util"
 	"github.com/metux/mpbt/core/model"
 	"github.com/metux/mpbt/core/workflow/fetch"
 	"github.com/metux/mpbt/core/workflow/build"
 )
 
+func abspath(p string) string {
+	p2, _ := filepath.Abs(p)
+	return p2
+}
+
 func main() {
+
 	prj := model.Project{
 		// FIXME: move this into the solution ?
-		SourceRoot: "sources",
-		Prefix: "DESTDIR",
+		BuildMachine: util.ExecOut([]string{"gcc", "-dumpmachine"}),
+		SourceRoot: abspath("sources"),
+		Prefix: abspath("DESTDIR"),
 	}
+
+	pkgconf := fmt.Sprintf(
+		"%s/share/pkgconfig:%s/lib/pkgconfig:%s/lib/%s/pkgconfig/",
+		prj.Prefix,
+		prj.Prefix,
+		prj.Prefix,
+		prj.BuildMachine)
+
+	log.Printf("machine=%s\npkgconf=%s\n", prj.BuildMachine, pkgconf)
+
+	os.Setenv("PKG_CONFIG_PATH", pkgconf)
 
 	// FIXME: shall these also be defined in the solution ?
 	err := prj.LoadPackages("../cf/xlibre/packages")

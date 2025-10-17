@@ -8,7 +8,7 @@ import (
 )
 
 func fetchComponent(prj * model.Project, name string) error {
-	comp := prj.LookupComponent(name)
+	comp := prj.LookupPackage(name)
 	if comp == nil {
 		return fmt.Errorf("Cant resolve component %s\n", name)
 	}

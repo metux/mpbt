@@ -8,7 +8,7 @@ import (
 )
 
 func buildComponent(prj * model.Project, name string) error {
-	comp := prj.LookupComponent(name)
+	comp := prj.LookupPackage(name)
 	if comp == nil {
 		return fmt.Errorf("Cant resolve component %s\n", name)
 	}
@@ -30,7 +30,8 @@ func Build(prj * model.Project) error {
 
 	for _, b := range prj.Solution.Build {
 		if err := buildComponent(prj, b); err != nil {
-			log.Printf("ERR on %s: %s\n", b, err)
+			log.Printf("BUILD ERR on %s: %s\n", b, err)
+			return err
 		}
 	}
 

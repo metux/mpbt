@@ -1,6 +1,6 @@
 name: xlibre-xserver
 provides:
-    - xserver-sdk
+    - x11/xserver-sdk
     - xlibre-xserver
 sources:
     git:

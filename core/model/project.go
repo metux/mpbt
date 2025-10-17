@@ -15,6 +15,8 @@ type Project struct {
 	Solution   Solution
 	SourceRoot string
 	Prefix     string
+	BuildMachine string
+	HostMachine  string
 }
 
 func (prj *Project) AddComponent(comp *Package) {
@@ -69,7 +71,7 @@ func (prj *Project) LoadSolution(fn string) error {
 	return prj.Solution.LoadYaml(fn)
 }
 
-func (prj *Project) LookupComponent(name string) *Package {
+func (prj *Project) LookupPackage(name string) *Package {
 	// apply mapping from solution
 	name = prj.Solution.GetMapped(name)
 

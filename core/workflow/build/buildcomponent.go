@@ -32,7 +32,7 @@ func BuildComponent(comp model.Package) error {
 
 func BuildWithBuilder(comp model.Package, b IBuilder) error {
 	if _, err := os.Stat(comp.SourceDir + "/.DONE"); err == nil {
-		fmt.Println("Package %s already built.", comp.Name)
+		fmt.Printf("[%s] Package already built.", comp.Name)
 		return nil
 	}
 

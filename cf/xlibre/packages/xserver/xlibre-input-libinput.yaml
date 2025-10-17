@@ -1,0 +1,19 @@
+name: xlibre-input-libinput
+provides:
+    - xserver-xf86-input-libinput
+sources:
+    git:
+        url:    git@github.com:X11Libre/xf86-input-libinput.git
+        ref:    origin/master
+        depth:  7
+        fetch:
+          - refs/heads/master:refs/remotes/origin/master
+        # fixme: add extra repos ?
+buildsystem: meson
+
+depends:
+    - sys/pciaccess
+
+build-depends:
+    - buildtool/c-compiler
+    - x11/xserver-sdk

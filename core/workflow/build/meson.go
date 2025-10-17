@@ -1,7 +1,7 @@
 package build
 
 import (
-//	"fmt"
+	"fmt"
 
 	"github.com/metux/mpbt/core/model"
 	"github.com/metux/mpbt/core/util"
@@ -21,7 +21,10 @@ func (ab * MesonBuilder) RunPrepare() error {
 }
 
 func (ab * MesonBuilder) RunConfigure() error {
-	return util.ExecCmd([]string{"meson", "setup", "__BUILD"}, ab.Package.SourceDir)
+	return util.ExecCmd([]string{"meson",
+			"setup",
+			"__BUILD",
+			fmt.Sprintf("--prefix=%s", ab.Package.InstallPrefix)}, ab.Package.SourceDir)
 }
 
 func (ab * MesonBuilder) RunBuild() error {
