@@ -21,12 +21,10 @@ func abspath(p string) string {
 func main() {
 
 	rootdir := abspath("../")
-	machine := util.ExecOut([]string{"gcc", "-dumpmachine"})
 
 	prj := model.Project{
 		// FIXME: move this into the solution ?
-		BuildMachine: machine,
-		SourceRoot:   util.AppendPath(rootdir, "BUILD/sources"),
+//		SourceRoot:   util.AppendPath(rootdir, "BUILD/sources"),
 		Prefix:       util.AppendPath(rootdir, "BUILD/DESTDIR"),
 	}
 	prj.Init()

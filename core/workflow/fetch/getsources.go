@@ -28,7 +28,7 @@ func fetchPackage(prj *model.Project, name string) error {
 
 // FIXME: not honoring build flags yet
 func FetchSource(prj *model.Project) error {
-	if prj.SourceRoot == "" {
+	if prj.GetSourceRoot() == "" {
 		panic("prj.SourceRoot must not be empty")
 	}
 

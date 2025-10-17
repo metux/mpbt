@@ -18,15 +18,13 @@ type Project struct {
 	Packages     PackageMap
 	Provides     ProvidesMap
 	Solution     Solution
-	SourceRoot   string
+//	SourceRoot   string
 	Prefix       string
-	BuildMachine string
-	HostMachine  string
 }
 
 func (prj *Project) AddPackage(comp *Package) {
 	// init internal Package fields
-	comp.SourceDir, _ = filepath.Abs(prj.SourceRoot + "/" + comp.Name)
+	comp.SourceDir, _ = filepath.Abs(prj.GetSourceRoot() + "/" + comp.Name)
 	comp.InstallPrefix, _ = filepath.Abs(prj.Prefix)
 
 	if prj.Packages == nil {
