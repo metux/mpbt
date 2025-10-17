@@ -10,11 +10,9 @@ import (
 
 type Solution struct {
 	magic.MagicDict
-	Filename string
 }
 
 func (c *Solution) LoadYaml(fn string) error {
-	c.Filename = fn
 	d, err := magic.YamlLoad(fn, "")
 	if err != nil {
 		log.Printf("failed loading magic dict %s -> %s\n", fn, err)
