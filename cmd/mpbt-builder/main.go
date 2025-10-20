@@ -48,6 +48,7 @@ func main() {
 		panic(fmt.Sprintf("failed loading solution: %s", err))
 	}
 
+	prj.ApplyPackageConfigs()
 	prj.PushEnv() // FIXME: should be done per exec
 
 	if err := fetch.FetchSource(&prj); err != nil {

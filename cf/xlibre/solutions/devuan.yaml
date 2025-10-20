@@ -51,6 +51,7 @@ build:
     - xserver/xf86-video-r128
     - xserver/xf86-video-vesa
     - xserver/xf86-video-vmware
+    - xserver/xf86-video-mach64
 
 #build_drv_ac xf86-input-elographics $X11L_DRV_GIT/xf86-input-elographics xlibre-xf86-input-elographics-1.4.4.2
 #build_drv_ac xf86-input-evdev       $X11L_DRV_GIT/xf86-input-evdev       xlibre-xf86-input-evdev-2.11.0.2

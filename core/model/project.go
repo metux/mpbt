@@ -122,6 +122,20 @@ func (prj *Project) LookupPackage(name string) *Package {
 	return nil
 }
 
+func (prj *Project) ApplyPackageConfigs() {
+	for _, pkg := range prj.Packages {
+//		log.Printf("package %s -> %+v\n", ident, pkg)
+//		log.Printf("package.Name %s\n", pkg.Name)
+
+		if pconf := prj.Solution.GetPackageConfig(pkg.Name); pconf != nil {
+			log.Printf("package.Name %s\n", pkg.Name)
+			for _, key := range pconf.Keys() {
+				log.Printf("KEY=%s\n", key)
+			}
+		}
+	}
+}
+
 func (prj *Project) Init() {
 	prj.MagicDict.Init()
 	prj.SetMachine(util.ExecOut([]string{"gcc", "-dumpmachine"}))
