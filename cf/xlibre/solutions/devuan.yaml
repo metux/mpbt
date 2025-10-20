@@ -1,4 +1,3 @@
-
 pathes:
     PREFIX: ${@PROJECT::@workdir}/DESTDIR
     ACLOCAL_PATH: ${pathes::PREFIX}/share/aclocal
@@ -17,7 +16,14 @@ package-mapping:
 
 package-config:
     xserver/xlibre-xserver:
-        meson-args: -Dxvfb=true
+        meson-args:
+            - -Dxephyr=true
+            - -Dxnest=true
+            - -Dxvfb=true
+            - -Dxorg=true
+            - -Dglamor=true
+            - -Dxselinux=true
+            - -Dxf86bigfont=true
 
 build:
     - x11/xserver-sdk

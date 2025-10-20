@@ -24,10 +24,14 @@ func (ab *MesonBuilder) RunPrepare() error {
 }
 
 func (ab *MesonBuilder) RunConfigure() error {
-	return util.ExecCmd([]string{"meson",
+	args := []string{"meson",
 		"setup",
 		"__BUILD",
-		fmt.Sprintf("--prefix=%s", ab.Package.InstallPrefix)}, ab.Package.SourceDir)
+		fmt.Sprintf("--prefix=%s", ab.Package.InstallPrefix)}
+
+	args = append(args, api.GetStrList(ab.Config, "meson-args")...)
+
+	return util.ExecCmd(args, ab.Package.SourceDir)
 }
 
 func (ab *MesonBuilder) RunBuild() error {
