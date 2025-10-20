@@ -15,7 +15,6 @@ type Solution struct {
 func (c *Solution) LoadYaml(fn string) error {
 	d, err := magic.YamlLoad(fn, "")
 	if err != nil {
-		log.Printf("failed loading magic dict %s -> %s\n", fn, err)
 		return err
 	}
 	c.MagicDict = d
