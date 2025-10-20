@@ -15,14 +15,15 @@ func BuildPackage(pkg * model.Package, cf api.Entry) error {
 		return nil
 	}
 
-	if pkg.BuildSystem == "meson" {
+	bs := pkg.GetBuildsystem()
+	if bs == "meson" {
 		return BuildWithBuilder(pkg, cf, &MesonBuilder{})
 	}
-	if pkg.BuildSystem == "autotools" {
+	if bs == "autotools" {
 		return BuildWithBuilder(pkg, cf, &AutotoolsBuilder{})
 	}
 
-	return fmt.Errorf("%s: no known build system defined: %s", pkg.Name, pkg.BuildSystem)
+	return fmt.Errorf("%s: no known build system defined: %s", pkg.Name, bs)
 }
 
 func BuildWithBuilder(pkg * model.Package, cf api.Entry, b model.IBuilder) error {
