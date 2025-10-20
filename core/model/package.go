@@ -2,11 +2,13 @@ package model
 
 import (
 	"github.com/metux/go-magicdict/api"
+	"github.com/metux/go-magicdict/magic"
 	"github.com/metux/mpbt/core/model/sources"
 	"github.com/metux/mpbt/core/util"
 )
 
 type Package struct {
+	magic.MagicDict
 	Name        string          `yaml:"name"`
 	Provides    util.StringList `yaml:"provides"`
 	Type        string          `yaml:"type"`
@@ -26,9 +28,16 @@ type Package struct {
 type PackageMap = map[string]*Package
 
 func (c *Package) LoadYaml(fn string) error {
-	err := util.LoadYaml(fn, c)
 	c.Filename = fn
-	return err
+	if err := util.LoadYaml(fn, c); err != nil {
+		return err
+	}
+	d, err := magic.YamlLoad(fn, "")
+	if err != nil {
+		return err
+	}
+	c.MagicDict = d
+	return nil
 }
 
 func (c Package) GetAllDeps() util.StringList {
