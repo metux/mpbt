@@ -1,12 +1,10 @@
 include ../make.conf
 
-EXECUTABLE := mpbt
+SUBDIRS := mpbt-builder
 
 compile:
-	$(GO) build $(GOTAGS) .
+	for i in $(SUBDIRS) ; do $(MAKE) -C $$i ; done
 
 clean:
+	for i in $(SUBDIRS) ; do $(MAKE) -C $$i clean ; done
 	rm -f $(EXECUTABLE)
-
-run: compile
-	./cmd -root .. -solution ../cf/xlibre/solutions/devuan.yaml

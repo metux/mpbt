@@ -27,4 +27,5 @@ swagger-serve: swagger
 .PHONY: swagger swagger-serve proto
 
 run:
-	$(MAKE) -C cmd run
+	$(MAKE) -C cmd
+	./cmd/mpbt-builder/mpbt-builder -root . -solution cf/xlibre/solutions/devuan.yaml

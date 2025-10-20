@@ -3,6 +3,7 @@ pathes:
     ACLOCAL_PATH: ${pathes::PREFIX}/share/aclocal
     SRCROOT: ${@PROJECT::@workdir}/sources
 
+# tell which actual packages for resolving `provides`
 package-mapping:
     x11/font-util:        system/font-util
     x11/libxcb-util:      system/libxcb-util
@@ -14,6 +15,7 @@ package-mapping:
     x11/xkbcomp:          system/xkbcomp
     buildtool/c-compiler: os-installed/gcc
 
+# per package configuration
 package-config:
     xserver/xlibre-xserver:
         meson-args:
@@ -25,11 +27,14 @@ package-config:
             - -Dxselinux=true
             - -Dxf86bigfont=true
 
+# what to build (can use packages or provides here)
 build:
     - x11/xserver-sdk
     - xserver/xf86-input-libinput
     - xserver/xf86-input-joystick
 
+
+# extra environment variables
 env:
     PKG_CONFIG_PATH: ${pathes::PREFIX}/share/pkgconfig:${pathes::PREFIX}/lib/pkgconfig:${pathes::PREFIX}/lib/${@PROJECT::@machine}/pkgconfig/
     ACLOCAL_PATH: ${pathes::PREFIX}/share/aclocal
