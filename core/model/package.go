@@ -11,8 +11,6 @@ type Package struct {
 	magic.MagicDict
 	Name        string          `yaml:"name"`
 	Provides    util.StringList `yaml:"provides"`
-	BuildDepend util.StringList `yaml:"build-depends"`
-	Depend      util.StringList `yaml:"depends"`
 	Sources     sources.Sources `yaml:"sources"`
 
 	// internal only, not in YAML
@@ -37,7 +35,7 @@ func (c *Package) LoadYaml(fn string) error {
 }
 
 func (c Package) GetAllDeps() util.StringList {
-	return append(c.BuildDepend, c.Depend...)
+	return append(c.GetBuildDepends(), c.GetDepends()...)
 }
 
 // tell wether the component should/can be built
@@ -57,4 +55,12 @@ func (c Package) GetBuildsystem() string {
 
 func (c Package) GetType() string {
 	return api.GetStr(c, "type")
+}
+
+func (c Package) GetDepends() [] string {
+	return api.GetStrList(c, "depends")
+}
+
+func (c Package) GetBuildDepends() [] string {
+	return api.GetStrList(c, "build-depends")
 }
