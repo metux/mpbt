@@ -8,22 +8,22 @@ import (
 )
 
 func fetchPackage(prj *model.Project, name string) error {
-	comp := prj.LookupPackage(name)
-	if comp == nil {
+	pkg := prj.LookupPackage(name)
+	if pkg == nil {
 		return fmt.Errorf("Cant resolve component %s\n", name)
 	}
 
-	for _, dep := range comp.GetAllDeps() {
+	for _, dep := range pkg.GetAllDeps() {
 		if err := fetchPackage(prj, dep); err != nil {
 			return err
 		}
 	}
 
-	if comp.Sources.Git == nil {
+	if pkg.Sources.Git == nil {
 		return nil
 	}
 
-	return ClonePackage(*comp, prj.Solution.GetPackageConfig(comp.Name))
+	return ClonePackage(*pkg, prj.Solution.GetPackageConfig(pkg.GetName()))
 }
 
 // FIXME: not honoring build flags yet

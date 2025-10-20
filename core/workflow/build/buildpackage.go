@@ -23,39 +23,41 @@ func BuildPackage(pkg * model.Package, cf api.Entry) error {
 		return BuildWithBuilder(pkg, cf, &AutotoolsBuilder{})
 	}
 
-	return fmt.Errorf("%s: no known build system defined: %s", pkg.Name, bs)
+	return fmt.Errorf("%s: no known build system defined: %s", pkg.GetName(), bs)
 }
 
 func BuildWithBuilder(pkg * model.Package, cf api.Entry, b model.IBuilder) error {
 	b.Init(pkg, cf)
 
+	pkgName := pkg.GetName()
+
 	if _, err := os.Stat(pkg.SourceDir + "/.DONE"); err == nil {
-		log.Printf("[%s] Package already built\n", pkg.Name)
+		log.Printf("[%s] Package already built\n", pkgName)
 		return nil
 	}
 
 	if err := b.RunPrepare(); err != nil {
-		log.Printf("[%s] Prepare error: %s\n", pkg.Name, err)
+		log.Printf("[%s] Prepare error: %s\n", pkgName, err)
 		return err
 	}
 
 	if err := b.RunConfigure(); err != nil {
-		log.Printf("[%s] Configure error: %s\n", pkg.Name, err)
+		log.Printf("[%s] Configure error: %s\n", pkgName, err)
 		return err
 	}
 
 	if err := b.RunBuild(); err != nil {
-		log.Printf("[%s] Build error: %s\n", pkg.Name, err)
+		log.Printf("[%s] Build error: %s\n", pkgName, err)
 		return err
 	}
 
 	if err := b.RunInstall(); err != nil {
-		log.Printf("[%s] Install error: %s\n", pkg.Name, err)
+		log.Printf("[%s] Install error: %s\n", pkgName, err)
 		return err
 	}
 
 	if err := util.ExecCmd([]string{"touch", ".DONE"}, pkg.SourceDir); err != nil {
-		log.Printf("[%s] Error: %s\n", pkg.Name, err)
+		log.Printf("[%s] Error: %s\n", pkgName, err)
 		return err
 	}
 

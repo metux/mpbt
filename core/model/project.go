@@ -22,13 +22,14 @@ type Project struct {
 
 func (prj *Project) AddPackage(pkg *Package) {
 	// init internal Package fields
-	pkg.SourceDir = util.AppendPath(prj.GetSourceRoot(), pkg.Name)
+	pkgName := pkg.GetName()
+	pkg.SourceDir = util.AppendPath(prj.GetSourceRoot(), pkgName)
 	pkg.InstallPrefix = prj.GetInstallPrefix()
 
 	if prj.Packages == nil {
 		prj.Packages = make(PackageMap)
 	}
-	prj.Packages[pkg.Name] = pkg
+	prj.Packages[pkgName] = pkg
 	if prj.Provides == nil {
 		prj.Provides = make(map[string]PackageMap)
 	}
@@ -36,10 +37,10 @@ func (prj *Project) AddPackage(pkg *Package) {
 	for _, prov := range pkg.Provides {
 		if val, ok := prj.Provides[prov]; ok {
 			// already have it
-			val[pkg.Name] = pkg
+			val[pkgName] = pkg
 		} else {
 			newlist := make(PackageMap)
-			newlist[pkg.Name] = pkg
+			newlist[pkgName] = pkg
 			prj.Provides[prov] = newlist
 		}
 	}
@@ -65,7 +66,7 @@ func (prj *Project) LoadPackages(dirname string, prefix string) error {
 				if e := pkg.LoadYaml(util.AppendPath(dirname, n)); e != nil {
 					return e
 				}
-				pkg.Name = util.AppendPath(prefix, bn)
+				pkg.SetName(util.AppendPath(prefix, bn))
 				prj.AddPackage(&pkg)
 			}
 		}
@@ -126,9 +127,9 @@ func (prj *Project) ApplyPackageConfigs() {
 	for _, pkg := range prj.Packages {
 //		log.Printf("package %s -> %+v\n", ident, pkg)
 //		log.Printf("package.Name %s\n", pkg.Name)
-
-		if pconf := prj.Solution.GetPackageConfig(pkg.Name); pconf != nil {
-			log.Printf("package.Name %s\n", pkg.Name)
+		pkgName := pkg.GetName()
+		if pconf := prj.Solution.GetPackageConfig(pkgName); pconf != nil {
+			log.Printf("package.Name %s\n", pkgName)
 			for _, key := range pconf.Keys() {
 				log.Printf("KEY=%s\n", key)
 			}

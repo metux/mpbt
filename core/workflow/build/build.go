@@ -8,18 +8,18 @@ import (
 )
 
 func buildPackage(prj *model.Project, name string) error {
-	comp := prj.LookupPackage(name)
-	if comp == nil {
+	pkg := prj.LookupPackage(name)
+	if pkg == nil {
 		return fmt.Errorf("Cant resolve component %s\n", name)
 	}
 
-	for _, dep := range comp.GetAllDeps() {
+	for _, dep := range pkg.GetAllDeps() {
 		if err := buildPackage(prj, dep); err != nil {
 			return err
 		}
 	}
 
-	return BuildPackage(comp, prj.Solution.GetPackageConfig(comp.Name))
+	return BuildPackage(pkg, prj.Solution.GetPackageConfig(pkg.GetName()))
 }
 
 // FIXME: not honoring build flags yet

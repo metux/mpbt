@@ -9,7 +9,6 @@ import (
 
 type Package struct {
 	magic.MagicDict
-	Name        string          `yaml:"name"`
 	Provides    util.StringList `yaml:"provides"`
 	Sources     sources.Sources `yaml:"sources"`
 
@@ -63,4 +62,12 @@ func (c Package) GetDepends() [] string {
 
 func (c Package) GetBuildDepends() [] string {
 	return api.GetStrList(c, "build-depends")
+}
+
+func (c Package) GetName() string {
+	return api.GetStr(c, "name")
+}
+
+func (c Package) SetName(n string) {
+	api.SetStr(c, "name", n)
 }

@@ -8,16 +8,16 @@ import (
 	"github.com/metux/go-magicdict/api"
 )
 
-func ClonePackage(comp model.Package, config api.Entry) error {
-	gitspec := comp.Sources.Git
+func ClonePackage(pkg model.Package, config api.Entry) error {
+	gitspec := pkg.Sources.Git
 	remotename := "origin"
 
 	if gitspec == nil {
-		log.Printf("[%s] no gitspec - nothing to clone here\n", comp.Name)
+		log.Printf("[%s] no gitspec - nothing to clone here\n", pkg.GetName())
 		return nil
 	}
 
-	repo := util.GitRepo{Dir: comp.SourceDir}
+	repo := util.GitRepo{Dir: pkg.SourceDir}
 
 	// FIXME: dont fetch if already checked-out
 	if repo.IsCheckedOut() {
