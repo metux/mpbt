@@ -71,3 +71,7 @@ func (c Package) GetName() string {
 func (c Package) SetName(n string) {
 	api.SetStr(c, "name", n)
 }
+
+func (c Package) GetProvides() []string {
+	return api.GetStrList(c, "provides")
+}

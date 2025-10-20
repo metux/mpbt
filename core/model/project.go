@@ -34,7 +34,7 @@ func (prj *Project) AddPackage(pkg *Package) {
 		prj.Provides = make(map[string]PackageMap)
 	}
 
-	for _, prov := range pkg.Provides {
+	for _, prov := range pkg.GetProvides() {
 		if val, ok := prj.Provides[prov]; ok {
 			// already have it
 			val[pkgName] = pkg
