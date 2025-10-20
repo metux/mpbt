@@ -29,6 +29,8 @@ package-config:
             - -Dxf86bigfont=true
             - -Dxcsecurity=true
             - -Dxfbdev=true
+            - -Ddri2=true
+            - -Ddri3=true
     3rdparty/libdrm:
         meson-args:
             - -Domap=enabled
