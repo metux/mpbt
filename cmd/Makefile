@@ -9,4 +9,4 @@ clean:
 	rm -f $(EXECUTABLE)
 
 run: compile
-	./cmd
+	./cmd -root .. -solution ../cf/xlibre/solutions/devuan.yaml
