@@ -1,0 +1,10 @@
+provides: x11/libdrm
+type: bundle
+sources:
+    git:
+        url: https://github.com/X11Libre/drm
+        ref: libdrm-2.4.121
+        fetch:
+          - refs/tags/*:refs/tags/*
+
+buildsystem: meson

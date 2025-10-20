@@ -19,6 +19,7 @@ package-mapping:
 package-config:
     xserver/xlibre-xserver:
         meson-args:
+            - -Dc_args="-fno-common"
             - -Dxephyr=true
             - -Dxnest=true
             - -Dxvfb=true
@@ -26,13 +27,46 @@ package-config:
             - -Dglamor=true
             - -Dxselinux=true
             - -Dxf86bigfont=true
+            - -Dxcsecurity=true
+            - -Dxfbdev=true
+    3rdparty/libdrm:
+        meson-args:
+            - -Domap=enabled
 
 # what to build (can use packages or provides here)
 build:
     - x11/xserver-sdk
     - xserver/xf86-input-libinput
     - xserver/xf86-input-joystick
+    - xserver/xf86-input-evdev
+    - xserver/xf86-input-mouse
+    - xserver/xf86-input-synaptics
+    - xserver/xf86-input-elographics
+    - xserver/xf86-video-amdgpu
+    - xserver/xf86-video-ati
+    - xserver/xf86-video-intel
+    - xserver/xf86-video-nouveau
+    - xserver/xf86-video-omap
+    - xserver/xf86-video-qxl
+    - xserver/xf86-video-r128
+    - xserver/xf86-video-vesa
+    - xserver/xf86-video-vmware
 
+#build_drv_ac xf86-input-elographics $X11L_DRV_GIT/xf86-input-elographics xlibre-xf86-input-elographics-1.4.4.2
+#build_drv_ac xf86-input-evdev       $X11L_DRV_GIT/xf86-input-evdev       xlibre-xf86-input-evdev-2.11.0.2
+#build_drv_ac xf86-input-libinput    $X11L_DRV_GIT/xf86-input-libinput    xlibre-xf86-input-libinput-1.5.1.0
+#build_drv_ac xf86-input-mouse       $X11L_DRV_GIT/xf86-input-mouse       xlibre-xf86-input-mouse-1.9.5.2
+#build_drv_ac xf86-input-synaptics   $X11L_DRV_GIT/xf86-input-synaptics   xlibre-xf86-input-synaptics-1.10.0.2
+
+#build_drv_ac xf86-video-amdgpu      $X11L_DRV_GIT/xf86-video-amdgpu      xlibre-xf86-video-amdgpu-23.0.0.5
+#build_drv_ac xf86-video-ati         $X11L_DRV_GIT/xf86-video-ati         xlibre-xf86-video-ati-22.0.0.3
+#build_drv_ac xf86-video-intel       $X11L_DRV_GIT/xf86-video-intel       xlibre-xf86-video-intel-3.0.0.3
+#build_drv_ac xf86-video-nouveau     $X11L_DRV_GIT/xf86-video-nouveau     xlibre-xf86-video-nouveau-1.0.18.3
+#build_drv_ac xf86-video-omap        $X11L_DRV_GIT/xf86-video-omap        xlibre-xf86-video-omap-0.4.5.2
+#build_drv_ac xf86-video-qxl         $X11L_DRV_GIT/xf86-video-qxl         xlibre-xf86-video-qxl-0.1.6.2
+#build_drv_ac xf86-video-r128        $X11L_DRV_GIT/xf86-video-r128        xlibre-xf86-video-r128-6.13.0.2
+#build_drv_ac xf86-video-vesa        $X11L_DRV_GIT/xf86-video-vesa        xlibre-xf86-video-vesa-2.6.0.2
+#build_drv_ac xf86-video-vmware      $X11L_DRV_GIT/xf86-video-vmware      xlibre-xf86-video-vmware-13.4.0.3
 
 # extra environment variables
 env:

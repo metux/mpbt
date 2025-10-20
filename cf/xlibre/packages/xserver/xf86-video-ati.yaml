@@ -1,0 +1,14 @@
+sources:
+    git:
+        url:    git@github.com:X11Libre/xf86-video-ati.git
+        ref:    origin/master
+        depth:  1
+        fetch:
+          - refs/heads/master:refs/remotes/origin/master
+        # fixme: add extra repos ?
+buildsystem: autotools
+
+build-depends:
+    - buildtool/c-compiler
+    - x11/xserver-sdk
+    - 3rdparty/util-macros

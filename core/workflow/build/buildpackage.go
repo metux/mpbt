@@ -28,9 +28,6 @@ func BuildPackage(pkg * model.Package, cf api.Entry) error {
 func BuildWithBuilder(pkg * model.Package, cf api.Entry, b model.IBuilder) error {
 	b.Init(pkg, cf)
 
-	arg := api.GetStr(cf, "meson-args")
-	log.Printf("meson-args: %s\n", arg)
-
 	if _, err := os.Stat(pkg.SourceDir + "/.DONE"); err == nil {
 		log.Printf("[%s] Package already built\n", pkg.Name)
 		return nil
