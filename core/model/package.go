@@ -24,9 +24,8 @@ type Package struct {
 	magic.MagicDict
 
 	// internal only, not in YAML
-	SourceDir     string       `yaml:"-"`
 	InstallPrefix string       `yaml:"-"`
-	Git           *sources.Git `yaml:"-"`
+	cacheGit           *sources.Git `yaml:"-"`
 }
 
 type PackageMap = map[string]*Package
@@ -88,8 +87,8 @@ func (c Package) GetProvides() []string {
 }
 
 func (pkg Package) GetGit() *sources.Git {
-	if pkg.Git != nil {
-		return pkg.Git
+	if pkg.cacheGit != nil {
+		return pkg.cacheGit
 	}
 
 	ent, err := pkg.Get("sources::git")
@@ -108,8 +107,8 @@ func (pkg Package) GetGit() *sources.Git {
 		Fetch: api.GetStrList(ent, "fetch"),
 	}
 
-	pkg.Git = &git
-	return pkg.Git
+	pkg.cacheGit = &git
+	return pkg.cacheGit
 }
 
 func (pkg Package) GetSourceDir() string {
