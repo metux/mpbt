@@ -26,22 +26,24 @@ type Package struct {
 	magic.MagicDict
 
 	// internal only, not in YAML
-//	InstallPrefix string       `yaml:"-"`
 	cacheGit           *sources.Git `yaml:"-"`
 }
 
 type PackageMap = map[string]*Package
 
-func (c *Package) LoadYaml(fn string) error {
-	if err := util.LoadYaml(fn, c); err != nil {
-		return err
-	}
+func (pkg *Package) LoadYaml(fn string) error {
 	d, err := magic.YamlLoad(fn, "")
 	if err != nil {
 		return err
 	}
-	c.MagicDict = d
-	api.SetStr(d, KeyPackageFilename, fn)
+	pkg.MagicDict = d
+
+	// init some presets
+	api.SetStr(pkg, KeyPackageFilename, fn)
+	api.SetDefaultStr(pkg, KeyPackageSourceDir, "${"+KeyPackageProject+"::"+KeyProjectSourceRoot+"}/${name}")
+	api.SetDefaultStr(pkg, KeyPackageInstallPrefix, "${"+KeyPackageProject+"::"+KeyProjectInstallPrefix+"}")
+	api.SetDefaultStr(pkg, KeyPackageInstallPrefix, "${"+KeyPackageProject+"::"+KeyProjectInstallPrefix+"}")
+
 	return nil
 }
 
@@ -123,4 +125,12 @@ func (pkg Package) SetSourceDir(src string) error {
 
 func (pkg Package) GetInstallPrefix() string {
 	return api.GetStr(pkg, KeyPackageInstallPrefix)
+}
+
+func LoadPackageYaml(fn string) (*Package, error) {
+	pkg := Package{}
+	if err := pkg.LoadYaml(fn); err != nil {
+		return nil, err
+	}
+	return &pkg, nil
 }

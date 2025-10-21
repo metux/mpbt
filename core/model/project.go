@@ -30,9 +30,6 @@ func (prj *Project) AddPackage(pkg *Package) {
 	// init internal Package fields
 	pkgName := pkg.GetName()
 	pkg.Put(KeyPackageProject, prj)
-	api.SetDefaultStr(pkg, KeyPackageSourceDir, "${"+KeyPackageProject+"::"+KeyProjectSourceRoot+"}/${name}")
-	api.SetDefaultStr(pkg, KeyPackageInstallPrefix, "${"+KeyPackageProject+"::"+KeyProjectInstallPrefix+"}")
-	api.SetDefaultStr(pkg, KeyPackageInstallPrefix, "${"+KeyPackageProject+"::"+KeyProjectInstallPrefix+"}")
 
 	log.Printf("my sourceroot=%s\n", api.GetStr(prj, KeyProjectSourceRoot))
 	log.Printf("pkg installprefix=%s\n", api.GetStr(pkg, KeyPackageInstallPrefix))
@@ -73,12 +70,12 @@ func (prj *Project) LoadPackages(dirname string, prefix string) error {
 			ext := filepath.Ext(n)
 			bn := strings.TrimSuffix(n, ext)
 			if ext == ".yaml" || ext == ".yml" {
-				pkg := Package{}
-				if e := pkg.LoadYaml(util.AppendPath(dirname, n)); e != nil {
-					return e
+				pkg, err := LoadPackageYaml(util.AppendPath(dirname, n))
+				if err != nil {
+					return err
 				}
 				pkg.SetName(util.AppendPath(prefix, bn))
-				prj.AddPackage(&pkg)
+				prj.AddPackage(pkg)
 			}
 		}
 	}
