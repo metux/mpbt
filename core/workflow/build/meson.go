@@ -29,7 +29,18 @@ func (ab *MesonBuilder) RunConfigure() error {
 		"__BUILD",
 		fmt.Sprintf("--prefix=%s", ab.Package.GetInstallPrefix())}
 
-	args = append(args, api.GetStrList(ab.Config, "meson-args")...)
+	meson_args := api.GetStrList(ab.Config, "meson-args")
+	if len(meson_args) == 0 {
+		meson_args = api.GetStrList(ab.Package, "meson-args")
+	}
+
+	meson_extra_args := api.GetStrList(ab.Config, "meson-extra-args")
+	if len(meson_extra_args) == 0 {
+		meson_extra_args = api.GetStrList(ab.Package, "meson-extra-args")
+	}
+
+	args = append(args, meson_args...)
+	args = append(args, meson_extra_args...)
 
 	return util.ExecCmd(args, ab.Package.GetSourceDir())
 }
