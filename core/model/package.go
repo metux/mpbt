@@ -9,6 +9,11 @@ import (
 	"github.com/metux/mpbt/core/util"
 )
 
+const (
+	KeyPackageBuildsystem = api.Key("buildsystem")
+	KeyPackageSourceDir = api.Key("source-dir")
+)
+
 type Package struct {
 	magic.MagicDict
 
@@ -49,7 +54,7 @@ func (c Package) IsFetchable() bool {
 }
 
 func (c Package) GetBuildsystem() string {
-	return api.GetStr(c, "buildsystem")
+	return api.GetStr(c, KeyPackageBuildsystem)
 }
 
 func (c Package) GetType() string {
@@ -99,4 +104,8 @@ func (pkg Package) GetGit() * sources.Git {
 
 	pkg.Git = &git
 	return pkg.Git
+}
+
+func (pkg Package) GetSourceDir() string {
+	return api.GetStr(pkg, KeyPackageSourceDir)
 }
