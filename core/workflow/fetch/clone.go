@@ -3,9 +3,9 @@ package fetch
 import (
 	"log"
 
+	"github.com/metux/go-magicdict/api"
 	"github.com/metux/mpbt/core/model"
 	"github.com/metux/mpbt/core/util"
-	"github.com/metux/go-magicdict/api"
 )
 
 func ClonePackage(pkg model.Package, config api.Entry) error {

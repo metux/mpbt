@@ -3,14 +3,14 @@ package build
 import (
 	"fmt"
 
+	"github.com/metux/go-magicdict/api"
 	"github.com/metux/mpbt/core/model"
 	"github.com/metux/mpbt/core/util"
-	"github.com/metux/go-magicdict/api"
 )
 
 type AutotoolsBuilder struct {
 	Package *model.Package
-	Config api.Entry
+	Config  api.Entry
 }
 
 func (ab *AutotoolsBuilder) Init(p *model.Package, cf api.Entry) {

@@ -10,7 +10,7 @@ import (
 	"github.com/metux/mpbt/core/util"
 )
 
-func BuildPackage(pkg * model.Package, cf api.Entry) error {
+func BuildPackage(pkg *model.Package, cf api.Entry) error {
 	if !pkg.IsBuildable() {
 		return nil
 	}
@@ -26,7 +26,7 @@ func BuildPackage(pkg * model.Package, cf api.Entry) error {
 	return fmt.Errorf("%s: no known build system defined: %s", pkg.GetName(), bs)
 }
 
-func BuildWithBuilder(pkg * model.Package, cf api.Entry, b model.IBuilder) error {
+func BuildWithBuilder(pkg *model.Package, cf api.Entry, b model.IBuilder) error {
 	b.Init(pkg, cf)
 
 	pkgName := pkg.GetName()

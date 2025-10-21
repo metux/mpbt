@@ -11,22 +11,22 @@ import (
 
 const (
 	KeyPackageBuildDepends = api.Key("build-depends")
-	KeyPackageBuildsystem = api.Key("buildsystem")
-	KeyPackageDepends = api.Key("depends")
-	KeyPackageFilename = api.Key("@filename")
-	KeyPackageName = api.Key("name")
-	KeyPackageProvides = api.Key("provides")
-	KeyPackageSourceDir = api.Key("source-dir")
-	KeyPackageType = api.Key("type")
+	KeyPackageBuildsystem  = api.Key("buildsystem")
+	KeyPackageDepends      = api.Key("depends")
+	KeyPackageFilename     = api.Key("@filename")
+	KeyPackageName         = api.Key("name")
+	KeyPackageProvides     = api.Key("provides")
+	KeyPackageSourceDir    = api.Key("source-dir")
+	KeyPackageType         = api.Key("type")
 )
 
 type Package struct {
 	magic.MagicDict
 
 	// internal only, not in YAML
-	SourceDir     string `yaml:"-"`
-	InstallPrefix string `yaml:"-"`
-	Git * sources.Git `yaml:"-"`
+	SourceDir     string       `yaml:"-"`
+	InstallPrefix string       `yaml:"-"`
+	Git           *sources.Git `yaml:"-"`
 }
 
 type PackageMap = map[string]*Package
@@ -67,11 +67,11 @@ func (c Package) GetType() string {
 	return api.GetStr(c, KeyPackageType)
 }
 
-func (c Package) GetDepends() [] string {
+func (c Package) GetDepends() []string {
 	return api.GetStrList(c, KeyPackageDepends)
 }
 
-func (c Package) GetBuildDepends() [] string {
+func (c Package) GetBuildDepends() []string {
 	return api.GetStrList(c, KeyPackageBuildDepends)
 }
 
@@ -87,7 +87,7 @@ func (c Package) GetProvides() []string {
 	return api.GetStrList(c, KeyPackageProvides)
 }
 
-func (pkg Package) GetGit() * sources.Git {
+func (pkg Package) GetGit() *sources.Git {
 	if pkg.Git != nil {
 		return pkg.Git
 	}
@@ -101,9 +101,9 @@ func (pkg Package) GetGit() * sources.Git {
 		return nil
 	}
 
-	git := sources.Git {
-		Url: api.GetStr(ent, "url"),
-		Ref: api.GetStr(ent, "ref"),
+	git := sources.Git{
+		Url:   api.GetStr(ent, "url"),
+		Ref:   api.GetStr(ent, "ref"),
 		Depth: api.GetInt(ent, "depth", 0),
 		Fetch: api.GetStrList(ent, "fetch"),
 	}
