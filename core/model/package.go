@@ -13,7 +13,6 @@ type Package struct {
 	magic.MagicDict
 
 	// internal only, not in YAML
-	Filename      string `yaml:"-"`
 	SourceDir     string `yaml:"-"`
 	InstallPrefix string `yaml:"-"`
 	Git * sources.Git `yaml:"-"`
@@ -22,7 +21,6 @@ type Package struct {
 type PackageMap = map[string]*Package
 
 func (c *Package) LoadYaml(fn string) error {
-	c.Filename = fn
 	if err := util.LoadYaml(fn, c); err != nil {
 		return err
 	}
@@ -31,6 +29,7 @@ func (c *Package) LoadYaml(fn string) error {
 		return err
 	}
 	c.MagicDict = d
+	api.SetStr(d, "@filename", fn)
 	return nil
 }
 
