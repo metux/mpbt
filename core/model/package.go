@@ -10,8 +10,14 @@ import (
 )
 
 const (
+	KeyPackageBuildDepends = api.Key("build-depends")
 	KeyPackageBuildsystem = api.Key("buildsystem")
+	KeyPackageDepends = api.Key("depends")
+	KeyPackageFilename = api.Key("@filename")
+	KeyPackageName = api.Key("name")
+	KeyPackageProvides = api.Key("provides")
 	KeyPackageSourceDir = api.Key("source-dir")
+	KeyPackageType = api.Key("type")
 )
 
 type Package struct {
@@ -34,7 +40,7 @@ func (c *Package) LoadYaml(fn string) error {
 		return err
 	}
 	c.MagicDict = d
-	api.SetStr(d, "@filename", fn)
+	api.SetStr(d, KeyPackageFilename, fn)
 	return nil
 }
 
@@ -58,27 +64,27 @@ func (c Package) GetBuildsystem() string {
 }
 
 func (c Package) GetType() string {
-	return api.GetStr(c, "type")
+	return api.GetStr(c, KeyPackageType)
 }
 
 func (c Package) GetDepends() [] string {
-	return api.GetStrList(c, "depends")
+	return api.GetStrList(c, KeyPackageDepends)
 }
 
 func (c Package) GetBuildDepends() [] string {
-	return api.GetStrList(c, "build-depends")
+	return api.GetStrList(c, KeyPackageBuildDepends)
 }
 
 func (c Package) GetName() string {
-	return api.GetStr(c, "name")
+	return api.GetStr(c, KeyPackageName)
 }
 
 func (c Package) SetName(n string) {
-	api.SetStr(c, "name", n)
+	api.SetStr(c, KeyPackageName, n)
 }
 
 func (c Package) GetProvides() []string {
-	return api.GetStrList(c, "provides")
+	return api.GetStrList(c, KeyPackageProvides)
 }
 
 func (pkg Package) GetGit() * sources.Git {
