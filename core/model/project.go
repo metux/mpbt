@@ -15,6 +15,7 @@ const (
 	KeyProjectInstallPrefix = "@installprefix"
 	KeyProjectSourceRoot = "@sourceroot"
 	KeyProjectWorkdir = "@workdir"
+	KeyProjectMachine = "@machine"
 )
 
 type ProvidesMap map[string]PackageMap
@@ -165,11 +166,11 @@ func (prj *Project) GetRoot() string {
 }
 
 func (prj *Project) SetMachine(machine string) {
-	api.SetStr(prj, "@machine", machine)
+	api.SetStr(prj, KeyProjectMachine, machine)
 }
 
 func (prj *Project) SetSourceRoot(dir string) {
-	api.SetStr(prj, "@sourceroot", dir)
+	api.SetStr(prj, KeyProjectSourceRoot, dir)
 }
 
 func (prj *Project) SetInstallPrefix(dir string) {
@@ -177,7 +178,7 @@ func (prj *Project) SetInstallPrefix(dir string) {
 }
 
 func (prj *Project) GetSourceRoot() string {
-	return api.GetStr(prj, "@sourceroot")
+	return api.GetStr(prj, KeyProjectSourceRoot)
 }
 
 func (prj *Project) GetInstallPrefix() string {
