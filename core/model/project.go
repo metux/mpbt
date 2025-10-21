@@ -125,13 +125,10 @@ func (prj *Project) LookupPackage(name string) *Package {
 
 func (prj *Project) ApplyPackageConfigs() {
 	for _, pkg := range prj.Packages {
-//		log.Printf("package %s -> %+v\n", ident, pkg)
-//		log.Printf("package.Name %s\n", pkg.Name)
 		pkgName := pkg.GetName()
 		if pconf := prj.Solution.GetPackageConfig(pkgName); pconf != nil {
-			log.Printf("package.Name %s\n", pkgName)
 			for _, key := range pconf.Keys() {
-				log.Printf("KEY=%s\n", key)
+				log.Printf("package.Name %s KEY=%s\n", pkgName, key)
 			}
 		}
 	}

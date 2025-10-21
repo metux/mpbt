@@ -9,7 +9,7 @@ import (
 )
 
 func ClonePackage(pkg model.Package, config api.Entry) error {
-	gitspec := pkg.Sources.Git
+	gitspec := pkg.GetGit()
 	remotename := "origin"
 
 	if gitspec == nil {

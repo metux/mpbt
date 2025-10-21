@@ -19,7 +19,7 @@ func fetchPackage(prj *model.Project, name string) error {
 		}
 	}
 
-	if pkg.Sources.Git == nil {
+	if pkg.GetGit() == nil {
 		return nil
 	}
 

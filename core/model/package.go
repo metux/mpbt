@@ -1,6 +1,8 @@
 package model
 
 import (
+	"log"
+
 	"github.com/metux/go-magicdict/api"
 	"github.com/metux/go-magicdict/magic"
 	"github.com/metux/mpbt/core/model/sources"
@@ -9,7 +11,6 @@ import (
 
 type Package struct {
 	magic.MagicDict
-	Provides    util.StringList `yaml:"provides"`
 	Sources     sources.Sources `yaml:"sources"`
 
 	// internal only, not in YAML
@@ -45,7 +46,7 @@ func (c Package) IsBuildable() bool {
 }
 
 func (c Package) IsFetchable() bool {
-	return c.Sources.Git != nil
+	return c.GetGit() != nil
 }
 
 func (c Package) GetBuildsystem() string {
@@ -74,4 +75,25 @@ func (c Package) SetName(n string) {
 
 func (c Package) GetProvides() []string {
 	return api.GetStrList(c, "provides")
+}
+
+func (pkg Package) GetGit() * sources.Git {
+	ent, err := pkg.Get("sources::git")
+	if err != nil {
+		log.Printf("[%s] failed getting git entry: %+v\n", pkg.GetName(), err)
+	}
+
+	if ent == nil {
+		log.Printf("[%s] no git config\n", pkg.GetName())
+		return nil
+	}
+
+	git := sources.Git {
+		Url: api.GetStr(ent, "url"),
+		Ref: api.GetStr(ent, "ref"),
+		Depth: api.GetInt(ent, "depth", 0),
+		Fetch: api.GetStrList(ent, "fetch"),
+	}
+
+	return &git
 }
