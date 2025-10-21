@@ -19,7 +19,7 @@ jobs:
             - name: Check out repository code
               uses: actions/checkout@v4
 
-            - run: sudo apt-get intall -y golang-go
+            - run: sudo apt-get install -y golang-go
 
             - run: pwd
 
