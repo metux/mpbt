@@ -23,7 +23,7 @@ type Project struct {
 func (prj *Project) AddPackage(pkg *Package) {
 	// init internal Package fields
 	pkgName := pkg.GetName()
-	pkg.SourceDir = util.AppendPath(prj.GetSourceRoot(), pkgName)
+	pkg.SetSourceDir(util.AppendPath(prj.GetSourceRoot(), pkgName))
 	pkg.InstallPrefix = prj.GetInstallPrefix()
 
 	if prj.Packages == nil {

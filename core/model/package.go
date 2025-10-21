@@ -115,3 +115,7 @@ func (pkg Package) GetGit() *sources.Git {
 func (pkg Package) GetSourceDir() string {
 	return api.GetStr(pkg, KeyPackageSourceDir)
 }
+
+func (pkg Package) SetSourceDir(src string) error {
+	return api.SetStr(pkg, KeyPackageSourceDir, src)
+}

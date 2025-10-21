@@ -19,8 +19,8 @@ func (ab *MesonBuilder) Init(p *model.Package, cf api.Entry) {
 }
 
 func (ab *MesonBuilder) RunPrepare() error {
-	//	util.ExecCmd([]string{"rm", "-Rf", "__BUILD"}, ab.Package.SourceDir)
-	return util.ExecCmd([]string{"mkdir", "-p", "__BUILD"}, ab.Package.SourceDir)
+	//	util.ExecCmd([]string{"rm", "-Rf", "__BUILD"}, ab.Package.GetSourceDir())
+	return util.ExecCmd([]string{"mkdir", "-p", "__BUILD"}, ab.Package.GetSourceDir())
 }
 
 func (ab *MesonBuilder) RunConfigure() error {
@@ -31,18 +31,18 @@ func (ab *MesonBuilder) RunConfigure() error {
 
 	args = append(args, api.GetStrList(ab.Config, "meson-args")...)
 
-	return util.ExecCmd(args, ab.Package.SourceDir)
+	return util.ExecCmd(args, ab.Package.GetSourceDir())
 }
 
 func (ab *MesonBuilder) RunBuild() error {
-	return util.ExecCmd([]string{"meson", "compile"}, ab.Package.SourceDir+"/__BUILD")
+	return util.ExecCmd([]string{"meson", "compile"}, ab.Package.GetSourceDir()+"/__BUILD")
 }
 
 func (ab *MesonBuilder) RunInstall() error {
-	util.ExecCmd([]string{"meson", "install"}, ab.Package.SourceDir+"/__BUILD")
+	util.ExecCmd([]string{"meson", "install"}, ab.Package.GetSourceDir()+"/__BUILD")
 	return nil
 }
 
 func (ab *MesonBuilder) RunClean() error {
-	return util.ExecCmd([]string{"rm", "-Rf", "__BUILD"}, ab.Package.SourceDir)
+	return util.ExecCmd([]string{"rm", "-Rf", "__BUILD"}, ab.Package.GetSourceDir())
 }

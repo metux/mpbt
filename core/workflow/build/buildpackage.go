@@ -31,7 +31,7 @@ func BuildWithBuilder(pkg *model.Package, cf api.Entry, b model.IBuilder) error 
 
 	pkgName := pkg.GetName()
 
-	if _, err := os.Stat(pkg.SourceDir + "/.DONE"); err == nil {
+	if _, err := os.Stat(pkg.GetSourceDir() + "/.DONE"); err == nil {
 		log.Printf("[%s] Package already built\n", pkgName)
 		return nil
 	}
@@ -56,7 +56,7 @@ func BuildWithBuilder(pkg *model.Package, cf api.Entry, b model.IBuilder) error 
 		return err
 	}
 
-	if err := util.ExecCmd([]string{"touch", ".DONE"}, pkg.SourceDir); err != nil {
+	if err := util.ExecCmd([]string{"touch", ".DONE"}, pkg.GetSourceDir()); err != nil {
 		log.Printf("[%s] Error: %s\n", pkgName, err)
 		return err
 	}
