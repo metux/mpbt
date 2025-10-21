@@ -16,6 +16,7 @@ const (
 	KeyProjectSourceRoot = "@sourceroot"
 	KeyProjectWorkdir = "@workdir"
 	KeyProjectMachine = "@machine"
+	KeyProjectRootDir = "@rootdir"
 )
 
 type ProvidesMap map[string]PackageMap
@@ -88,7 +89,7 @@ func (prj *Project) LoadSolutionYAML(fn string) error {
 		return err
 	}
 
-	prj.Solution.Put("@PROJECT", prj)
+	prj.Solution.Put(KeySolutionProject, prj)
 	return nil
 }
 
@@ -147,7 +148,7 @@ func (prj *Project) Init() {
 	prj.MagicDict.Init()
 	prj.SetMachine(util.ExecOut([]string{"gcc", "-dumpmachine"}))
 	prj.SetRoot(".")
-	prj.SetWorkdir("${@rootdir}/BUILD")
+	prj.SetWorkdir("${"+KeyProjectRootDir+"}/BUILD")
 	prj.SetSourceRoot("${"+KeyProjectWorkdir+"}/sources")
 	prj.SetInstallPrefix("${"+KeyProjectWorkdir+"}/DESTDIR")
 }
@@ -158,11 +159,11 @@ func (prj *Project) SetWorkdir(wd string) {
 
 func (prj *Project) SetRoot(rootdir string) {
 	r, _ := filepath.Abs(rootdir)
-	api.SetStr(prj, "@rootdir", r)
+	api.SetStr(prj, KeyProjectRootDir, r)
 }
 
 func (prj *Project) GetRoot() string {
-	return api.GetStr(prj, "@rootdir")
+	return api.GetStr(prj, KeyProjectRootDir)
 }
 
 func (prj *Project) SetMachine(machine string) {

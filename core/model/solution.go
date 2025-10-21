@@ -6,6 +6,10 @@ import (
 	"github.com/metux/mpbt/core/util"
 )
 
+const (
+	KeySolutionProject = "@PROJECT"
+)
+
 type Solution struct {
 	magic.MagicDict
 }
