@@ -24,8 +24,10 @@ func (prj *Project) AddPackage(pkg *Package) {
 	// init internal Package fields
 	pkgName := pkg.GetName()
 	pkg.Put("@PROJECT", prj)
-	pkg.SetSourceDir(util.AppendPath(prj.GetSourceRoot(), pkgName))
-	pkg.InstallPrefix = prj.GetInstallPrefix()
+	api.SetDefaultStr(pkg, KeyPackageSourceDir, util.AppendPath(prj.GetSourceRoot(), pkgName))
+//	pkg.SetSourceDir(util.AppendPath(prj.GetSourceRoot(), pkgName))
+	api.SetDefaultStr(pkg, KeyPackageInstallPrefix, prj.GetInstallPrefix())
+//	pkg.InstallPrefix = prj.GetInstallPrefix()
 
 	if prj.Packages == nil {
 		prj.Packages = make(PackageMap)

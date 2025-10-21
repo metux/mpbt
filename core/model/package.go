@@ -18,13 +18,14 @@ const (
 	KeyPackageProvides     = api.Key("provides")
 	KeyPackageSourceDir    = api.Key("source-dir")
 	KeyPackageType         = api.Key("type")
+	KeyPackageInstallPrefix = api.Key("install-prefix")
 )
 
 type Package struct {
 	magic.MagicDict
 
 	// internal only, not in YAML
-	InstallPrefix string       `yaml:"-"`
+//	InstallPrefix string       `yaml:"-"`
 	cacheGit           *sources.Git `yaml:"-"`
 }
 
@@ -117,4 +118,8 @@ func (pkg Package) GetSourceDir() string {
 
 func (pkg Package) SetSourceDir(src string) error {
 	return api.SetStr(pkg, KeyPackageSourceDir, src)
+}
+
+func (pkg Package) GetInstallPrefix() string {
+	return api.GetStr(pkg, KeyPackageInstallPrefix)
 }

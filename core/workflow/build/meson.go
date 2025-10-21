@@ -27,7 +27,7 @@ func (ab *MesonBuilder) RunConfigure() error {
 	args := []string{"meson",
 		"setup",
 		"__BUILD",
-		fmt.Sprintf("--prefix=%s", ab.Package.InstallPrefix)}
+		fmt.Sprintf("--prefix=%s", ab.Package.GetInstallPrefix())}
 
 	args = append(args, api.GetStrList(ab.Config, "meson-args")...)
 

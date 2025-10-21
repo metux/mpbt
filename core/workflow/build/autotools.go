@@ -23,7 +23,7 @@ func (ab *AutotoolsBuilder) RunPrepare() error {
 }
 
 func (ab *AutotoolsBuilder) RunConfigure() error {
-	return util.ExecCmd([]string{"./configure", fmt.Sprintf("--prefix=%s", ab.Package.InstallPrefix)}, ab.Package.GetSourceDir())
+	return util.ExecCmd([]string{"./configure", fmt.Sprintf("--prefix=%s", ab.Package.GetInstallPrefix())}, ab.Package.GetSourceDir())
 }
 
 func (ab *AutotoolsBuilder) RunBuild() error {
