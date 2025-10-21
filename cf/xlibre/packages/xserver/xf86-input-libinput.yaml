@@ -1,6 +1,6 @@
 sources:
     git:
-        url:    git@github.com:X11Libre/xf86-input-libinput.git
+        url:    https:/github.com/X11Libre/xf86-input-libinput.git
         ref:    origin/master
         depth:  1
         fetch:
