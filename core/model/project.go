@@ -11,6 +11,12 @@ import (
 	"github.com/metux/mpbt/core/util"
 )
 
+const (
+	KeyProjectInstallPrefix = "@installprefix"
+	KeyProjectSourceRoot = "@sourceroot"
+	KeyProjectWorkdir = "@workdir"
+)
+
 type ProvidesMap map[string]PackageMap
 
 type Project struct {
@@ -23,12 +29,14 @@ type Project struct {
 func (prj *Project) AddPackage(pkg *Package) {
 	// init internal Package fields
 	pkgName := pkg.GetName()
-	pkg.Put("@PROJECT", prj)
-	api.SetDefaultStr(pkg, KeyPackageSourceDir, util.AppendPath(prj.GetSourceRoot(), pkgName))
-//	pkg.SetSourceDir(util.AppendPath(prj.GetSourceRoot(), pkgName))
-	api.SetDefaultStr(pkg, KeyPackageInstallPrefix, prj.GetInstallPrefix())
-//	pkg.InstallPrefix = prj.GetInstallPrefix()
+	pkg.Put(KeyPackageProject, prj)
+	api.SetDefaultStr(pkg, KeyPackageSourceDir, "${"+KeyPackageProject+"::"+KeyProjectSourceRoot+"}/${name}")
+	api.SetDefaultStr(pkg, KeyPackageInstallPrefix, "${"+KeyPackageProject+"::"+KeyProjectInstallPrefix+"}")
+	api.SetDefaultStr(pkg, KeyPackageInstallPrefix, "${"+KeyPackageProject+"::"+KeyProjectInstallPrefix+"}")
 
+	log.Printf("my sourceroot=%s\n", api.GetStr(prj, KeyProjectSourceRoot))
+	log.Printf("pkg installprefix=%s\n", api.GetStr(pkg, KeyPackageInstallPrefix))
+	log.Printf("pkg sourcedir=%s\n", api.GetStr(pkg, KeyPackageSourceDir))
 	if prj.Packages == nil {
 		prj.Packages = make(PackageMap)
 	}
@@ -142,12 +150,12 @@ func (prj *Project) Init() {
 	prj.SetMachine(util.ExecOut([]string{"gcc", "-dumpmachine"}))
 	prj.SetRoot(".")
 	prj.SetWorkdir("${@rootdir}/BUILD")
-	prj.SetSourceRoot("${@workdir}/sources")
-	prj.SetInstallPrefix("${@workdir}/DESTDIR")
+	prj.SetSourceRoot("${"+KeyProjectWorkdir+"}/sources")
+	prj.SetInstallPrefix("${"+KeyProjectWorkdir+"}/DESTDIR")
 }
 
 func (prj *Project) SetWorkdir(wd string) {
-	api.SetStr(prj, "@workdir", wd)
+	api.SetStr(prj, KeyProjectWorkdir, wd)
 }
 
 func (prj *Project) SetRoot(rootdir string) {
@@ -168,7 +176,7 @@ func (prj *Project) SetSourceRoot(dir string) {
 }
 
 func (prj *Project) SetInstallPrefix(dir string) {
-	api.SetStr(prj, "@installprefix", dir)
+	api.SetStr(prj, KeyProjectInstallPrefix, dir)
 }
 
 func (prj *Project) GetSourceRoot() string {
@@ -176,7 +184,7 @@ func (prj *Project) GetSourceRoot() string {
 }
 
 func (prj *Project) GetInstallPrefix() string {
-	return api.GetStr(prj, "@installprefix")
+	return api.GetStr(prj, KeyProjectInstallPrefix)
 }
 
 func (prj *Project) PushEnv() {

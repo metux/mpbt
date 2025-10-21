@@ -10,15 +10,16 @@ import (
 )
 
 const (
-	KeyPackageBuildDepends = api.Key("build-depends")
-	KeyPackageBuildsystem  = api.Key("buildsystem")
-	KeyPackageDepends      = api.Key("depends")
-	KeyPackageFilename     = api.Key("@filename")
-	KeyPackageName         = api.Key("name")
-	KeyPackageProvides     = api.Key("provides")
-	KeyPackageSourceDir    = api.Key("source-dir")
-	KeyPackageType         = api.Key("type")
-	KeyPackageInstallPrefix = api.Key("install-prefix")
+	KeyPackageBuildDepends = "build-depends"
+	KeyPackageBuildsystem  = "buildsystem"
+	KeyPackageDepends      = "depends"
+	KeyPackageFilename     = "@filename"
+	KeyPackageName         = "name"
+	KeyPackageProject      = "@PROJECT"
+	KeyPackageProvides     = "provides"
+	KeyPackageSourceDir    = "source-dir"
+	KeyPackageType         = "type"
+	KeyPackageInstallPrefix = "install-prefix"
 )
 
 type Package struct {
