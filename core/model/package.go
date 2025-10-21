@@ -11,12 +11,12 @@ import (
 
 type Package struct {
 	magic.MagicDict
-	Sources     sources.Sources `yaml:"sources"`
 
 	// internal only, not in YAML
 	Filename      string `yaml:"-"`
 	SourceDir     string `yaml:"-"`
 	InstallPrefix string `yaml:"-"`
+	Git * sources.Git `yaml:"-"`
 }
 
 type PackageMap = map[string]*Package
@@ -78,13 +78,16 @@ func (c Package) GetProvides() []string {
 }
 
 func (pkg Package) GetGit() * sources.Git {
+	if pkg.Git != nil {
+		return pkg.Git
+	}
+
 	ent, err := pkg.Get("sources::git")
 	if err != nil {
 		log.Printf("[%s] failed getting git entry: %+v\n", pkg.GetName(), err)
 	}
 
 	if ent == nil {
-		log.Printf("[%s] no git config\n", pkg.GetName())
 		return nil
 	}
 
@@ -95,5 +98,6 @@ func (pkg Package) GetGit() * sources.Git {
 		Fetch: api.GetStrList(ent, "fetch"),
 	}
 
-	return &git
+	pkg.Git = &git
+	return pkg.Git
 }
