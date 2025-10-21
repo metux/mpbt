@@ -1,0 +1,33 @@
+name: Build X servers
+
+permissions:
+    contents: write
+
+env:
+    MESON_BUILDDIR:  "build"
+    X11_PREFIX:      /home/runner/x11
+    X11_BUILD_DIR:   /home/runner/build-deps
+
+on:
+    push:
+    pull_request:
+
+jobs:
+    xserver-build-ubuntu:
+        env:
+#            MESON_ARGS: -Dc_args="-fno-common" -Dprefix=/usr -Dxephyr=true -Dwerror=false -Dxcsecurity=true -Dxorg=true -Dxvfb=true -Dxnest=true -Dxfbdev=true -Dtest_xephyr_gles=false
+#            LIBGL_ALWAYS_SOFTWARE: 1
+#            GALLIUM_DRIVER: llvmpipe
+#            PIGLIT_PLATFORM: x11_egl
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out repository code
+              uses: actions/checkout@v4
+
+            - run: sudo apt-get intall -y golang-go
+
+            - run: pwd
+
+            - run: ls -la
+
+            - run: make run
