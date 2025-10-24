@@ -12,7 +12,7 @@ clean:
 
 run:
 	$(MAKE) -C cmd
-	~/go/bin/mpbt-builder \
+	./cmd/mpbt-builder/mpbt-builder \
             -root . \
             -solution cf/xlibre/solutions/devuan.yaml \
             -project-define xlibre_git=git@github.com:X11Libre \
