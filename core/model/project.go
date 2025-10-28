@@ -157,8 +157,10 @@ func (prj *Project) Init() {
 	api.SetDefaultStr(prj, KeyProjectSourceRoot, "${"+KeyProjectWorkdir+"}/sources")
 	api.SetDefaultStr(prj, KeyProjectInstallPrefix, "${" + KeyProjectWorkdir + "}/DESTDIR")
 
-	if home, err := os.UserHomeDir(); err != nil {
+	if home, err := os.UserHomeDir(); err == nil {
 		api.SetDefaultStr(prj, KeyProjectHomedir, home)
+	} else {
+		panic(fmt.Sprintf("failed gettting homedir %s", err))
 	}
 }
 

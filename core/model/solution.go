@@ -7,7 +7,7 @@ import (
 
 const (
 	Solution_Key_Project = "@PROJECT"
-	Solution_Key_InstallPrefix = "@installprefix"
+	Solution_Key_InstallPrefix = "install-prefix"
 )
 
 type Solution struct {

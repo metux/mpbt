@@ -1,10 +1,10 @@
-pathes:
-    PREFIX: ${@PROJECT::@workdir}/DESTDIR
-    ACLOCAL_PATH: ${pathes::PREFIX}/share/aclocal
-
 # needed by several sources
 xlibre_git:     https://github.com/X11Libre
 xorg_git:       https://gitlab.freedesktop.org/xorg
+
+# default:
+# install-prefix: ${@PROJECT::@workdir}/DESTDIR
+install-prefix: ${@PROJECT::@homedir}/X11LIBRE
 
 # override points for CI
 # xserver_commit: origin/maint-25.0
@@ -100,8 +100,8 @@ build:
 
 # extra environment variables
 env:
-    PKG_CONFIG_PATH: ${pathes::PREFIX}/share/pkgconfig:${pathes::PREFIX}/lib/pkgconfig:${pathes::PREFIX}/lib/${@PROJECT::@machine}/pkgconfig/
-    ACLOCAL_PATH: ${pathes::PREFIX}/share/aclocal
+    PKG_CONFIG_PATH: ${install-prefix}/share/pkgconfig:${install-prefix}/lib/pkgconfig:${install-prefix}/lib/${@PROJECT::@machine}/pkgconfig/
+    ACLOCAL_PATH: ${install-prefix}/share/aclocal
 
 packages:
     - ${@PROJECT::@rootdir}/cf/xlibre/packages
