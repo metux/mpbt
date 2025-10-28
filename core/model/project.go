@@ -15,6 +15,7 @@ import (
 const (
 	KeyProjectInstallPrefix = "@installprefix"
 	KeyProjectSourceRoot    = "@sourceroot"
+	KeyProjectHomedir       = "@homedir"
 	KeyProjectWorkdir       = "@workdir"
 	KeyProjectMachine       = "@machine"
 	KeyProjectRootDir       = "@rootdir"
@@ -83,19 +84,15 @@ func (prj *Project) LoadPackages(dirname string, prefix string) error {
 	return nil
 }
 
-func (prj *Project) LoadSolutionYAML(fn string) error {
+func (prj *Project) LoadSolution(fn string) error {
 	if err := prj.Solution.LoadYaml(fn); err != nil {
 		return err
 	}
 
-	prj.Solution.Put(KeySolutionProject, prj)
-	return nil
-}
+	prj.Solution.Put(Solution_Key_Project, prj)
 
-func (prj *Project) LoadSolution(fn string) error {
-	if err := prj.LoadSolutionYAML(fn); err != nil {
-		return err
-	}
+	log.Printf("project install-prefix=%s\n", api.GetStr(prj, KeyProjectInstallPrefix))
+	log.Printf("solution install-prefix=%s\n", prj.Solution.GetStr(Solution_Key_InstallPrefix))
 
 	pkglist := prj.Solution.GetPackageSpecDirs()
 	for _, p := range pkglist {
@@ -158,7 +155,11 @@ func (prj *Project) Init() {
 	prj.SetRoot(".")
 	prj.SetWorkdir("${" + KeyProjectRootDir + "}/BUILD")
 	api.SetDefaultStr(prj, KeyProjectSourceRoot, "${"+KeyProjectWorkdir+"}/sources")
-	prj.SetInstallPrefix("${" + KeyProjectWorkdir + "}/DESTDIR")
+	api.SetDefaultStr(prj, KeyProjectInstallPrefix, "${" + KeyProjectWorkdir + "}/DESTDIR")
+
+	if home, err := os.UserHomeDir(); err != nil {
+		api.SetDefaultStr(prj, KeyProjectHomedir, home)
+	}
 }
 
 func (prj *Project) SetWorkdir(wd string) {
@@ -176,10 +177,6 @@ func (prj *Project) SetMachine(machine string) {
 
 func (prj *Project) SetSourceRoot(dir string) {
 	api.SetStr(prj, KeyProjectSourceRoot, dir)
-}
-
-func (prj *Project) SetInstallPrefix(dir string) {
-	api.SetStr(prj, KeyProjectInstallPrefix, dir)
 }
 
 func (prj *Project) GetSourceRoot() string {

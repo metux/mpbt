@@ -2,39 +2,44 @@ package model
 
 import (
 	"github.com/metux/go-magicdict/api"
-	"github.com/metux/go-magicdict/magic"
 	"github.com/metux/mpbt/core/util"
 )
 
 const (
-	KeySolutionProject = "@PROJECT"
+	Solution_Key_Project = "@PROJECT"
+	Solution_Key_InstallPrefix = "@installprefix"
 )
 
 type Solution struct {
-	magic.MagicDict
-}
-
-func (c *Solution) LoadYaml(fn string) error {
-	d, err := magic.YamlLoad(fn, "")
-	if err != nil {
-		return err
-	}
-	c.MagicDict = d
-	return nil
+	SpecObj
 }
 
 func (c *Solution) GetMapped(name string) string {
-	return util.StrOr(api.GetStr(c, api.Key("package-mapping::"+name)), name)
+	return util.StrOr(c.GetStr(api.Key("package-mapping::"+name)), name)
 }
 
 func (c *Solution) GetBuildList() []string {
-	return api.GetStrList(c, "build")
+	return c.GetStrList("build")
 }
 
 func (c *Solution) GetPackageSpecDirs() []string {
-	return api.GetStrList(c, "packages")
+	return c.GetStrList("packages")
 }
 
 func (c *Solution) GetPackageConfig(pkgname string) api.Entry {
-	return api.GetEntry(c, api.Key("package-config::"+pkgname))
+	return c.GetEntry(api.Key("package-config::"+pkgname))
+}
+
+func (c *Solution) SetProject(prj * Project) {
+	c.Put(Solution_Key_Project, prj)
+}
+
+func (c *Solution) LoadYaml(fn string) error {
+	if err := c.SpecObj.LoadYaml(fn); err != nil {
+		return err
+	}
+
+	// initialize some default keys
+	api.SetDefaultStr(c, Solution_Key_InstallPrefix, "${"+Solution_Key_Project+"::"+KeyProjectInstallPrefix+"}")
+	return nil
 }

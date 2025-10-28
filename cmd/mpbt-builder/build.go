@@ -22,7 +22,7 @@ func do_build() {
 	}
 
 	for k, v := range solDefines {
-		api.SetStr(prj.Solution, api.Key(k), v)
+		prj.Solution.SetStr(api.Key(k), v)
 	}
 
 	prj.ApplyPackageConfigs()
