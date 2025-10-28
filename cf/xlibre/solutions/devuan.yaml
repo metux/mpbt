@@ -17,7 +17,7 @@ package-mapping:
     x11/libxcb-wm:        system/libxcb-wm
     x11/libxcvt:          3rdparty/libxcvt
     x11/libx11:           system/libx11
-    x11/xcbproto:         3rdparty/xcbproto
+    x11/xcb-proto:        3rdparty/xcb-proto
     x11/xfree86-type1:    system/xfree86-type1
     x11/xkbcomp:          system/xkbcomp
     buildtool/c-compiler: os-installed/gcc

@@ -1,4 +1,4 @@
-provides: x11/xcbproto
+provides: x11/xcb-proto
 type: bundle
 sources:
     git:

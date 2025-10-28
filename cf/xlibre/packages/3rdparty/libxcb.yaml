@@ -8,5 +8,5 @@ sources:
         fetch:
           - refs/tags/*:refs/tags/*
 build-depends:
-    - xcbproto
+    - xcb-proto
 ref: libxcb-1.17.0

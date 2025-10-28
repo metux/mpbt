@@ -37,19 +37,15 @@ func (ab *MesonBuilder) RunConfigure() error {
 	args = append(args, meson_args...)
 	args = append(args, meson_extra_args...)
 
-	fmt.Printf("meson configure: source_dir=%s\n", ab.Package.GetSourceDir())
 	return util.ExecCmd(ab.pkgName, args, ab.Package.GetSourceDir())
 }
 
 func (ab *MesonBuilder) RunBuild() error {
-	fmt.Printf("meson build: source_dir=%s\n", ab.Package.GetSourceDir())
 	return util.ExecCmd(ab.pkgName, []string{"meson", "compile"}, ab.Package.GetSourceDir()+"/__BUILD")
 }
 
 func (ab *MesonBuilder) RunInstall() error {
-	fmt.Printf("meson install: source_dir=%s\n", ab.Package.GetSourceDir())
-	util.ExecCmd(ab.pkgName, []string{"meson", "install"}, ab.Package.GetSourceDir()+"/__BUILD")
-	return nil
+	return util.ExecCmd(ab.pkgName, []string{"meson", "install"}, ab.Package.GetSourceDir()+"/__BUILD")
 }
 
 func (ab *MesonBuilder) RunClean() error {

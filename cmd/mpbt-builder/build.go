@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/metux/go-magicdict/api"
 	"github.com/metux/mpbt/core/model"
@@ -17,6 +18,8 @@ func do_build() {
 		api.SetStr(prj, api.Key(k), v)
 	}
 
+	log.Printf("loading solution: %s\n", cfSolution)
+
 	if err := prj.LoadSolution(cfSolution); err != nil {
 		panic(fmt.Sprintf("failed loading solution: %s", err))
 	}
@@ -25,13 +28,17 @@ func do_build() {
 		prj.Solution.SetStr(api.Key(k), v)
 	}
 
+	log.Printf("applying package config ...\n")
+
 	prj.ApplyPackageConfigs()
 	prj.PushEnv() // FIXME: should be done per exec
 
+	log.Printf("fetching sources ...\n")
 	if err := fetch.FetchSource(&prj); err != nil {
 		panic(fmt.Sprintf("fetch failed: %s\n", err))
 	}
 
+	log.Printf("building ...\n")
 	if err := build.Build(&prj); err != nil {
 		panic(fmt.Sprintf("build failed: %s\n", err))
 	}
