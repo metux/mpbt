@@ -187,10 +187,6 @@ func (prj *Project) GetSourceRoot() string {
 	return api.GetStr(prj, KeyProjectSourceRoot)
 }
 
-func (prj *Project) GetInstallPrefix() string {
-	return api.GetStr(prj, KeyProjectInstallPrefix)
-}
-
 func (prj *Project) PushEnv() {
 	for _, k := range api.GetKeys(prj.Solution, "env") {
 		val := api.GetStr(prj.Solution, api.Key("env::"+string(k)))
