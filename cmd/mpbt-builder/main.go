@@ -12,6 +12,7 @@ var prjDefines MultiFlag = make(MultiFlag, 0)
 var solDefines MultiFlag = make(MultiFlag, 0)
 
 func main() {
+	fmt.Printf("MPBT 0001\n")
 	flag.StringVar(&cfSolution, "solution", "", "Solution config file")
 	flag.StringVar(&cfRootDir, "root", ".", "Project root directory")
 	flag.Var(&prjDefines, "project-define", "define extra project variables")
