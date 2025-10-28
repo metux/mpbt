@@ -19,6 +19,7 @@ const (
 	KeyProjectWorkdir       = "@workdir"
 	KeyProjectMachine       = "@machine"
 	KeyProjectRootDir       = "@rootdir"
+	Project_Key_Solution    = "@SOLUTION"
 )
 
 type ProvidesMap map[string]PackageMap
@@ -90,6 +91,7 @@ func (prj *Project) LoadSolution(fn string) error {
 	}
 
 	prj.Solution.Put(Solution_Key_Project, prj)
+	prj.Put(Project_Key_Solution, prj.Solution)
 
 	log.Printf("project install-prefix=%s\n", api.GetStr(prj, KeyProjectInstallPrefix))
 	log.Printf("solution install-prefix=%s\n", prj.Solution.GetStr(Solution_Key_InstallPrefix))

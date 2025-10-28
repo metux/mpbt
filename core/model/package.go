@@ -42,8 +42,7 @@ func (pkg *Package) LoadYaml(fn string) error {
 	// init some presets
 	api.SetStr(pkg, KeyPackageFilename, fn)
 	api.SetDefaultStr(pkg, KeyPackageSourceDir, "${"+KeyPackageProject+"::"+KeyProjectSourceRoot+"}/${name}")
-	api.SetDefaultStr(pkg, KeyPackageInstallPrefix, "${"+KeyPackageProject+"::"+KeyProjectInstallPrefix+"}")
-	api.SetDefaultStr(pkg, KeyPackageInstallPrefix, "${"+KeyPackageProject+"::"+KeyProjectInstallPrefix+"}")
+	api.SetDefaultStr(pkg, KeyPackageInstallPrefix, "${"+KeyPackageSolution+"::"+Solution_Key_InstallPrefix+"}")
 
 	return nil
 }
