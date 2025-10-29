@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
 package model
 
 import (
@@ -155,7 +156,7 @@ func (prj *Project) Init() {
 	prj.MagicDict.Init()
 	prj.SetMachine(util.ExecOut([]string{"gcc", "-dumpmachine"}))
 	prj.SetRoot(".")
-	prj.SetWorkdir("${" + KeyProjectRootDir + "}/BUILD")
+	api.SetDefaultStr(prj, KeyProjectWorkdir, "${" + KeyProjectRootDir + "}/WORK")
 	api.SetDefaultStr(prj, KeyProjectSourceRoot, "${"+KeyProjectWorkdir+"}/sources")
 	api.SetDefaultStr(prj, KeyProjectInstallPrefix, "${" + KeyProjectWorkdir + "}/DESTDIR")
 

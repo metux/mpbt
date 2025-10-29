@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
 package main
 
 import (
@@ -26,6 +27,10 @@ func do_build() {
 
 	for k, v := range solDefines {
 		prj.Solution.SetStr(api.Key(k), v)
+	}
+
+	if cfWorkDir != "" {
+		prj.SetWorkdir(cfWorkDir)
 	}
 
 	log.Printf("applying package config ...\n")

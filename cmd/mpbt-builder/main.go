@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
 package main
 
 import (
@@ -7,14 +8,16 @@ import (
 
 var cfSolution string
 var cfRootDir string
+var cfWorkDir string
 var args []string
 var prjDefines MultiFlag = make(MultiFlag, 0)
 var solDefines MultiFlag = make(MultiFlag, 0)
 
 func main() {
-	fmt.Printf("MPBT 0002\n")
+	fmt.Printf("MPBT 0003\n")
 	flag.StringVar(&cfSolution, "solution", "", "Solution config file")
 	flag.StringVar(&cfRootDir, "root", ".", "Project root directory")
+	flag.StringVar(&cfWorkDir, "workdir", "", "Working directory")
 	flag.Var(&prjDefines, "project-define", "define extra project variables")
 	flag.Var(&solDefines, "solution-define", "define extra solution variables")
 	flag.Parse()

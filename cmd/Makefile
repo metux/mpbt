@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
 include ../make.conf
 
 SUBDIRS := mpbt-builder
