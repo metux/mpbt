@@ -41,6 +41,6 @@ func (c *Solution) LoadYaml(fn string) error {
 	}
 
 	// initialize some default keys
-	api.SetDefaultStr(c, Solution_Key_InstallPrefix, "${"+Solution_Key_Project+"::"+KeyProjectInstallPrefix+"}")
+	c.SetDefaultStr(Solution_Key_InstallPrefix, "${"+Solution_Key_Project+"::"+KeyProjectInstallPrefix+"}")
 	return nil
 }
