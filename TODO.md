@@ -5,6 +5,6 @@
 [ ] multiple remotes
 [ ] forced repo update (depending on solution settings)
 [ ] solution: package-config overrides recursively (overwrites individual subkeys within source nodes)
-[ ] let individual packages be built directly from workdir, instead of cloning (eg github)
+[X] let individual packages be built directly from workdir, instead of cloning (eg github)
 [ ] move .DONE files out of the source trees
 [ ] automatic rebuild on source changed (eg. use git hash etc for marker) --> trigger rebuild of dependants ?
