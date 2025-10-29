@@ -26,7 +26,7 @@ const (
 )
 
 type Package struct {
-	magic.MagicDict
+	SpecObj
 
 	// internal only, not in YAML
 	cacheGit *sources.Git `yaml:"-"`
@@ -130,7 +130,7 @@ func LoadPackageYaml(fn string, name string) (*Package, error) {
 	if err := pkg.LoadYaml(fn); err != nil {
 		return nil, err
 	}
-	api.SetDefaultStr(pkg, KeyPackageName, name)
-	api.SetDefaultStr(pkg, KeyPackageSlug, util.SanitizeFilename(name))
+	pkg.SetDefaultStr(KeyPackageName, name)
+	pkg.SetDefaultStr(KeyPackageSlug, util.SanitizeFilename(name))
 	return &pkg, nil
 }
