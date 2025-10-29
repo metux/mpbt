@@ -14,6 +14,7 @@ run:
 	$(MAKE) -C cmd
 	./cmd/mpbt-builder/mpbt-builder \
             -root . \
+            -workdir WORK.tmp \
             -solution cf/xlibre/solutions/devuan.yaml \
             -project-define xlibre_git=git@github.com:X11Libre \
             build
