@@ -11,18 +11,18 @@ import (
 )
 
 const (
-	KeyPackageBuildDepends  = "build-depends"
-	KeyPackageBuildsystem   = "buildsystem"
-	KeyPackageDepends       = "depends"
-	KeyPackageFilename      = "@filename"
-	KeyPackageName          = "name"
-	KeyPackageSlug          = "@slug"
-	KeyPackageProject       = "@PROJECT"
-	KeyPackageSolution      = "@SOLUTION"
-	KeyPackageProvides      = "provides"
-	KeyPackageSourceDir     = "source-dir"
-	KeyPackageType          = "type"
-	KeyPackageInstallPrefix = "install-prefix"
+	Package_Key_BuildDepends  = "build-depends"
+	Package_Key_Buildsystem   = "buildsystem"
+	Package_Key_Depends       = "depends"
+	Package_Key_Filename      = "@filename"
+	Package_Key_Name          = "name"
+	Package_Key_Slug          = "@slug"
+	Package_Key_Project       = "@PROJECT"
+	Package_Key_Solution      = "@SOLUTION"
+	Package_Key_Provides      = "provides"
+	Package_Key_SourceDir     = "source-dir"
+	Package_Key_Type          = "type"
+	Package_Key_InstallPrefix = "install-prefix"
 )
 
 type Package struct {
@@ -42,9 +42,9 @@ func (pkg *Package) LoadYaml(fn string) error {
 	pkg.MagicDict = d
 
 	// init some presets
-	api.SetStr(pkg, KeyPackageFilename, fn)
-	api.SetDefaultStr(pkg, KeyPackageSourceDir, "${"+KeyPackageProject+"::"+KeyProjectSourceRoot+"}/${name}")
-	api.SetDefaultStr(pkg, KeyPackageInstallPrefix, "${"+KeyPackageSolution+"::"+Solution_Key_InstallPrefix+"}")
+	pkg.SetStr(Package_Key_Filename, fn)
+	pkg.SetDefaultStr(Package_Key_SourceDir, "${"+Package_Key_Project+"::"+KeyProjectSourceRoot+"}/${name}")
+	pkg.SetDefaultStr(Package_Key_InstallPrefix, "${"+Package_Key_Solution+"::"+Solution_Key_InstallPrefix+"}")
 
 	return nil
 }
@@ -65,27 +65,27 @@ func (c Package) IsFetchable() bool {
 }
 
 func (c Package) GetBuildsystem() string {
-	return api.GetStr(c, KeyPackageBuildsystem)
+	return api.GetStr(c, Package_Key_Buildsystem)
 }
 
 func (c Package) GetType() string {
-	return api.GetStr(c, KeyPackageType)
+	return api.GetStr(c, Package_Key_Type)
 }
 
 func (c Package) GetDepends() []string {
-	return api.GetStrList(c, KeyPackageDepends)
+	return api.GetStrList(c, Package_Key_Depends)
 }
 
 func (c Package) GetBuildDepends() []string {
-	return api.GetStrList(c, KeyPackageBuildDepends)
+	return api.GetStrList(c, Package_Key_BuildDepends)
 }
 
 func (c Package) GetName() string {
-	return api.GetStr(c, KeyPackageName)
+	return api.GetStr(c, Package_Key_Name)
 }
 
 func (c Package) GetProvides() []string {
-	return api.GetStrList(c, KeyPackageProvides)
+	return api.GetStrList(c, Package_Key_Provides)
 }
 
 func (pkg Package) GetGit() *sources.Git {
@@ -114,15 +114,20 @@ func (pkg Package) GetGit() *sources.Git {
 }
 
 func (pkg Package) GetSourceDir() string {
-	return api.GetStr(pkg, KeyPackageSourceDir)
+	return pkg.GetStr(Package_Key_SourceDir)
 }
 
 func (pkg Package) SetSourceDir(src string) error {
-	return api.SetStr(pkg, KeyPackageSourceDir, src)
+	return pkg.SetStr(Package_Key_SourceDir, src)
 }
 
 func (pkg Package) GetInstallPrefix() string {
-	return api.GetStr(pkg, KeyPackageInstallPrefix)
+	return pkg.GetStr(Package_Key_InstallPrefix)
+}
+
+func (pkg Package) SetProject(prj * Project) {
+	pkg.Put(Package_Key_Project, prj)
+	pkg.Put(Package_Key_Solution, prj.Solution)
 }
 
 func LoadPackageYaml(fn string, name string) (*Package, error) {
@@ -130,7 +135,7 @@ func LoadPackageYaml(fn string, name string) (*Package, error) {
 	if err := pkg.LoadYaml(fn); err != nil {
 		return nil, err
 	}
-	pkg.SetDefaultStr(KeyPackageName, name)
-	pkg.SetDefaultStr(KeyPackageSlug, util.SanitizeFilename(name))
+	pkg.SetDefaultStr(Package_Key_Name, name)
+	pkg.SetDefaultStr(Package_Key_Slug, util.SanitizeFilename(name))
 	return &pkg, nil
 }

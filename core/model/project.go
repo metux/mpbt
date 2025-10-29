@@ -35,8 +35,7 @@ type Project struct {
 func (prj *Project) AddPackage(pkg *Package) {
 	// init internal Package fields
 	pkgName := pkg.GetName()
-	pkg.Put(KeyPackageProject, prj)
-	pkg.Put(KeyPackageSolution, prj.Solution)
+	pkg.SetProject(prj)
 
 	if prj.Packages == nil {
 		prj.Packages = make(PackageMap)
