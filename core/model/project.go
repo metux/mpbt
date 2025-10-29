@@ -14,13 +14,13 @@ import (
 )
 
 const (
-	KeyProjectInstallPrefix = "@installprefix"
-	KeyProjectSourceRoot    = "@sourceroot"
-	KeyProjectHomedir       = "@homedir"
-	KeyProjectWorkdir       = "@workdir"
-	KeyProjectMachine       = "@machine"
-	KeyProjectRootDir       = "@rootdir"
-	Project_Key_Solution    = "@SOLUTION"
+	Project_Key_InstallPrefix = "@installprefix"
+	Project_Key_SourceRoot    = "@sourceroot"
+	Project_Key_Homedir       = "@homedir"
+	Project_Key_Workdir       = "@workdir"
+	Project_Key_Machine       = "@machine"
+	Project_Key_RootDir       = "@rootdir"
+	Project_Key_Solution      = "@SOLUTION"
 )
 
 type ProvidesMap map[string]PackageMap
@@ -92,7 +92,7 @@ func (prj *Project) LoadSolution(fn string) error {
 	prj.Solution.Put(Solution_Key_Project, prj)
 	prj.Put(Project_Key_Solution, prj.Solution)
 
-	log.Printf("project install-prefix=%s\n", api.GetStr(prj, KeyProjectInstallPrefix))
+	log.Printf("project install-prefix=%s\n", api.GetStr(prj, Project_Key_InstallPrefix))
 	log.Printf("solution install-prefix=%s\n", prj.Solution.GetStr(Solution_Key_InstallPrefix))
 
 	pkglist := prj.Solution.GetPackageSpecDirs()
@@ -154,36 +154,36 @@ func (prj *Project) Init() {
 	prj.MagicDict.Init()
 	prj.SetMachine(util.ExecOut([]string{"gcc", "-dumpmachine"}))
 	prj.SetRoot(".")
-	api.SetDefaultStr(prj, KeyProjectWorkdir, "${" + KeyProjectRootDir + "}/WORK")
-	api.SetDefaultStr(prj, KeyProjectSourceRoot, "${"+KeyProjectWorkdir+"}/sources")
-	api.SetDefaultStr(prj, KeyProjectInstallPrefix, "${" + KeyProjectWorkdir + "}/DESTDIR")
+	api.SetDefaultStr(prj, Project_Key_Workdir, "${" + Project_Key_RootDir + "}/WORK")
+	api.SetDefaultStr(prj, Project_Key_SourceRoot, "${"+Project_Key_Workdir+"}/sources")
+	api.SetDefaultStr(prj, Project_Key_InstallPrefix, "${" + Project_Key_Workdir + "}/DESTDIR")
 
 	if home, err := os.UserHomeDir(); err == nil {
-		api.SetDefaultStr(prj, KeyProjectHomedir, home)
+		api.SetDefaultStr(prj, Project_Key_Homedir, home)
 	} else {
 		panic(fmt.Sprintf("failed gettting homedir %s", err))
 	}
 }
 
 func (prj *Project) SetWorkdir(wd string) {
-	api.SetStr(prj, KeyProjectWorkdir, wd)
+	api.SetStr(prj, Project_Key_Workdir, wd)
 }
 
 func (prj *Project) SetRoot(rootdir string) {
 	r, _ := filepath.Abs(rootdir)
-	api.SetStr(prj, KeyProjectRootDir, r)
+	api.SetStr(prj, Project_Key_RootDir, r)
 }
 
 func (prj *Project) SetMachine(machine string) {
-	api.SetStr(prj, KeyProjectMachine, machine)
+	api.SetStr(prj, Project_Key_Machine, machine)
 }
 
 func (prj *Project) SetSourceRoot(dir string) {
-	api.SetStr(prj, KeyProjectSourceRoot, dir)
+	api.SetStr(prj, Project_Key_SourceRoot, dir)
 }
 
 func (prj *Project) GetSourceRoot() string {
-	return api.GetStr(prj, KeyProjectSourceRoot)
+	return api.GetStr(prj, Project_Key_SourceRoot)
 }
 
 func (prj *Project) PushEnv() {

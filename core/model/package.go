@@ -43,7 +43,7 @@ func (pkg *Package) LoadYaml(fn string) error {
 
 	// init some presets
 	pkg.SetStr(Package_Key_Filename, fn)
-	pkg.SetDefaultStr(Package_Key_SourceDir, "${"+Package_Key_Project+"::"+KeyProjectSourceRoot+"}/${name}")
+	pkg.SetDefaultStr(Package_Key_SourceDir, "${"+Package_Key_Project+"::"+Project_Key_SourceRoot+"}/${name}")
 	pkg.SetDefaultStr(Package_Key_InstallPrefix, "${"+Package_Key_Solution+"::"+Solution_Key_InstallPrefix+"}")
 
 	return nil
@@ -65,11 +65,11 @@ func (c Package) IsFetchable() bool {
 }
 
 func (c Package) GetBuildsystem() string {
-	return api.GetStr(c, Package_Key_Buildsystem)
+	return c.GetStr(Package_Key_Buildsystem)
 }
 
 func (c Package) GetType() string {
-	return api.GetStr(c, Package_Key_Type)
+	return c.GetStr(Package_Key_Type)
 }
 
 func (c Package) GetDepends() []string {
@@ -81,11 +81,11 @@ func (c Package) GetBuildDepends() []string {
 }
 
 func (c Package) GetName() string {
-	return api.GetStr(c, Package_Key_Name)
+	return c.GetStr(Package_Key_Name)
 }
 
 func (c Package) GetProvides() []string {
-	return api.GetStrList(c, Package_Key_Provides)
+	return c.GetStrList(Package_Key_Provides)
 }
 
 func (pkg Package) GetGit() *sources.Git {
