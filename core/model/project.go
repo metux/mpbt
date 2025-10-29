@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/metux/go-magicdict/api"
-	"github.com/metux/go-magicdict/magic"
 	"github.com/metux/mpbt/core/util"
 )
 
@@ -26,7 +25,7 @@ const (
 type ProvidesMap map[string]PackageMap
 
 type Project struct {
-	magic.MagicDict
+	util.SpecObj
 	Packages PackageMap
 	Provides ProvidesMap
 	Solution Solution
@@ -92,7 +91,7 @@ func (prj *Project) LoadSolution(fn string) error {
 	prj.Solution.Put(Solution_Key_Project, prj)
 	prj.Put(Project_Key_Solution, prj.Solution)
 
-	log.Printf("project install-prefix=%s\n", api.GetStr(prj, Project_Key_InstallPrefix))
+	log.Printf("project install-prefix=%s\n", prj.GetStr(Project_Key_InstallPrefix))
 	log.Printf("solution install-prefix=%s\n", prj.Solution.GetStr(Solution_Key_InstallPrefix))
 
 	pkglist := prj.Solution.GetPackageSpecDirs()
@@ -154,41 +153,41 @@ func (prj *Project) Init() {
 	prj.MagicDict.Init()
 	prj.SetMachine(util.ExecOut([]string{"gcc", "-dumpmachine"}))
 	prj.SetRoot(".")
-	api.SetDefaultStr(prj, Project_Key_Workdir, "${" + Project_Key_RootDir + "}/WORK")
-	api.SetDefaultStr(prj, Project_Key_SourceRoot, "${"+Project_Key_Workdir+"}/sources")
-	api.SetDefaultStr(prj, Project_Key_InstallPrefix, "${" + Project_Key_Workdir + "}/DESTDIR")
+	prj.SetDefaultStr(Project_Key_Workdir, "${" + Project_Key_RootDir + "}/WORK")
+	prj.SetDefaultStr(Project_Key_SourceRoot, "${"+Project_Key_Workdir+"}/sources")
+	prj.SetDefaultStr(Project_Key_InstallPrefix, "${" + Project_Key_Workdir + "}/DESTDIR")
 
 	if home, err := os.UserHomeDir(); err == nil {
-		api.SetDefaultStr(prj, Project_Key_Homedir, home)
+		prj.SetDefaultStr(Project_Key_Homedir, home)
 	} else {
 		panic(fmt.Sprintf("failed gettting homedir %s", err))
 	}
 }
 
 func (prj *Project) SetWorkdir(wd string) {
-	api.SetStr(prj, Project_Key_Workdir, wd)
+	prj.SetStr(Project_Key_Workdir, wd)
 }
 
 func (prj *Project) SetRoot(rootdir string) {
 	r, _ := filepath.Abs(rootdir)
-	api.SetStr(prj, Project_Key_RootDir, r)
+	prj.SetStr(Project_Key_RootDir, r)
 }
 
 func (prj *Project) SetMachine(machine string) {
-	api.SetStr(prj, Project_Key_Machine, machine)
+	prj.SetStr(Project_Key_Machine, machine)
 }
 
 func (prj *Project) SetSourceRoot(dir string) {
-	api.SetStr(prj, Project_Key_SourceRoot, dir)
+	prj.SetStr(Project_Key_SourceRoot, dir)
 }
 
 func (prj *Project) GetSourceRoot() string {
-	return api.GetStr(prj, Project_Key_SourceRoot)
+	return prj.GetStr(Project_Key_SourceRoot)
 }
 
 func (prj *Project) PushEnv() {
 	for _, k := range api.GetKeys(prj.Solution, "env") {
-		val := api.GetStr(prj.Solution, api.Key("env::"+string(k)))
+		val := prj.Solution.GetStr(api.Key("env::"+string(k)))
 		log.Printf("[PROJECT] ENV: %s=%s\n", string(k), val)
 		os.Setenv(string(k), val)
 	}
