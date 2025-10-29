@@ -91,9 +91,6 @@ func (prj *Project) LoadSolution(fn string) error {
 	prj.Solution.Put(Solution_Key_Project, prj)
 	prj.Put(Project_Key_Solution, prj.Solution)
 
-	log.Printf("project install-prefix=%s\n", prj.GetStr(Project_Key_InstallPrefix))
-	log.Printf("solution install-prefix=%s\n", prj.Solution.GetStr(Solution_Key_InstallPrefix))
-
 	pkglist := prj.Solution.GetPackageSpecDirs()
 	for _, p := range pkglist {
 		if err := prj.LoadPackages(p, ""); err != nil {
