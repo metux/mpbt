@@ -165,7 +165,12 @@ func (prj *Project) Init() {
 }
 
 func (prj *Project) SetWorkdir(wd string) {
-	prj.SetStr(Project_Key_Workdir, wd)
+	absdir, _ := filepath.Abs(wd)
+	prj.SetStr(Project_Key_Workdir, absdir)
+}
+
+func (prj *Project) GetWorkdir() string {
+	return prj.GetStr(Project_Key_Workdir)
 }
 
 func (prj *Project) SetRoot(rootdir string) {

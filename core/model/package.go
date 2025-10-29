@@ -23,6 +23,7 @@ const (
 	Package_Key_SourceDir     = "source-dir"
 	Package_Key_Type          = "type"
 	Package_Key_InstallPrefix = "install-prefix"
+	Package_Key_StatDir       = "@statdir"
 )
 
 type Package struct {
@@ -130,6 +131,14 @@ func (pkg Package) SetProject(prj * Project) {
 	pkg.Put(Package_Key_Solution, prj.Solution)
 }
 
+func (pkg Package) GetSlug() string {
+	return pkg.GetStr(Package_Key_Slug)
+}
+
+func (pkg Package) GetStatDir() string {
+	return pkg.GetStr(Package_Key_StatDir)
+}
+
 func LoadPackageYaml(fn string, name string) (*Package, error) {
 	pkg := Package{}
 	if err := pkg.LoadYaml(fn); err != nil {
@@ -137,5 +146,6 @@ func LoadPackageYaml(fn string, name string) (*Package, error) {
 	}
 	pkg.SetDefaultStr(Package_Key_Name, name)
 	pkg.SetDefaultStr(Package_Key_Slug, util.SanitizeFilename(name))
+	pkg.SetDefaultStr(Package_Key_StatDir, "${"+Package_Key_Project+"::"+Project_Key_Workdir+"}/stat")
 	return &pkg, nil
 }
