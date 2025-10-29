@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-package model
+package util
 
 import (
 	"github.com/metux/go-magicdict/api"

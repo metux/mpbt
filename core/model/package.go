@@ -26,7 +26,7 @@ const (
 )
 
 type Package struct {
-	SpecObj
+	util.SpecObj
 
 	// internal only, not in YAML
 	cacheGit *sources.Git `yaml:"-"`

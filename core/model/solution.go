@@ -12,7 +12,7 @@ const (
 )
 
 type Solution struct {
-	SpecObj
+	util.SpecObj
 }
 
 func (c *Solution) GetMapped(name string) string {
