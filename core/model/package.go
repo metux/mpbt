@@ -16,6 +16,7 @@ const (
 	KeyPackageDepends       = "depends"
 	KeyPackageFilename      = "@filename"
 	KeyPackageName          = "name"
+	KeyPackageSlug          = "@slug"
 	KeyPackageProject       = "@PROJECT"
 	KeyPackageSolution      = "@SOLUTION"
 	KeyPackageProvides      = "provides"
@@ -83,10 +84,6 @@ func (c Package) GetName() string {
 	return api.GetStr(c, KeyPackageName)
 }
 
-func (c Package) SetName(n string) {
-	api.SetStr(c, KeyPackageName, n)
-}
-
 func (c Package) GetProvides() []string {
 	return api.GetStrList(c, KeyPackageProvides)
 }
@@ -128,10 +125,12 @@ func (pkg Package) GetInstallPrefix() string {
 	return api.GetStr(pkg, KeyPackageInstallPrefix)
 }
 
-func LoadPackageYaml(fn string) (*Package, error) {
+func LoadPackageYaml(fn string, name string) (*Package, error) {
 	pkg := Package{}
 	if err := pkg.LoadYaml(fn); err != nil {
 		return nil, err
 	}
+	api.SetDefaultStr(pkg, KeyPackageName, name)
+	api.SetDefaultStr(pkg, KeyPackageSlug, util.SanitizeFilename(name))
 	return &pkg, nil
 }

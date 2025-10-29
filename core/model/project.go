@@ -74,11 +74,10 @@ func (prj *Project) LoadPackages(dirname string, prefix string) error {
 			ext := filepath.Ext(n)
 			bn := strings.TrimSuffix(n, ext)
 			if ext == ".yaml" || ext == ".yml" {
-				pkg, err := LoadPackageYaml(util.AppendPath(dirname, n))
+				pkg, err := LoadPackageYaml(util.AppendPath(dirname, n), util.AppendPath(prefix, bn))
 				if err != nil {
 					return err
 				}
-				pkg.SetName(util.AppendPath(prefix, bn))
 				prj.AddPackage(pkg)
 			}
 		}
