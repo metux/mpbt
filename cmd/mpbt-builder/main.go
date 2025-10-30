@@ -5,34 +5,35 @@ import (
 	"flag"
 	"fmt"
 
+	"github.com/metux/mpbt/core/util"
 	"github.com/metux/mpbt/frontend"
 )
 
-var cfSolution string
-var cfRootDir string
-var cfWorkDir string
-var args []string
-var prjDefines MultiFlag = make(MultiFlag, 0)
-var solDefines MultiFlag = make(MultiFlag, 0)
-
-var Config frontend.BuilderConfig
-
 func main() {
-	fmt.Printf("MPBT 0003\n")
-	flag.StringVar(&cfSolution, "solution", "", "Solution config file")
-	flag.StringVar(&cfRootDir, "root", ".", "Project root directory")
-	flag.StringVar(&cfWorkDir, "workdir", "", "Working directory")
+	fmt.Printf("MPBT 0005\n")
+	prjDefines := make(util.MultiFlag, 0)
+	solDefines := make(util.MultiFlag, 0)
+
+	Config := frontend.BuildConfig { }
+
+	flag.StringVar(&Config.SolutionFile, "solution", "", "Solution config file")
+	flag.StringVar(&Config.RootDir, "root", ".", "Project root directory")
+	flag.StringVar(&Config.WorkDir, "workdir", "", "Working directory")
 	flag.Var(&prjDefines, "project-define", "define extra project variables")
 	flag.Var(&solDefines, "solution-define", "define extra solution variables")
 	flag.Parse()
-	args = flag.Args()
 
-	if cfSolution == "" {
+	args := flag.Args()
+
+	Config.SolutionDefines = solDefines
+	Config.ProjectDefines = prjDefines
+
+	if Config.SolutionFile == "" {
 		fmt.Printf("missing -solution <fn> parameter\n")
 		helppage()
 	}
 
-	if cfRootDir == "" || len(args) == 0 {
+	if Config.RootDir == "" || len(args) == 0 {
 		fmt.Printf("missing -root <dir> parameter\n")
 		helppage()
 	}
@@ -45,7 +46,7 @@ func main() {
 	args = args[1:]
 
 	if cmd == "build" {
-		do_build()
+		frontend.RunBuild(Config)
 	} else {
 		helppage()
 	}

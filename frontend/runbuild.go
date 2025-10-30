@@ -1,37 +1,36 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-package main
+package frontend
 
 import (
 	"fmt"
 	"log"
 
 	"github.com/metux/go-magicdict/api"
-//	"github.com/metux/mpbt/frontend"
 	"github.com/metux/mpbt/core/workflow/build"
 	"github.com/metux/mpbt/core/workflow/fetch"
 	"github.com/metux/mpbt/core/model"
 )
 
-func do_build() {
+func RunBuild(cf BuildConfig) {
 	prj := model.MakeProject()
-	prj.SetRoot(cfRootDir)
+	prj.SetRoot(cf.RootDir)
 
-	for k, v := range prjDefines {
+	for k, v := range cf.ProjectDefines {
 		api.SetStr(prj, api.Key(k), v)
 	}
 
-	log.Printf("loading solution: %s\n", cfSolution)
+	log.Printf("loading solution: %s\n", cf.SolutionFile)
 
-	if err := prj.LoadSolution(cfSolution); err != nil {
+	if err := prj.LoadSolution(cf.SolutionFile); err != nil {
 		panic(fmt.Sprintf("failed loading solution: %s", err))
 	}
 
-	for k, v := range solDefines {
+	for k, v := range cf.SolutionDefines {
 		prj.Solution.SetStr(api.Key(k), v)
 	}
 
-	if cfWorkDir != "" {
-		prj.SetWorkdir(cfWorkDir)
+	if cf.WorkDir != "" {
+		prj.SetWorkdir(cf.WorkDir)
 	}
 
 	log.Printf("applying package config ...\n")
