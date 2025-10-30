@@ -6,9 +6,10 @@ import (
 	"log"
 
 	"github.com/metux/go-magicdict/api"
-	"github.com/metux/mpbt/core/model"
+//	"github.com/metux/mpbt/frontend"
 	"github.com/metux/mpbt/core/workflow/build"
 	"github.com/metux/mpbt/core/workflow/fetch"
+	"github.com/metux/mpbt/core/model"
 )
 
 func do_build() {

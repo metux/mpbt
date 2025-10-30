@@ -4,6 +4,8 @@ package main
 import (
 	"flag"
 	"fmt"
+
+	"github.com/metux/mpbt/frontend"
 )
 
 var cfSolution string
@@ -12,6 +14,8 @@ var cfWorkDir string
 var args []string
 var prjDefines MultiFlag = make(MultiFlag, 0)
 var solDefines MultiFlag = make(MultiFlag, 0)
+
+var Config frontend.BuilderConfig
 
 func main() {
 	fmt.Printf("MPBT 0003\n")

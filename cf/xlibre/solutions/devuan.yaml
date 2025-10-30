@@ -51,6 +51,8 @@ package-config:
         ref: xlibre-xf86-input-joystick-1.6.4.2
     xserver/xf86-input-evdev:
         ref: xlibre-xf86-input-evdev-2.11.0.2
+    xserver/xf86-input-keyboard:
+        ref: xlibre-xf86-input-keyboard-2.1.0.2
     xserver/xf86-input-mouse:
         ref: xlibre-xf86-input-mouse-1.9.5.2
     xserver/xf86-input-synaptics:
@@ -84,6 +86,7 @@ build:
     - xserver/xf86-input-libinput
     - xserver/xf86-input-joystick
     - xserver/xf86-input-evdev
+    - xserver/xf86-input-keyboard
     - xserver/xf86-input-mouse
     - xserver/xf86-input-synaptics
     - xserver/xf86-input-elographics
