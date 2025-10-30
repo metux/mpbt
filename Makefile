@@ -19,4 +19,7 @@ run:
             -project-define xlibre_git=git@github.com:X11Libre \
             build
 
+run2:
+	$(GO) run scripts/test-build-xlibre.go
+
 .PHONY: compile fmt clean run
