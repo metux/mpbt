@@ -1,0 +1,64 @@
+provides:
+    - x11/xserver-sdk
+    - xlibre-xserver
+
+sources:
+    git:
+        url:    ${@SOLUTION::xlibre_git}/xserver
+        ref:    ${ref}
+#        depth:  1
+        fetch:
+          - refs/heads/*:refs/remotes/origin/*
+          - refs/tags/*:refs/tags/*
+
+ref: origin/master
+
+buildsystem: meson
+
+depends:
+    - sys/pciaccess
+    - x11/libxcvt
+    - sys/libdrm
+
+build-depends:
+    - buildtool/c-compiler
+    - x11/xorgproto
+    - x11/xcb-proto
+
+# flags are always boolean, default is true
+flags:
+    xorg:
+    xephyr:
+    xfbdev:
+    glamor:
+    xnest:
+    xvfb:
+    glx:
+    pciaccess:
+        # extra dependencies when enabled
+        depend-on:
+            - sys/pciaccess
+    udev:
+        depend-on:
+            - sys/libudev
+    udev_kms:
+    dpms:
+    xf86bigfont:
+    screensaver:
+    xres:
+    xselinux:
+    namespace:
+    xinerama:
+    xv:
+    linux_apm:
+    linux_acpi:
+    mitshm:
+    tests:
+    dri1:
+    dri2:
+    dri3:
+    drm:
+    libunwind:
+    docs:
+    devel-docs:
+    docs-pdf:

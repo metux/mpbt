@@ -1,0 +1,3 @@
+provides: x11/xcb-proto
+type: system
+pkg-config: xpbproto
