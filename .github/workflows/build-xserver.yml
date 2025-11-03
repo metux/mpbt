@@ -1,0 +1,18 @@
+name: Build X servers
+
+permissions:
+    contents: write
+
+on:
+    push:
+    pull_request:
+
+jobs:
+    xserver-build-ubuntu:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out repository code
+              uses: actions/checkout@v4
+            - run: sudo apt-get update
+            - run: sudo apt-get install -y golang-go meson libx11-dev libpixman-1-dev libxkbfile-dev libxfont-dev libxshmfence-dev libselinux1-dev libaudit-dev mesa-common-dev libepoxy-dev libxcb-shape0-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-util-dev libxcb-image0-dev libxcb-icccm4-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-xkb-dev libxcb-glx0-dev libxcb-xv0-dev libinput-dev libxi-dev libgbm-dev libspice-protocol-dev
+            - run: make run
