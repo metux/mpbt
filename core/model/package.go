@@ -3,6 +3,7 @@ package model
 
 import (
 	"log"
+	"path/filepath"
 
 	"github.com/metux/go-magicdict/api"
 	"github.com/metux/go-magicdict/magic"
@@ -15,6 +16,7 @@ const (
 	Package_Key_Buildsystem   = "buildsystem"
 	Package_Key_Depends       = "depends"
 	Package_Key_Filename      = "@filename"
+	Package_Key_Basename      = "@basename"
 	Package_Key_Name          = "name"
 	Package_Key_Slug          = "@slug"
 	Package_Key_Project       = "@PROJECT"
@@ -145,6 +147,7 @@ func LoadPackageYaml(fn string, name string) (*Package, error) {
 		return nil, err
 	}
 	pkg.SetDefaultStr(Package_Key_Name, name)
+	pkg.SetDefaultStr(Package_Key_Basename, filepath.Base(name))
 	pkg.SetDefaultStr(Package_Key_Slug, util.SanitizeFilename(name))
 	pkg.SetDefaultStr(Package_Key_StatDir, "${"+Package_Key_Project+"::"+Project_Key_Workdir+"}/stat")
 	return &pkg, nil
