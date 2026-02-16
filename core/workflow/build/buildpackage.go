@@ -23,6 +23,9 @@ func BuildPackage(pkg *model.Package, cf api.Entry) error {
 	if bs == "autotools" {
 		return BuildWithBuilder(pkg, cf, &AutotoolsBuilder{})
 	}
+	if bs == "none" {
+		return BuildWithBuilder(pkg, cf, &NoneBuilder{})
+	}
 
 	return fmt.Errorf("%s: no known build system defined: %s", pkg.GetName(), bs)
 }
