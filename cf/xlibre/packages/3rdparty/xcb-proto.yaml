@@ -2,7 +2,7 @@ provides: x11/xcb-proto
 type: bundle
 sources:
     git:
-        url:    ${@SOLUTION::xorg_git}/proto/xcbproto.git
+        url:    ${@SOLUTION::xlibre_git}/mirror.fdo.xcbproto.git
         ref:    ${ref}
         depth:  1
         fetch:

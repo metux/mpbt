@@ -2,12 +2,11 @@ provides: x11/xorgproto
 type: bundle
 sources:
     git:
-        url:    ${@SOLUTION::xorg_git}/proto/xorgproto.git
+        url:    ${@SOLUTION::xlibre_git}/mirror.fdo.xorgproto.git
         ref:    ${ref}
         depth:  1
         fetch:
           - refs/heads/master:refs/remotes/origin/master
-buildsystem: autotools
-build-depends:
-    - x11/util-macros
-ref: origin/master
+          - refs/tags/*:refs/tags/*
+buildsystem: meson
+ref: xorgproto-2024.1

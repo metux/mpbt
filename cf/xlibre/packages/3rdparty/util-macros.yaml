@@ -2,7 +2,7 @@ provides: x11/util-macros
 type: bundle
 sources:
     git:
-        url:    ${@SOLUTION::xorg_git}/util/macros.git
+        url:    ${@SOLUTION::xlibre_git}/mirror.fdo.xorg-macros.git
         ref:    ${ref}
         depth:  1
         fetch:
