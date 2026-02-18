@@ -26,6 +26,8 @@ const (
 	Package_Key_Type          = "type"
 	Package_Key_InstallPrefix = "install-prefix"
 	Package_Key_StatDir       = "@statdir"
+
+	Package_Default_BuildDir = "__BUILD"
 )
 
 type Package struct {
@@ -118,6 +120,10 @@ func (pkg Package) GetGit() *sources.Git {
 
 func (pkg Package) GetSourceDir() string {
 	return pkg.GetStr(Package_Key_SourceDir)
+}
+
+func (pkg Package) GetBuildDir() string {
+	return filepath.Join(pkg.GetSourceDir(), Package_Default_BuildDir)
 }
 
 func (pkg Package) SetSourceDir(src string) error {
