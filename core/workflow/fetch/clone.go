@@ -35,7 +35,13 @@ func ClonePackage(pkg model.Package, config api.Entry) error {
 		return err
 	}
 	if !repo.IsCheckedOut() {
-		return repo.SimpleCheckout(gitspec.Ref)
+		if err := repo.SimpleCheckout(gitspec.Ref); err != nil {
+			return err
+		}
 	}
+	if len(gitspec.PostCheckoutCmd) > 0 {
+		return util.ExecCmd(pkg.GetName(), gitspec.PostCheckoutCmd, pkg.GetSourceDir())
+	}
+
 	return nil
 }

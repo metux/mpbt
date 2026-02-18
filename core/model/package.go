@@ -108,10 +108,11 @@ func (pkg Package) GetGit() *sources.Git {
 	}
 
 	git := sources.Git{
-		Url:   api.GetStr(ent, "url"),
-		Ref:   api.GetStr(ent, "ref"),
-		Depth: api.GetInt(ent, "depth", 0),
-		Fetch: api.GetStrList(ent, "fetch"),
+		Url:             api.GetStr(ent, "url"),
+		Ref:             api.GetStr(ent, "ref"),
+		Depth:           api.GetInt(ent, "depth", 0),
+		Fetch:           api.GetStrList(ent, "fetch"),
+		PostCheckoutCmd: api.GetStrList(ent, "post-checkout-cmd"),
 	}
 
 	pkg.cacheGit = &git

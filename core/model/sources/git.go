@@ -17,4 +17,6 @@ type Git struct {
 
 	// List of remote refs to fetch
 	Fetch util.StringList
+
+	PostCheckoutCmd util.StringList
 }
