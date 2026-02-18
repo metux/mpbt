@@ -82,6 +82,7 @@ package-config:
 
 # what to build (can use packages or provides here)
 build:
+    - tests/script-test
     - x11/xserver-sdk
     - xserver/xf86-input-libinput
     - xserver/xf86-input-joystick

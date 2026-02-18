@@ -29,6 +29,9 @@ func BuildPackage(pkg *model.Package, cf api.Entry) error {
 	if bs == "cmake" {
 		return BuildWithBuilder(pkg, cf, &CMakeBuilder{})
 	}
+	if bs == "exec" {
+		return BuildWithBuilder(pkg, cf, &ExecBuilder{})
+	}
 
 	return fmt.Errorf("%s: no known build system defined: %s", pkg.GetName(), bs)
 }

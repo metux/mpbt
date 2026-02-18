@@ -1,0 +1,24 @@
+sources:
+    # directly from this source tree instead of cloning
+    local: ${@PROJECT::@rootdir}
+
+source-dir: ${@PROJECT::@rootdir}
+
+buildsystem: exec
+
+commands:
+    prepare:
+        - ${source-dir}/cf/xlibre/scripts/script-test-prepare.sh
+        - ${@basename}
+    configure:
+        - ${source-dir}/cf/xlibre/scripts/script-test-configure.sh
+        - ${@basename}
+    build:
+        - ${source-dir}/cf/xlibre/scripts/script-test-build.sh
+        - ${@basename}
+    install:
+        - ${source-dir}/cf/xlibre/scripts/script-test-install.sh
+        - ${@basename}
+    clean:
+        - ${source-dir}/cf/xlibre/scripts/script-test-clean.sh
+        - ${@basename}
