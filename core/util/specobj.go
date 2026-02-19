@@ -27,6 +27,10 @@ func (c *SpecObj) SetDefaultStr(name api.Key, val string) error {
 	return api.SetDefaultStr(c, name, val)
 }
 
+func (c *SpecObj) SetDefaultInt(name api.Key, val int) error {
+	return api.SetDefaultInt(c, name, val)
+}
+
 func (c *SpecObj) GetStr(name api.Key) string {
 	return api.GetStr(c, name)
 }
