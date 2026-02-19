@@ -3,41 +3,28 @@ package build
 
 import (
 	"fmt"
-
-	"github.com/metux/go-magicdict/api"
-	"github.com/metux/mpbt/core/model"
-	"github.com/metux/mpbt/core/util"
 )
 
 type AutotoolsBuilder struct {
-	Package *model.Package
-	pkgName string
-}
-
-func (ab *AutotoolsBuilder) Init(p *model.Package, cf api.Entry) {
-	ab.Package = p
-	ab.pkgName = p.GetName()
+	BuilderBase
 }
 
 func (ab *AutotoolsBuilder) RunPrepare() error {
-	return util.ExecCmd(ab.pkgName, []string{"./autogen.sh"}, ab.Package.GetSourceDir())
+	return ab.ExecInSourceDir([]string{"./autogen.sh"})
 }
 
 func (ab *AutotoolsBuilder) RunConfigure() error {
-	return util.ExecCmd(ab.pkgName, []string{"./configure", fmt.Sprintf("--prefix=%s", ab.Package.GetInstallPrefix())}, ab.Package.GetSourceDir())
+	return ab.ExecInSourceDir([]string{"./configure", fmt.Sprintf("--prefix=%s", ab.Package.GetInstallPrefix())})
 }
 
 func (ab *AutotoolsBuilder) RunBuild() error {
-	return util.ExecCmd(
-		ab.pkgName,
-		[]string{"make", fmt.Sprintf("-j%d", ab.Package.GetParallel())},
-		ab.Package.GetSourceDir())
+	return ab.ExecInSourceDir([]string{"make", fmt.Sprintf("-j%d", ab.Package.GetParallel())})
 }
 
 func (ab *AutotoolsBuilder) RunInstall() error {
-	return util.ExecCmd(ab.pkgName, []string{"make", "install"}, ab.Package.GetSourceDir())
+	return ab.ExecInSourceDir([]string{"make", "install"})
 }
 
 func (ab *AutotoolsBuilder) RunClean() error {
-	return util.ExecCmd(ab.pkgName, []string{"make", "clean"}, ab.Package.GetSourceDir())
+	return ab.ExecInSourceDir([]string{"make", "clean"})
 }

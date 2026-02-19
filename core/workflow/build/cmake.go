@@ -3,27 +3,14 @@ package build
 
 import (
 	"fmt"
-
-	"github.com/metux/go-magicdict/api"
-	"github.com/metux/mpbt/core/model"
-	"github.com/metux/mpbt/core/util"
 )
 
 type CMakeBuilder struct {
-	Package *model.Package
-	Config  api.Entry
-	pkgName string
-}
-
-func (ab *CMakeBuilder) Init(p *model.Package, cf api.Entry) {
-	ab.Package = p
-	ab.Config = cf
-	ab.pkgName = ab.Package.GetName()
+	BuilderBase
 }
 
 func (ab *CMakeBuilder) RunPrepare() error {
-	//	util.ExecCmd(ab.pkgName, []string{"rm", "-Rf", ab.Package.GetBuildDir()}, ab.Package.GetSourceDir())
-	return util.ExecCmd(ab.pkgName, []string{"mkdir", "-p", ab.Package.GetBuildDir()}, ab.Package.GetSourceDir())
+	return ab.MakeBuildDir()
 }
 
 func (ab *CMakeBuilder) RunConfigure() error {
@@ -36,20 +23,17 @@ func (ab *CMakeBuilder) RunConfigure() error {
 	args = append(args, cmake_args...)
 	args = append(args, cmake_extra_args...)
 
-	return util.ExecCmd(ab.pkgName, args, ab.Package.GetBuildDir())
+	return ab.ExecInBuildDir(args)
 }
 
 func (ab *CMakeBuilder) RunBuild() error {
-	return util.ExecCmd(
-		ab.pkgName,
-		[]string{"make", fmt.Sprintf("-j%d", ab.Package.GetParallel())},
-		ab.Package.GetBuildDir())
+	return ab.ExecInBuildDir([]string{"make", fmt.Sprintf("-j%d", ab.Package.GetParallel())})
 }
 
 func (ab *CMakeBuilder) RunInstall() error {
-	return util.ExecCmd(ab.pkgName, []string{"make", "install"}, ab.Package.GetBuildDir())
+	return ab.ExecInBuildDir([]string{"make", "install"})
 }
 
 func (ab *CMakeBuilder) RunClean() error {
-	return util.ExecCmd(ab.pkgName, []string{"rm", "-Rf", ab.Package.GetBuildDir()}, ab.Package.GetSourceDir())
+	return ab.RemoveBuildDir()
 }

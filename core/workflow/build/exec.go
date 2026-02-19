@@ -3,20 +3,10 @@ package build
 
 import (
 	"github.com/metux/go-magicdict/api"
-	"github.com/metux/mpbt/core/model"
-	"github.com/metux/mpbt/core/util"
 )
 
 type ExecBuilder struct {
-	Package *model.Package
-	Config  api.Entry
-	pkgName string
-}
-
-func (eb *ExecBuilder) Init(p *model.Package, cf api.Entry) {
-	eb.Package = p
-	eb.Config = cf
-	eb.pkgName = eb.Package.GetName()
+	BuilderBase
 }
 
 func (eb *ExecBuilder) RunPrepare() error {
@@ -42,7 +32,7 @@ func (eb *ExecBuilder) RunClean() error {
 func (eb *ExecBuilder) doExec(stage string) error {
 	cmdline := eb.Package.GetStrList(api.Key("commands::" + stage))
 	if len(cmdline) > 0 {
-		return util.ExecCmd(eb.Package.GetName(), cmdline, eb.Package.GetSourceDir())
+		return eb.ExecInSourceDir(cmdline)
 	}
 	return nil
 }
