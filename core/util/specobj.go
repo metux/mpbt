@@ -42,3 +42,7 @@ func (c *SpecObj) GetStrList(name api.Key) []string {
 func (c *SpecObj) GetEntry(k api.Key) api.Entry {
 	return api.GetEntry(c, k)
 }
+
+func (c *SpecObj) GetInt(k api.Key, dflt int) int {
+	return api.GetInt(c, k, dflt)
+}
