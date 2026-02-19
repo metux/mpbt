@@ -7,8 +7,12 @@ import (
 )
 
 const (
-	Solution_Key_Project       = "@PROJECT"
-	Solution_Key_InstallPrefix = "install-prefix"
+	Solution_Key_Project        = "@PROJECT"
+	Solution_Key_InstallPrefix  = "install-prefix"
+	Solution_Key_PackageMapping = "package-mapping"
+	Solution_Key_Build          = "build"
+	Solution_Key_Packages       = "packages"
+	Solution_Key_PackageConfig  = "package-config"
 )
 
 type Solution struct {
@@ -16,19 +20,19 @@ type Solution struct {
 }
 
 func (c *Solution) GetMapped(name string) string {
-	return util.StrOr(c.GetStr(api.Key("package-mapping::"+name)), name)
+	return util.StrOr(c.GetStr(api.Key(Solution_Key_PackageMapping+"::"+name)), name)
 }
 
 func (c *Solution) GetBuildList() []string {
-	return c.GetStrList("build")
+	return c.GetStrList(Solution_Key_Build)
 }
 
 func (c *Solution) GetPackageSpecDirs() []string {
-	return c.GetStrList("packages")
+	return c.GetStrList(Solution_Key_Packages)
 }
 
 func (c *Solution) GetPackageConfig(pkgname string) api.Entry {
-	return c.GetEntry(api.Key("package-config::" + pkgname))
+	return c.GetEntry(api.Key(Solution_Key_PackageConfig + "::" + pkgname))
 }
 
 func (c *Solution) SetProject(prj *Project) {
