@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 
 	"github.com/metux/go-magicdict/api"
@@ -20,6 +21,7 @@ const (
 	Project_Key_Machine       = "@machine"
 	Project_Key_RootDir       = "@rootdir"
 	Project_Key_Solution      = "@SOLUTION"
+	Project_Key_Parallel      = "@parallel"
 )
 
 type ProvidesMap map[string]PackageMap
@@ -153,6 +155,7 @@ func (prj *Project) Init() {
 	prj.SetDefaultStr(Project_Key_Workdir, "${"+Project_Key_RootDir+"}/WORK")
 	prj.SetDefaultStr(Project_Key_SourceRoot, "${"+Project_Key_Workdir+"}/sources")
 	prj.SetDefaultStr(Project_Key_InstallPrefix, "${"+Project_Key_Workdir+"}/DESTDIR")
+	prj.SetDefaultInt(Project_Key_Parallel, runtime.NumCPU())
 
 	if home, err := os.UserHomeDir(); err == nil {
 		prj.SetDefaultStr(Project_Key_Homedir, home)
