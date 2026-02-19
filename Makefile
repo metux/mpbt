@@ -22,15 +22,10 @@ run:
 run2:
 	$(GO) run scripts/test-build-xlibre.go
 
-install: compile
-	mkdir -p $(HOME)/go/bin
-	cp cmd/mpbt-builder/mpbt-builder $(HOME)/go/bin/mpbt-builder
-
 .PHONY: compile fmt clean run
 
 GOPATH := $(shell go env GOPATH)
 
-# FIXME
 install: compile
 	mkdir -p $(GOPATH)/bin
 	cp cmd/mpbt-builder/mpbt-builder $(GOPATH)/bin
