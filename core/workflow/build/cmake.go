@@ -3,7 +3,6 @@ package build
 
 import (
 	"fmt"
-	"runtime"
 
 	"github.com/metux/go-magicdict/api"
 	"github.com/metux/mpbt/core/model"
@@ -43,7 +42,7 @@ func (ab *CMakeBuilder) RunConfigure() error {
 func (ab *CMakeBuilder) RunBuild() error {
 	return util.ExecCmd(
 		ab.pkgName,
-		[]string{"make", fmt.Sprintf("-j%d", runtime.NumCPU())},
+		[]string{"make", fmt.Sprintf("-j%d", ab.Package.GetParallel())},
 		ab.Package.GetBuildDir())
 }
 

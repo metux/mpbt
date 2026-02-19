@@ -13,6 +13,7 @@ const (
 	Solution_Key_Build          = "build"
 	Solution_Key_Packages       = "packages"
 	Solution_Key_PackageConfig  = "package-config"
+	Solution_Key_Parallel       = "parallel"
 )
 
 type Solution struct {
@@ -46,5 +47,6 @@ func (c *Solution) LoadYaml(fn string) error {
 
 	// initialize some default keys
 	c.SetDefaultStr(Solution_Key_InstallPrefix, "${"+Solution_Key_Project+"::"+Project_Key_InstallPrefix+"}")
+	c.SetDefaultStr(Solution_Key_Parallel, "${"+Solution_Key_Project+"::"+Project_Key_Parallel+"}")
 	return nil
 }

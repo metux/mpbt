@@ -21,7 +21,7 @@ const (
 	Project_Key_Machine       = "@machine"
 	Project_Key_RootDir       = "@rootdir"
 	Project_Key_Solution      = "@SOLUTION"
-	Project_Key_Parallel      = "@parallel"
+	Project_Key_Parallel      = "parallel"
 )
 
 type ProvidesMap map[string]PackageMap

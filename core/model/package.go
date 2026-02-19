@@ -26,6 +26,7 @@ const (
 	Package_Key_Type          = "type"
 	Package_Key_InstallPrefix = "install-prefix"
 	Package_Key_StatDir       = "@statdir"
+	Package_Key_Parallel      = "parallel"
 
 	Package_Default_BuildDir = "__BUILD"
 )
@@ -50,6 +51,7 @@ func (pkg *Package) LoadYaml(fn string) error {
 	pkg.SetStr(Package_Key_Filename, fn)
 	pkg.SetDefaultStr(Package_Key_SourceDir, "${"+Package_Key_Project+"::"+Project_Key_SourceRoot+"}/${name}")
 	pkg.SetDefaultStr(Package_Key_InstallPrefix, "${"+Package_Key_Solution+"::"+Solution_Key_InstallPrefix+"}")
+	pkg.SetDefaultStr(Package_Key_Parallel, "${"+Package_Key_Solution+"::"+Solution_Key_Parallel+"}")
 
 	return nil
 }
@@ -146,6 +148,10 @@ func (pkg Package) GetSlug() string {
 
 func (pkg Package) GetStatDir() string {
 	return pkg.GetStr(Package_Key_StatDir)
+}
+
+func (pkg Package) GetParallel() int {
+	return pkg.GetInt(Package_Key_Parallel, 0)
 }
 
 func LoadPackageYaml(fn string, name string) (*Package, error) {

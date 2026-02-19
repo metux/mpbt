@@ -3,6 +3,7 @@ package build
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/metux/go-magicdict/api"
 	"github.com/metux/mpbt/core/model"
@@ -42,7 +43,10 @@ func (ab *MesonBuilder) RunConfigure() error {
 }
 
 func (ab *MesonBuilder) RunBuild() error {
-	return util.ExecCmd(ab.pkgName, []string{"meson", "compile"}, ab.Package.GetBuildDir())
+	return util.ExecCmd(
+		ab.pkgName,
+		[]string{"meson", "compile", "-j", strconv.Itoa(ab.Package.GetParallel())},
+		ab.Package.GetBuildDir())
 }
 
 func (ab *MesonBuilder) RunInstall() error {
