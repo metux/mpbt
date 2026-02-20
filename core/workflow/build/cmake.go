@@ -3,6 +3,7 @@ package build
 
 import (
 	"fmt"
+	"strconv"
 )
 
 type CMakeBuilder struct {
@@ -27,11 +28,11 @@ func (ab *CMakeBuilder) RunConfigure() error {
 }
 
 func (ab *CMakeBuilder) RunBuild() error {
-	return ab.ExecInBuildDir([]string{"make", fmt.Sprintf("-j%d", ab.Package.GetParallel())})
+	return ab.ExecInBuildDir([]string{"cmake", "--build", ".", "--parallel", strconv.Itoa(ab.Package.GetParallel())})
 }
 
 func (ab *CMakeBuilder) RunInstall() error {
-	return ab.ExecInBuildDir([]string{"make", "install"})
+	return ab.ExecInBuildDir([]string{"cmake", "--install", "."})
 }
 
 func (ab *CMakeBuilder) RunClean() error {
