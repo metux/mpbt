@@ -27,6 +27,7 @@ const (
 	Package_Key_InstallPrefix = "install-prefix"
 	Package_Key_StatDir       = "@statdir"
 	Package_Key_Parallel      = "parallel"
+	Package_Key_Destdir       = "@destdir"
 
 	Package_Default_BuildDir = "__BUILD"
 )
@@ -152,6 +153,10 @@ func (pkg Package) GetStatDir() string {
 
 func (pkg Package) GetParallel() int {
 	return pkg.GetInt(Package_Key_Parallel, 0)
+}
+
+func (pkg Package) GetDestdir() string {
+	return pkg.GetStr(Package_Key_Destdir)
 }
 
 func LoadPackageYaml(fn string, name string) (*Package, error) {
