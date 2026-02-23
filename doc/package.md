@@ -20,6 +20,7 @@ User provided keys:
 | `name`            | string           | package name (default: yaml file name w/o suffix and package config directory prefix)        |
 | `install-prefix`  | string           | installation prefix (by default filled by MPBT)                                              |
 | `parallel`        | integer          | number of parallel jobs (defaults to ${@SOLUTION::parallel})                                 |
+| `enable-binpkg`   | bool             | enable binary packages (experimental)                                                        |
 
 Automatic keys:
 ---------------

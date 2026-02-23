@@ -109,3 +109,5 @@ env:
 
 packages:
     - ${@PROJECT::@rootdir}/cf/xlibre/packages
+
+enable-binpkg: yes      # enabled by default / experimental
