@@ -159,6 +159,10 @@ func (pkg Package) GetDestdir() string {
 	return pkg.GetStr(Package_Key_Destdir)
 }
 
+func (pkg Package) EnableBinpkg() bool {
+	return pkg.GetBool(Package_Key_Solution+"::enable-binpkg", true)
+}
+
 func LoadPackageYaml(fn string, name string) (*Package, error) {
 	pkg := Package{}
 	if err := pkg.LoadYaml(fn); err != nil {
@@ -168,5 +172,10 @@ func LoadPackageYaml(fn string, name string) (*Package, error) {
 	pkg.SetDefaultStr(Package_Key_Basename, filepath.Base(name))
 	pkg.SetDefaultStr(Package_Key_Slug, util.SanitizeFilename(name))
 	pkg.SetDefaultStr(Package_Key_StatDir, "${"+Package_Key_Project+"::"+Project_Key_Workdir+"}/stat")
+
+	// private, should not be used directly in user configs
+	pkg.SetStr("@binary-image", "${@PROJECT::@workdir}/install/${name}/image")
+	pkg.SetStr("@binary-tarball", "${@PROJECT::@workdir}/tarball/${name}.tar.gz")
+
 	return &pkg, nil
 }
