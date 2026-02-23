@@ -10,11 +10,16 @@ import (
 )
 
 func ExecCmd(prefix string, cmdline []string, wd string) error {
+	return ExecCmdEnv(prefix, cmdline, wd, os.Environ())
+}
+
+func ExecCmdEnv(prefix string, cmdline []string, wd string, env []string) error {
 	log.Printf("[%s] EXEC: %s\n", prefix, cmdline)
 	cmd := exec.Command(cmdline[0], cmdline[1:]...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Dir = wd
+	cmd.Env = env
 	return cmd.Run()
 }
 
