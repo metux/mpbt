@@ -23,8 +23,16 @@ func (b BuilderBase) ExecInSourceDir(cmdline []string) error {
 	return util.ExecCmd(b.PkgName, cmdline, b.Package.GetSourceDir())
 }
 
+func (b BuilderBase) ExecInSourceDirEnv(cmdline []string, env []string) error {
+	return util.ExecCmdEnv(b.PkgName, cmdline, b.Package.GetSourceDir(), env)
+}
+
 func (b BuilderBase) ExecInBuildDir(cmdline []string) error {
 	return util.ExecCmd(b.PkgName, cmdline, b.Package.GetBuildDir())
+}
+
+func (b BuilderBase) ExecInBuildDirEnv(cmdline []string, env []string) error {
+	return util.ExecCmdEnv(b.PkgName, cmdline, b.Package.GetBuildDir(), env)
 }
 
 func (b BuilderBase) MakeBuildDir() error {
