@@ -34,3 +34,4 @@ These keys are automatically filled in by MPBT and should not be overwritten.
 | `@PROJECT`      | link to the global project config object                                        |
 | `@SOLUTION`     | link to the global solution config object                                       |
 | `@statdir`      | directory for MPBT status files                                                 |
+| `@destdir`      | DESTDIR prefix, if install should go to a staging area                          |
