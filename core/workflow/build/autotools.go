@@ -22,7 +22,7 @@ func (ab *AutotoolsBuilder) RunBuild() error {
 }
 
 func (ab *AutotoolsBuilder) RunInstall() error {
-	return ab.ExecInSourceDir([]string{"make", "install"})
+	return ab.ExecInSourceDir([]string{"make", "install", "DESTDIR=" + ab.Package.GetDestdir()})
 }
 
 func (ab *AutotoolsBuilder) RunClean() error {
