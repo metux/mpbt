@@ -46,3 +46,7 @@ func (c *SpecObj) GetEntry(k api.Key) api.Entry {
 func (c *SpecObj) GetInt(k api.Key, dflt int) int {
 	return api.GetInt(c, k, dflt)
 }
+
+func (c *SpecObj) GetBool(k api.Key, dflt bool) bool {
+	return api.GetBool(c, k, dflt)
+}
