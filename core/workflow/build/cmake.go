@@ -3,6 +3,7 @@ package build
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 )
 
@@ -21,10 +22,13 @@ func (ab *CMakeBuilder) RunConfigure() error {
 	cmake_args := ab.Package.GetStrList("cmake-args")
 	cmake_extra_args := ab.Package.GetStrList("cmake-extra-args")
 
+	env := os.Environ()
+	env = append(env, "DESTDIR="+ab.Package.GetDestdir())
+
 	args = append(args, cmake_args...)
 	args = append(args, cmake_extra_args...)
 
-	return ab.ExecInBuildDir(args)
+	return ab.ExecInBuildDirEnv(args, env)
 }
 
 func (ab *CMakeBuilder) RunBuild() error {
