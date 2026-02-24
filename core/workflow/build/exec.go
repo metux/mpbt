@@ -2,6 +2,8 @@
 package build
 
 import (
+	"os"
+
 	"github.com/metux/go-magicdict/api"
 )
 
@@ -10,29 +12,32 @@ type ExecBuilder struct {
 }
 
 func (eb *ExecBuilder) RunPrepare() error {
-	return eb.doExec("prepare")
+	return eb.doExec("prepare", os.Environ())
 }
 
 func (eb *ExecBuilder) RunConfigure() error {
-	return eb.doExec("configure")
+	return eb.doExec("configure", os.Environ())
 }
 
 func (eb *ExecBuilder) RunBuild() error {
-	return eb.doExec("build")
+	return eb.doExec("build", os.Environ())
 }
 
 func (eb *ExecBuilder) RunInstall() error {
-	return eb.doExec("install")
+	env := os.Environ()
+	env = append(env, "DESTDIR="+eb.Package.GetDestdir())
+
+	return eb.doExec("install", env)
 }
 
 func (eb *ExecBuilder) RunClean() error {
-	return eb.doExec("clean")
+	return eb.doExec("clean", os.Environ())
 }
 
-func (eb *ExecBuilder) doExec(stage string) error {
+func (eb *ExecBuilder) doExec(stage string, env []string) error {
 	cmdline := eb.Package.GetStrList(api.Key("commands::" + stage))
 	if len(cmdline) > 0 {
-		return eb.ExecInSourceDir(cmdline)
+		return eb.ExecInSourceDirEnv(cmdline, env)
 	}
 	return nil
 }
