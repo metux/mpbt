@@ -34,7 +34,7 @@ func (ab *MesonBuilder) RunBuild() error {
 }
 
 func (ab *MesonBuilder) RunInstall() error {
-	return ab.ExecInBuildDir([]string{"meson", "install"})
+	return ab.ExecInBuildDir([]string{"meson", "install", "--destdir", ab.Package.GetDestdir()})
 }
 
 func (ab *MesonBuilder) RunClean() error {
