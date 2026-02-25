@@ -54,6 +54,12 @@ func (pkg *Package) LoadYaml(fn string) error {
 	pkg.SetDefaultStr(Package_Key_SourceDir, "${"+Package_Key_Project+"::"+Project_Key_SourceRoot+"}/${name}")
 	pkg.SetDefaultStr(Package_Key_InstallPrefix, "${"+Package_Key_Solution+"::"+Solution_Key_InstallPrefix+"}")
 	pkg.SetDefaultStr(Package_Key_Parallel, "${"+Package_Key_Solution+"::"+Solution_Key_Parallel+"}")
+	pkg.SetDefaultStr(Package_Key_StatDir, "${"+Package_Key_Project+"::"+Project_Key_Workdir+"}/stat")
+	pkg.SetDefaultStr(Package_Key_BuildDir, "${"+Package_Key_Project+"::"+Project_Key_Workdir+"}/build/${"+Package_Key_Name+"}")
+
+	// private, should not be used directly in user configs
+	pkg.SetStr("@binary-image", "${@PROJECT::@workdir}/install/${name}/image")
+	pkg.SetStr("@binary-tarball", "${@PROJECT::@workdir}/tarball/${name}.tar.gz")
 
 	return nil
 }
@@ -172,12 +178,5 @@ func LoadPackageYaml(fn string, name string) (*Package, error) {
 	pkg.SetDefaultStr(Package_Key_Name, name)
 	pkg.SetDefaultStr(Package_Key_Basename, filepath.Base(name))
 	pkg.SetDefaultStr(Package_Key_Slug, util.SanitizeFilename(name))
-	pkg.SetDefaultStr(Package_Key_StatDir, "${"+Package_Key_Project+"::"+Project_Key_Workdir+"}/stat")
-	pkg.SetDefaultStr(Package_Key_BuildDir, "${"+Package_Key_Project+"::"+Project_Key_Workdir+"}/build/${"+Package_Key_Name+"}")
-
-	// private, should not be used directly in user configs
-	pkg.SetStr("@binary-image", "${@PROJECT::@workdir}/install/${name}/image")
-	pkg.SetStr("@binary-tarball", "${@PROJECT::@workdir}/tarball/${name}.tar.gz")
-
 	return &pkg, nil
 }
