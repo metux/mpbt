@@ -14,6 +14,7 @@ import (
 const (
 	Package_Key_BuildDepends  = "build-depends"
 	Package_Key_Buildsystem   = "buildsystem"
+	Package_Key_BuildDir      = "@builddir"
 	Package_Key_Depends       = "depends"
 	Package_Key_Filename      = "@filename"
 	Package_Key_Basename      = "@basename"
@@ -127,7 +128,7 @@ func (pkg Package) GetSourceDir() string {
 }
 
 func (pkg Package) GetBuildDir() string {
-	return filepath.Join(pkg.GetSourceDir(), Package_Default_BuildDir)
+	return pkg.GetStr(Package_Key_BuildDir)
 }
 
 func (pkg Package) SetSourceDir(src string) error {
@@ -172,6 +173,7 @@ func LoadPackageYaml(fn string, name string) (*Package, error) {
 	pkg.SetDefaultStr(Package_Key_Basename, filepath.Base(name))
 	pkg.SetDefaultStr(Package_Key_Slug, util.SanitizeFilename(name))
 	pkg.SetDefaultStr(Package_Key_StatDir, "${"+Package_Key_Project+"::"+Project_Key_Workdir+"}/stat")
+	pkg.SetDefaultStr(Package_Key_BuildDir, "${"+Package_Key_Project+"::"+Project_Key_Workdir+"}/build/${"+Package_Key_Name+"}")
 
 	// private, should not be used directly in user configs
 	pkg.SetStr("@binary-image", "${@PROJECT::@workdir}/install/${name}/image")
