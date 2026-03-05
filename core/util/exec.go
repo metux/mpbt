@@ -23,8 +23,10 @@ func ExecCmdEnv(prefix string, cmdline []string, wd string, env []string) error 
 	return cmd.Run()
 }
 
-func ExecOut(cmdline []string) string {
-	out, err := exec.Command(cmdline[0], cmdline[1:]...).Output()
+func ExecOut(cmdline []string, wd string) string {
+	cmd := exec.Command(cmdline[0], cmdline[1:]...)
+	cmd.Dir = wd
+	out, err := cmd.Output()
 	if err != nil {
 		fmt.Println("Exec error:", err)
 	}

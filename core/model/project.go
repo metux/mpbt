@@ -150,7 +150,7 @@ func (prj *Project) ApplyPackageConfigs() {
 
 func (prj *Project) Init() {
 	prj.MagicDict.Init()
-	prj.SetMachine(util.ExecOut([]string{"gcc", "-dumpmachine"}))
+	prj.SetMachine(util.ExecOut([]string{"gcc", "-dumpmachine"}, ""))
 	prj.SetRoot(".")
 	prj.SetDefaultStr(Project_Key_Workdir, "${"+Project_Key_RootDir+"}/WORK")
 	prj.SetDefaultStr(Project_Key_SourceRoot, "${"+Project_Key_Workdir+"}/sources")
