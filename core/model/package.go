@@ -3,6 +3,7 @@ package model
 
 import (
 	"log"
+	"os"
 	"path/filepath"
 
 	"github.com/metux/go-magicdict/api"
@@ -172,6 +173,31 @@ func (pkg Package) GetDestdir() string {
 
 func (pkg Package) EnableBinpkg() bool {
 	return pkg.GetBool(Package_Key_Solution+"::enable-binpkg", true)
+}
+
+func (pkg Package) GetStatfileBuilt() string {
+	return pkg.GetStatDir() + "/" + pkg.GetSlug() + ".DONE"
+}
+
+func (pkg Package) CheckStatBuilt() bool {
+	statfile := pkg.GetStatfileBuilt()
+	if _, err := os.Stat(statfile); err == nil {
+		return true
+	}
+	return false
+}
+
+func (pkg Package) MarkStatBuilt() error {
+	statdir := pkg.GetStatDir()
+	os.MkdirAll(statdir, 0755)
+
+	statfile := pkg.GetStatfileBuilt()
+	pkgName := pkg.GetName()
+	if err := util.ExecCmd(pkgName, []string{"touch", statfile}, "."); err != nil {
+		log.Printf("[%s] Error: %s\n", pkgName, err)
+		return err
+	}
+	return nil
 }
 
 func LoadPackageYaml(fn string, name string) (*Package, error) {
