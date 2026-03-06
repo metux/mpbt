@@ -36,3 +36,7 @@ func (g GitRepo) Fetch(depth int, remote string, refs ...string) error {
 func (g GitRepo) SimpleCheckout(refname string) error {
 	return ExecCmd("<git>", []string{"git", "checkout", refname}, g.Dir)
 }
+
+func (g GitRepo) GetCurrentRev() string {
+	return ExecOut([]string{"git", "rev-parse", "HEAD"}, g.Dir)
+}
