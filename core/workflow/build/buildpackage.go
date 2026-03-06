@@ -41,13 +41,7 @@ func BuildWithBuilder(pkg *model.Package, cf api.Entry, b model.IBuilder) error 
 
 	pkgName := pkg.GetName()
 
-	statdir := pkg.GetStatDir()
-	os.MkdirAll(statdir, 0755)
-
-	statfile := statdir + "/" + pkg.GetSlug() + ".DONE"
-	log.Printf("statfile: %s\n", statfile)
-
-	if _, err := os.Stat(statfile); err == nil {
+	if pkg.CheckStatBuilt() {
 		log.Printf("[%s] Package already built\n", pkgName)
 		return nil
 	}
@@ -94,7 +88,7 @@ func BuildWithBuilder(pkg *model.Package, cf api.Entry, b model.IBuilder) error 
 		}
 	}
 
-	if err := util.ExecCmd(pkgName, []string{"touch", statfile}, "."); err != nil {
+	if err := pkg.MarkStatBuilt(); err != nil {
 		log.Printf("[%s] Error: %s\n", pkgName, err)
 		return err
 	}
