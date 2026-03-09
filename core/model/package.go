@@ -193,10 +193,26 @@ func (pkg Package) MarkStatBuilt() error {
 
 	statfile := pkg.GetStatfileBuilt()
 	pkgName := pkg.GetName()
-	if err := util.ExecCmd(pkgName, []string{"touch", statfile}, "."); err != nil {
-		log.Printf("[%s] Error: %s\n", pkgName, err)
+
+	repo := pkg.GetGitRepo()
+	rev := repo.GetCurrentRev()
+
+	log.Printf("[%s] current rev \"is\" %s\n", pkgName, rev)
+
+	file, err := os.Create(statfile)
+	if err != nil {
 		return err
 	}
+	defer file.Close()
+
+	if _, err := file.WriteString(rev); err != nil {
+		return err
+	}
+
+	if err := file.Sync(); err != nil {
+		return err
+	}
+
 	return nil
 }
 
