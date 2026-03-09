@@ -182,10 +182,16 @@ func (pkg Package) GetStatfileBuilt() string {
 
 func (pkg Package) CheckStatBuilt() bool {
 	statfile := pkg.GetStatfileBuilt()
-	if _, err := os.Stat(statfile); err == nil {
-		return true
+	if !util.FileExists(statfile) {
+		return false
 	}
-	return false
+
+	if pkg.EnableBinpkg() {
+		tarfile := pkg.GetBinpkgTarball()
+		return util.FileExists(tarfile)
+	}
+
+	return true
 }
 
 func (pkg Package) MarkStatBuilt() error {
