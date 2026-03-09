@@ -200,6 +200,10 @@ func (pkg Package) MarkStatBuilt() error {
 	return nil
 }
 
+func (pkg Package) GetGitRepo() util.GitRepo {
+	return util.GitRepo{Dir: pkg.GetSourceDir()}
+}
+
 func LoadPackageYaml(fn string, name string) (*Package, error) {
 	pkg := Package{}
 	if err := pkg.LoadYaml(fn); err != nil {
