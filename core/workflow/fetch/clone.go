@@ -18,7 +18,7 @@ func ClonePackage(pkg model.Package, config api.Entry) error {
 		return nil
 	}
 
-	repo := util.GitRepo{Dir: pkg.GetSourceDir()}
+	repo := pkg.GetGitRepo()
 
 	// FIXME: dont fetch if already checked-out
 	if repo.IsCheckedOut() {
