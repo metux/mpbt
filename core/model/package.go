@@ -30,6 +30,7 @@ const (
 	Package_Key_StatDir       = "@statdir"
 	Package_Key_Parallel      = "parallel"
 	Package_Key_Destdir       = "@destdir"
+	Package_Key_BinaryTarball = "@binary-tarball"
 
 	Package_Default_BuildDir = "__BUILD"
 )
@@ -60,7 +61,7 @@ func (pkg *Package) LoadYaml(fn string) error {
 
 	// private, should not be used directly in user configs
 	pkg.SetStr("@binary-image", "${@PROJECT::@workdir}/install/${name}/image")
-	pkg.SetStr("@binary-tarball", "${@PROJECT::@workdir}/tarball/${name}.tar.gz")
+	pkg.SetStr(Package_Key_BinaryTarball, "${@PROJECT::@workdir}/tarball/${name}.tar.gz")
 
 	// link some defaults to solution
 	pkg.SetDefaultStr("cmake-args", "${@SOLUTION::package-defaults::cmake-args}")
@@ -218,6 +219,10 @@ func (pkg Package) MarkStatBuilt() error {
 
 func (pkg Package) GetGitRepo() util.GitRepo {
 	return util.GitRepo{Dir: pkg.GetSourceDir()}
+}
+
+func (pkg Package) GetBinpkgTarball() string {
+	return pkg.GetStr(Package_Key_BinaryTarball)
 }
 
 func LoadPackageYaml(fn string, name string) (*Package, error) {

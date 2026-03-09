@@ -81,7 +81,7 @@ func BuildWithBuilder(pkg *model.Package, cf api.Entry, b model.IBuilder) error 
 			log.Printf("[%s] Install (2) error: %s\n", pkgName, err)
 			return err
 		}
-		tarball := pkg.GetStr("@binary-tarball")
+		tarball := pkg.GetBinpkgTarball()
 		log.Printf("creating tarball: %s\n", tarball)
 		if err := util.CreateTarballGz(destdir, tarball); err != nil {
 			return err
