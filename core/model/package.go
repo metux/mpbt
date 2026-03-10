@@ -186,6 +186,18 @@ func (pkg Package) CheckStatBuilt() bool {
 		return false
 	}
 
+	old_sha_buf, err := os.ReadFile(statfile)
+	if err != nil {
+		return false
+	}
+
+	old_sha := string(old_sha_buf)
+	new_sha := pkg.GetGitRepo().GetCurrentRev()
+
+	if old_sha != new_sha {
+		return false
+	}
+
 	if pkg.EnableBinpkg() {
 		tarfile := pkg.GetBinpkgTarball()
 		return util.FileExists(tarfile)
