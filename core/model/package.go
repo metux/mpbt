@@ -216,7 +216,7 @@ func (pkg Package) MarkStatBuilt() error {
 	repo := pkg.GetGitRepo()
 	rev := repo.GetCurrentRev()
 
-	log.Printf("[%s] current rev \"is\" %s\n", pkgName, rev)
+	log.Printf("[%s] current rev is %s\n", pkgName, rev)
 
 	file, err := os.Create(statfile)
 	if err != nil {
