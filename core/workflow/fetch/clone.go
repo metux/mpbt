@@ -34,6 +34,9 @@ func ClonePackage(pkg model.Package, config api.Entry) error {
 	if err := repo.Fetch(gitspec.Depth, remotename, gitspec.Fetch...); err != nil {
 		return err
 	}
+	if err := repo.ConfigFetch(remotename, gitspec.Fetch...); err != nil {
+		return err
+	}
 	if !repo.IsCheckedOut() {
 		if err := repo.SimpleCheckout(gitspec.Ref); err != nil {
 			return err

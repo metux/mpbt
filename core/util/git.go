@@ -33,6 +33,14 @@ func (g GitRepo) Fetch(depth int, remote string, refs ...string) error {
 	return ExecCmd("<git>", c1, g.Dir)
 }
 
+func (g GitRepo) ConfigFetch(remote string, refs ...string) error {
+	for _, r := range refs {
+		c1 := []string{"git", "config", "--add", "remote." + remote + ".fetch", "+" + r}
+		ExecCmd("<git>", c1, g.Dir)
+	}
+	return nil
+}
+
 func (g GitRepo) SimpleCheckout(refname string) error {
 	return ExecCmd("<git>", []string{"git", "checkout", refname}, g.Dir)
 }
