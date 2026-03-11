@@ -42,7 +42,6 @@ func BuildWithBuilder(pkg *model.Package, cf api.Entry, b model.IBuilder) error 
 	pkgName := pkg.GetName()
 
 	if pkg.CheckStatBuilt() {
-		log.Printf("[%s] Package already built\n", pkgName)
 		return nil
 	}
 
