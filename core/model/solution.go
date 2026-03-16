@@ -7,13 +7,14 @@ import (
 )
 
 const (
-	Solution_Key_Project        = "@PROJECT"
-	Solution_Key_InstallPrefix  = "install-prefix"
-	Solution_Key_PackageMapping = "package-mapping"
-	Solution_Key_Build          = "build"
-	Solution_Key_Packages       = "packages"
-	Solution_Key_PackageConfig  = "package-config"
-	Solution_Key_Parallel       = "parallel"
+	Solution_Key_Project         = "@PROJECT"
+	Solution_Key_InstallPrefix   = "install-prefix"
+	Solution_Key_PackageMapping  = "package-mapping"
+	Solution_Key_Build           = "build"
+	Solution_Key_Packages        = "packages"
+	Solution_Key_PackageConfig   = "package-config"
+	Solution_Key_Parallel        = "parallel"
+	Solution_Key_PackageDefaults = "package-defaults"
 )
 
 type Solution struct {

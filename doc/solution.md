@@ -16,15 +16,15 @@ from the host system (instead of building on its own), use different pathes, etc
 User provided keys:
 -------------------
 
-| Key               | Type             | Description                                                                            |
-| ----------------- | ---------------- | ---------------------------------------------------------------------------------------|
-| `install-prefix`  | string           | global installation prefix (as it will be on the target) for the whole bundle/solution |
-| `package-mapping` | dict (see below) | maps virtual package names to real ones for depenency resolution                       |
-| `build`           | string/list      | list of (virtual) package names to be built                                            |
-| `packages`        | string/list      | list of directories to search package configs from                                     |
-| `package-config`  | string/list      | extra per-package settings (will be copied into individual packages                    |
-| `parallel`        | integer          | number of parallel jobs (defaults to ${@PROJECT::parallel})                            |
-
+| Key                | Type             | Description                                                                            |
+| ------------------ | ---------------- | ---------------------------------------------------------------------------------------|
+| `install-prefix`   | string           | global installation prefix (as it will be on the target) for the whole bundle/solution |
+| `package-mapping`  | dict (see below) | maps virtual package names to real ones for depenency resolution                       |
+| `build`            | string/list      | list of (virtual) package names to be built                                            |
+| `packages`         | string/list      | list of directories to search package configs from                                     |
+| `package-config`   | string/list      | extra per-package settings (will be copied into individual packages                    |
+| `parallel`         | integer          | number of parallel jobs (defaults to ${@PROJECT::parallel})                            |
+| `package-defaults` | list             | list of keys to be linked as defaults into individual packages                         |
 
 Automatic keys:
 ---------------
