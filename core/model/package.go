@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	md "github.com/metux/go-magicdict"
 	"github.com/metux/go-magicdict/api"
 	"github.com/metux/go-magicdict/magic"
 	"github.com/metux/mpbt/core/model/sources"
@@ -154,6 +155,15 @@ func (pkg Package) GetInstallPrefix() string {
 func (pkg Package) SetProject(prj *Project) {
 	pkg.Put(Package_Key_Project, prj)
 	pkg.Put(Package_Key_Solution, prj.Solution)
+
+	// note: this must be done here instead of the constructor
+	// because only here we learn about the solution
+
+	if ent := md.EntryGet(prj.Solution, Solution_Key_PackageDefaults); ent != nil {
+		for _, idx := range ent.Keys() {
+			pkg.SetDefaultStr(idx, string("${"+Package_Key_Solution+"::"+Solution_Key_PackageDefaults+"::"+idx+"}"))
+		}
+	}
 }
 
 func (pkg Package) GetSlug() string {
