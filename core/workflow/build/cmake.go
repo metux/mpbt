@@ -22,13 +22,10 @@ func (ab *CMakeBuilder) RunConfigure() error {
 	cmake_args := ab.Package.GetStrList("cmake-args")
 	cmake_extra_args := ab.Package.GetStrList("cmake-extra-args")
 
-	env := os.Environ()
-	env = append(env, "DESTDIR="+ab.Package.GetDestdir())
-
 	args = append(args, cmake_args...)
 	args = append(args, cmake_extra_args...)
 
-	return ab.ExecInBuildDirEnv(args, env)
+	return ab.ExecInBuildDir(args)
 }
 
 func (ab *CMakeBuilder) RunBuild() error {
@@ -36,7 +33,10 @@ func (ab *CMakeBuilder) RunBuild() error {
 }
 
 func (ab *CMakeBuilder) RunInstall() error {
-	return ab.ExecInBuildDir([]string{"cmake", "--install", "."})
+	env := os.Environ()
+	env = append(env, "DESTDIR="+ab.Package.GetDestdir())
+
+	return ab.ExecInBuildDirEnv([]string{"cmake", "--install", "."}, env)
 }
 
 func (ab *CMakeBuilder) RunClean() error {
