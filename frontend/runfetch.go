@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 package frontend
 
-func RunBuild(cf BuildConfig) {
+func RunFetch(cf BuildConfig) {
 	prj := LoadProject(cf)
-
 	doFetch(&prj)
-	doBuild(&prj)
 }

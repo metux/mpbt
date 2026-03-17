@@ -46,6 +46,8 @@ func main() {
 
 	if cmd == "build" {
 		frontend.RunBuild(Config)
+	} else if cmd == "fetch" {
+		frontend.RunFetch(Config)
 	} else {
 		helppage()
 	}

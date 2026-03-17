@@ -12,5 +12,6 @@ func helppage() {
 	flag.PrintDefaults()
 	fmt.Printf("Available commands:\n")
 	fmt.Printf("    build           pull sources (once) and run build\n")
+	fmt.Printf("    fetch           pull sources only\n")
 	os.Exit(1)
 }
