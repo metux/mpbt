@@ -50,3 +50,7 @@ func (c *SpecObj) GetInt(k api.Key, dflt int) int {
 func (c *SpecObj) GetBool(k api.Key, dflt bool) bool {
 	return api.GetBool(c, k, dflt)
 }
+
+func (c *SpecObj) SetBool(k api.Key, val bool) {
+	api.SetBool(c, k, val)
+}

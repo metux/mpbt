@@ -48,6 +48,8 @@ func main() {
 		frontend.RunBuild(Config)
 	} else if cmd == "fetch" {
 		frontend.RunFetch(Config)
+	} else if cmd == "depgraph" {
+		frontend.RunDepGraph(Config)
 	} else {
 		helppage()
 	}

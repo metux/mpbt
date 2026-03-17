@@ -13,5 +13,6 @@ func helppage() {
 	fmt.Printf("Available commands:\n")
 	fmt.Printf("    build           pull sources (once) and run build\n")
 	fmt.Printf("    fetch           pull sources only\n")
+	fmt.Printf("    depgraph        generate dependency graph (.dot file)\n")
 	os.Exit(1)
 }
