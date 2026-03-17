@@ -1,3 +1,2 @@
 provides: buildtool/c-compiler
 type: system
-pkg-config: xkbcomp
