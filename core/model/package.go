@@ -64,10 +64,6 @@ func (pkg *Package) LoadYaml(fn string) error {
 	pkg.SetStr("@binary-image", "${@PROJECT::@workdir}/install/${name}/image")
 	pkg.SetStr(Package_Key_BinaryTarball, "${@PROJECT::@workdir}/tarball/${name}.tar.gz")
 
-	// link some defaults to solution
-	pkg.SetDefaultStr("cmake-args", "${@SOLUTION::package-defaults::cmake-args}")
-	pkg.SetDefaultStr("cmake-extra-args", "${SOLUTION::package-defaults::cmake-extra-args}")
-
 	return nil
 }
 
