@@ -12,6 +12,10 @@ import (
 )
 
 func BuildPackage(pkg *model.Package, cf api.Entry) error {
+	if pkg.IsSystem() {
+		return SysPackage(pkg, cf)
+	}
+
 	if !pkg.IsBuildable() {
 		return nil
 	}

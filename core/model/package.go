@@ -32,6 +32,7 @@ const (
 	Package_Key_Parallel      = "parallel"
 	Package_Key_Destdir       = "@destdir"
 	Package_Key_BinaryTarball = "@binary-tarball"
+	Package_Key_PkgConfig     = "pkg-config"
 
 	Package_Default_BuildDir = "__BUILD"
 )
@@ -76,6 +77,12 @@ func (c Package) GetAllDeps() util.StringList {
 func (c Package) IsBuildable() bool {
 	t := c.GetType()
 	return t != "system" && t != "fetchonly"
+}
+
+// tell whether component is a "system" package, thus we have
+// to look for it eg via pkg-config
+func (c Package) IsSystem() bool {
+	return c.GetType() == "system"
 }
 
 func (c Package) IsFetchable() bool {

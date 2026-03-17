@@ -1,2 +1,5 @@
 /BUILD
 /WORK
+/depgraph.dot
+/depgraph.pdf
+/depgraph.svg
