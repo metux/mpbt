@@ -228,21 +228,7 @@ func (pkg Package) MarkStatBuilt() error {
 
 	log.Printf("[%s] current rev is %s\n", pkgName, rev)
 
-	file, err := os.Create(statfile)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	if _, err := file.WriteString(rev); err != nil {
-		return err
-	}
-
-	if err := file.Sync(); err != nil {
-		return err
-	}
-
-	return nil
+	return os.WriteFile(statfile, []byte(rev), 0644)
 }
 
 func (pkg Package) GetGitRepo() util.GitRepo {
