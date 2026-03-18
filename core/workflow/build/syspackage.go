@@ -13,6 +13,10 @@ import (
 func SysPackage(pkg *model.Package, cf api.Entry) error {
 	name := pkg.GetName()
 
+	if pkg.GetBool("@pkg-config-found", false) {
+		return nil
+	}
+
 	// FIXME: pull this from config or env ?
 	pkgconfig_cmd := []string{"pkg-config", "--modversion"}
 
@@ -23,6 +27,8 @@ func SysPackage(pkg *model.Package, cf api.Entry) error {
 		}
 		log.Printf("[%s] pkg-config probe result: %s\n", name, out)
 	}
+
+	pkg.SetBool("@pkg-config-found", true)
 
 	return nil
 }
