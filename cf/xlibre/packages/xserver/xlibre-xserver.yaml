@@ -4,12 +4,20 @@ provides:
 
 sources:
     git:
-        url:    ${@SOLUTION::xlibre_git}/xserver
         ref:    ${ref}
-#        depth:  1
-        fetch:
-          - refs/heads/*:refs/remotes/origin/*
-          - refs/tags/*:refs/tags/*
+        remotes:
+            origin:
+                url:    ${xlibre_git}/xserver
+#                depth:  1
+                fetch:
+                  - refs/heads/*:refs/remotes/origin/*
+                  - refs/tags/*:refs/tags/*
+            xorg:
+                url:    ${xorg_git}/xserver.git
+                depth:  1
+                fetch:
+                  - refs/heads/*:refs/remotes/xorg/*
+                  - refs/tags/*:refs/tags/xorg/*
 
 ref: origin/master
 
