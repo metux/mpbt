@@ -111,3 +111,7 @@ packages:
     - ${@PROJECT::@rootdir}/cf/xlibre/packages
 
 enable-binpkg: yes      # enabled by default / experimental
+
+package-defaults:
+    xlibre_git:     ${xlibre_git}
+    xorg_git:       ${xorg_git}

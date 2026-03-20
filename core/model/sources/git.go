@@ -2,21 +2,36 @@
 package sources
 
 import (
+	"github.com/metux/go-magicdict/api"
 	"github.com/metux/mpbt/core/util"
 )
 
-type Git struct {
-	// remote URL - added as `origin`
-	Url string
+type GitRemote struct {
+	Name string
 
-	// reference to checkout
-	Ref string
+	// remote URL
+	Url string
 
 	// fetch depth
 	Depth int
 
 	// List of remote refs to fetch
 	Fetch util.StringList
+}
+
+type Git struct {
+	Remotes map[string]GitRemote
+
+	Ref string
 
 	PostCheckoutCmd util.StringList
+}
+
+func LoadGitRemote(ent api.Entry, name string) GitRemote {
+	return GitRemote{
+		Name:  name,
+		Url:   api.GetStr(ent, "url"),
+		Depth: api.GetInt(ent, "depth", 0),
+		Fetch: api.GetStrList(ent, "fetch"),
+	}
 }

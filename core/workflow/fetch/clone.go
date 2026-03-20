@@ -6,12 +6,27 @@ import (
 
 	"github.com/metux/go-magicdict/api"
 	"github.com/metux/mpbt/core/model"
+	"github.com/metux/mpbt/core/model/sources"
 	"github.com/metux/mpbt/core/util"
 )
 
+func addRemote(repo util.GitRepo, remote sources.GitRemote) error {
+	log.Printf("adding remote %s -- %+v\n", remote.Name, remote)
+
+	if err := repo.SetRemoteUrl(remote.Name, remote.Url); err != nil {
+		return err
+	}
+	if err := repo.Fetch(remote.Depth, remote.Name, remote.Fetch...); err != nil {
+		return err
+	}
+	if err := repo.ConfigFetch(remote.Name, remote.Fetch...); err != nil {
+		return err
+	}
+	return nil
+}
+
 func ClonePackage(pkg model.Package, config api.Entry) error {
 	gitspec := pkg.GetGit()
-	remotename := "origin"
 
 	if gitspec == nil {
 		log.Printf("[%s] no gitspec - nothing to clone here\n", pkg.GetName())
@@ -28,15 +43,13 @@ func ClonePackage(pkg model.Package, config api.Entry) error {
 	if err := repo.Init(); err != nil {
 		return err
 	}
-	if err := repo.SetRemoteUrl(remotename, gitspec.Url); err != nil {
-		return err
+
+	for _, remote := range gitspec.Remotes {
+		if err := addRemote(repo, remote); err != nil {
+			return err
+		}
 	}
-	if err := repo.Fetch(gitspec.Depth, remotename, gitspec.Fetch...); err != nil {
-		return err
-	}
-	if err := repo.ConfigFetch(remotename, gitspec.Fetch...); err != nil {
-		return err
-	}
+
 	if !repo.IsCheckedOut() {
 		if err := repo.SimpleCheckout(gitspec.Ref); err != nil {
 			return err

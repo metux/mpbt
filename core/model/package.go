@@ -113,7 +113,8 @@ func (c Package) GetProvides() []string {
 	return c.GetStrList(Package_Key_Provides)
 }
 
-func (pkg Package) GetGit() *sources.Git {
+func (pkg *Package) GetGit() *sources.Git {
+
 	if pkg.cacheGit != nil {
 		return pkg.cacheGit
 	}
@@ -128,11 +129,20 @@ func (pkg Package) GetGit() *sources.Git {
 	}
 
 	git := sources.Git{
-		Url:             api.GetStr(ent, "url"),
 		Ref:             api.GetStr(ent, "ref"),
-		Depth:           api.GetInt(ent, "depth", 0),
-		Fetch:           api.GetStrList(ent, "fetch"),
+		Remotes:         make(map[string]sources.GitRemote),
 		PostCheckoutCmd: api.GetStrList(ent, "post-checkout-cmd"),
+	}
+
+	if origin := sources.LoadGitRemote(ent, "origin"); origin.Url != "" {
+		git.Remotes["origin"] = origin
+	}
+
+	if remotes_ent := md.EntryGet(ent, "remotes"); remotes_ent != nil {
+		for _, idx := range remotes_ent.Keys() {
+			re := md.EntryGet(remotes_ent, idx)
+			git.Remotes[string(idx)] = sources.LoadGitRemote(re, string(idx))
+		}
 	}
 
 	pkg.cacheGit = &git
