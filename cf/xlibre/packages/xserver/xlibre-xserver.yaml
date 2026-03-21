@@ -5,6 +5,10 @@ provides:
 sources:
     git:
         ref:    ${ref}
+        config:
+            autoport.ours:    origin/master
+            autoport.theirs:  xorg/master
+            autoport.tracker: origin/tracking/xorg-master
         remotes:
             origin:
                 url:    ${xlibre_git}/xserver

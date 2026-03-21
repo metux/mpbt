@@ -25,6 +25,7 @@ type Git struct {
 	Ref string
 
 	PostCheckoutCmd util.StringList
+	Config map[api.Key]string
 }
 
 func LoadGitRemote(ent api.Entry, name string) GitRemote {

@@ -25,6 +25,26 @@ func addRemote(repo util.GitRepo, remote sources.GitRemote) error {
 	return nil
 }
 
+func addConfig(pkg model.Package, repo util.GitRepo, config map[api.Key]string) error {
+	if config == nil {
+		log.Printf("[%s] no config\n", pkg.GetName())
+		return nil
+	}
+
+	if pkg.GetBool("@git-config-applied", false) {
+		return nil
+	}
+
+	for idx, val := range config {
+		log.Printf("[%s] key=%s val=%s\n", pkg.GetName(), idx, val)
+		repo.ConfigSet(string(idx), val)
+	}
+
+	pkg.SetBool("@git-config-applied", true)
+
+	return nil
+}
+
 func ClonePackage(pkg model.Package, config api.Entry) error {
 	gitspec := pkg.GetGit()
 
@@ -34,6 +54,8 @@ func ClonePackage(pkg model.Package, config api.Entry) error {
 	}
 
 	repo := pkg.GetGitRepo()
+
+	addConfig(pkg, repo, gitspec.Config)
 
 	// FIXME: dont fetch if already checked-out
 	if repo.IsCheckedOut() {
