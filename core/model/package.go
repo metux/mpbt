@@ -132,6 +132,7 @@ func (pkg *Package) GetGit() *sources.Git {
 		Ref:             api.GetStr(ent, "ref"),
 		Remotes:         make(map[string]sources.GitRemote),
 		PostCheckoutCmd: api.GetStrList(ent, "post-checkout-cmd"),
+		Config:          api.GetStrMap(ent, "config"),
 	}
 
 	if origin := sources.LoadGitRemote(ent, "origin"); origin.Url != "" {

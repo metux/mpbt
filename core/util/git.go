@@ -41,6 +41,10 @@ func (g GitRepo) ConfigFetch(remote string, refs ...string) error {
 	return nil
 }
 
+func (g GitRepo) ConfigSet(name string, value string) error {
+	return ExecCmd("<git>", []string{"git", "config", name, value}, g.Dir)
+}
+
 func (g GitRepo) SimpleCheckout(refname string) error {
 	return ExecCmd("<git>", []string{"git", "checkout", refname}, g.Dir)
 }
