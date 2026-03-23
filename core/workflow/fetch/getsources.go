@@ -24,10 +24,6 @@ func fetchPackage(prj *model.Project, name string) error {
 		}
 	}
 
-	if pkg.GetGit() == nil {
-		return nil
-	}
-
 	if err := ClonePackage(pkg, prj.Solution.GetPackageConfig(pkg.GetName())); err != nil {
 		return err
 	}
