@@ -24,7 +24,7 @@ func fetchPackage(prj *model.Project, name string) error {
 		return nil
 	}
 
-	return ClonePackage(*pkg, prj.Solution.GetPackageConfig(pkg.GetName()))
+	return ClonePackage(pkg, prj.Solution.GetPackageConfig(pkg.GetName()))
 }
 
 // FIXME: not honoring build flags yet

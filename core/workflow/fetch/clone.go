@@ -25,7 +25,7 @@ func addRemote(repo util.GitRepo, remote sources.GitRemote) error {
 	return nil
 }
 
-func addConfig(pkg model.Package, repo util.GitRepo, config map[api.Key]string) error {
+func addConfig(pkg *model.Package, repo util.GitRepo, config map[api.Key]string) error {
 	if config == nil {
 		log.Printf("[%s] no config\n", pkg.GetName())
 		return nil
@@ -45,7 +45,7 @@ func addConfig(pkg model.Package, repo util.GitRepo, config map[api.Key]string) 
 	return nil
 }
 
-func ClonePackage(pkg model.Package, config api.Entry) error {
+func ClonePackage(pkg *model.Package, config api.Entry) error {
 	gitspec := pkg.GetGit()
 
 	if gitspec == nil {
