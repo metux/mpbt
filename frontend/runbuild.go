@@ -4,6 +4,6 @@ package frontend
 func RunBuild(cf BuildConfig) {
 	prj := LoadProject(cf)
 
-	doFetch(&prj)
+	doFetch(&prj, false)
 	doBuild(&prj)
 }

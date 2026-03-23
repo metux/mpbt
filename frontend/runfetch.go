@@ -3,5 +3,5 @@ package frontend
 
 func RunFetch(cf BuildConfig) {
 	prj := LoadProject(cf)
-	doFetch(&prj)
+	doFetch(&prj, true)
 }
