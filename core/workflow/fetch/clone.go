@@ -10,42 +10,73 @@ import (
 	"github.com/metux/mpbt/core/util"
 )
 
-func addRemote(repo util.GitRepo, remote sources.GitRemote) error {
-	log.Printf("adding remote %s -- %+v\n", remote.Name, remote)
-
-	if err := repo.SetRemoteUrl(remote.Name, remote.Url); err != nil {
-		return err
-	}
-	if err := repo.Fetch(remote.Depth, remote.Name, remote.Fetch...); err != nil {
-		return err
-	}
-	if err := repo.ConfigFetch(remote.Name, remote.Fetch...); err != nil {
-		return err
-	}
-	return nil
-}
-
 func addConfig(pkg *model.Package, repo util.GitRepo, config map[api.Key]string) error {
 	if config == nil {
-		log.Printf("[%s] no config\n", pkg.GetName())
-		return nil
-	}
-
-	if pkg.GetBool("@git-config-applied", false) {
 		return nil
 	}
 
 	for idx, val := range config {
-		log.Printf("[%s] key=%s val=%s\n", pkg.GetName(), idx, val)
-		repo.ConfigSet(string(idx), val)
+		log.Printf("[%s] adding git config: key=%s val=%s\n", pkg.GetName(), idx, val)
+		if err := repo.ConfigSet(string(idx), val); err != nil {
+			return nil
+		}
 	}
-
-	pkg.SetBool("@git-config-applied", true)
 
 	return nil
 }
 
-func ClonePackage(pkg *model.Package, config api.Entry) error {
+func updatePackage(pkg *model.Package, gitspec *sources.Git, repo util.GitRepo) error {
+	log.Printf("[%s] updating package ...\n", pkg.GetName())
+
+	if err := addConfig(pkg, repo, gitspec.Config); err != nil {
+		return err
+	}
+
+	for _, remote := range gitspec.Remotes {
+		if err := repo.Fetch(remote.Depth, remote.Name, remote.Fetch...); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func clonePackage(pkg *model.Package, gitspec *sources.Git, repo util.GitRepo) error {
+	log.Printf("[%s] cloning package\n", pkg.GetName())
+
+	if err := repo.Init(); err != nil {
+		return err
+	}
+
+	for _, remote := range gitspec.Remotes {
+		log.Printf("[%s] adding remote %s -- %+v\n", pkg.GetName(), remote.Name, remote)
+		if err := repo.SetRemoteUrl(remote.Name, remote.Url); err != nil {
+			return err
+		}
+		if err := repo.Fetch(remote.Depth, remote.Name, remote.Fetch...); err != nil {
+			return err
+		}
+		if err := repo.ConfigFetch(remote.Name, remote.Fetch...); err != nil {
+			return err
+		}
+	}
+
+	if err := addConfig(pkg, repo, gitspec.Config); err != nil {
+		return err
+	}
+
+	if err := repo.SimpleCheckout(gitspec.Ref); err != nil {
+		return err
+	}
+
+	if len(gitspec.PostCheckoutCmd) > 0 {
+		return util.ExecCmd(pkg.GetName(), gitspec.PostCheckoutCmd, pkg.GetSourceDir())
+	}
+
+	return nil
+}
+
+func FetchPackage(pkg *model.Package, update bool) error {
 	gitspec := pkg.GetGit()
 
 	if gitspec == nil {
@@ -55,30 +86,12 @@ func ClonePackage(pkg *model.Package, config api.Entry) error {
 
 	repo := pkg.GetGitRepo()
 
-	addConfig(pkg, repo, gitspec.Config)
-
-	// FIXME: dont fetch if already checked-out
-	if repo.IsCheckedOut() {
-		return nil
-	}
-
-	if err := repo.Init(); err != nil {
-		return err
-	}
-
-	for _, remote := range gitspec.Remotes {
-		if err := addRemote(repo, remote); err != nil {
-			return err
-		}
-	}
-
 	if !repo.IsCheckedOut() {
-		if err := repo.SimpleCheckout(gitspec.Ref); err != nil {
-			return err
-		}
+		return clonePackage(pkg, gitspec, repo)
 	}
-	if len(gitspec.PostCheckoutCmd) > 0 {
-		return util.ExecCmd(pkg.GetName(), gitspec.PostCheckoutCmd, pkg.GetSourceDir())
+
+	if update {
+		return updatePackage(pkg, gitspec, repo)
 	}
 
 	return nil

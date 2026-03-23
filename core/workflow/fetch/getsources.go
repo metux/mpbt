@@ -8,7 +8,7 @@ import (
 	"github.com/metux/mpbt/core/model"
 )
 
-func fetchPackage(prj *model.Project, name string) error {
+func fetchPackage(prj *model.Project, name string, update bool) error {
 	pkg := prj.LookupPackage(name)
 	if pkg == nil {
 		return fmt.Errorf("Cant resolve component %s\n", name)
@@ -19,12 +19,12 @@ func fetchPackage(prj *model.Project, name string) error {
 	}
 
 	for _, dep := range pkg.GetAllDeps() {
-		if err := fetchPackage(prj, dep); err != nil {
+		if err := fetchPackage(prj, dep, update); err != nil {
 			return err
 		}
 	}
 
-	if err := ClonePackage(pkg, prj.Solution.GetPackageConfig(pkg.GetName())); err != nil {
+	if err := FetchPackage(pkg, update); err != nil {
 		return err
 	}
 
@@ -33,13 +33,13 @@ func fetchPackage(prj *model.Project, name string) error {
 }
 
 // FIXME: not honoring build flags yet
-func FetchSource(prj *model.Project) error {
+func FetchSource(prj *model.Project, update bool) error {
 	if prj.GetSourceRoot() == "" {
 		panic("prj.SourceRoot must not be empty")
 	}
 
 	for _, b := range prj.Solution.GetBuildList() {
-		if err := fetchPackage(prj, b); err != nil {
+		if err := fetchPackage(prj, b, update); err != nil {
 			log.Printf("ERR on %s: %s\n", b, err)
 			return err
 		}

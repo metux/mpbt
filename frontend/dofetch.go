@@ -9,9 +9,9 @@ import (
 	"github.com/metux/mpbt/core/workflow/fetch"
 )
 
-func doFetch(prj *model.Project) {
+func doFetch(prj *model.Project, update bool) {
 	log.Printf("fetching sources ...\n")
-	if err := fetch.FetchSource(prj); err != nil {
+	if err := fetch.FetchSource(prj, update); err != nil {
 		panic(fmt.Sprintf("fetch failed: %s\n", err))
 	}
 }
