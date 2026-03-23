@@ -14,6 +14,10 @@ func fetchPackage(prj *model.Project, name string) error {
 		return fmt.Errorf("Cant resolve component %s\n", name)
 	}
 
+	if pkg.GetBool("@fetch-done", false) {
+		return nil
+	}
+
 	for _, dep := range pkg.GetAllDeps() {
 		if err := fetchPackage(prj, dep); err != nil {
 			return err
@@ -24,7 +28,12 @@ func fetchPackage(prj *model.Project, name string) error {
 		return nil
 	}
 
-	return ClonePackage(pkg, prj.Solution.GetPackageConfig(pkg.GetName()))
+	if err := ClonePackage(pkg, prj.Solution.GetPackageConfig(pkg.GetName())); err != nil {
+		return err
+	}
+
+	pkg.SetBool("@fetch-done", true)
+	return nil
 }
 
 // FIXME: not honoring build flags yet
