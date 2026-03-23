@@ -85,7 +85,7 @@ func (c Package) IsSystem() bool {
 	return c.GetType() == "system"
 }
 
-func (c Package) IsFetchable() bool {
+func (c *Package) IsFetchable() bool {
 	return c.GetGit() != nil
 }
 
@@ -204,7 +204,7 @@ func (pkg Package) GetStatfileBuilt() string {
 	return pkg.GetStatDir() + "/" + pkg.GetSlug() + ".DONE"
 }
 
-func (pkg Package) CheckStatBuilt() bool {
+func (pkg *Package) CheckStatBuilt() bool {
 	statfile := pkg.GetStatfileBuilt()
 	if !util.FileExists(statfile) {
 		return false
@@ -230,7 +230,7 @@ func (pkg Package) CheckStatBuilt() bool {
 	return true
 }
 
-func (pkg Package) MarkStatBuilt() error {
+func (pkg *Package) MarkStatBuilt() error {
 	statdir := pkg.GetStatDir()
 	os.MkdirAll(statdir, 0755)
 
@@ -245,7 +245,7 @@ func (pkg Package) MarkStatBuilt() error {
 	return os.WriteFile(statfile, []byte(rev), 0644)
 }
 
-func (pkg Package) GetGitRepo() util.GitRepo {
+func (pkg *Package) GetGitRepo() util.GitRepo {
 	return util.GitRepo{Dir: pkg.GetSourceDir()}
 }
 
