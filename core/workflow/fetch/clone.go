@@ -33,7 +33,7 @@ func updatePackage(pkg *model.Package, gitspec *sources.Git, repo util.GitRepo) 
 	}
 
 	for _, remote := range gitspec.Remotes {
-		if err := repo.Fetch(remote.Depth, remote.Name, remote.Fetch...); err != nil {
+		if err := repo.Fetch(remote.Depth, remote.Name, true, remote.Fetch...); err != nil {
 			return err
 		}
 	}
@@ -53,7 +53,7 @@ func clonePackage(pkg *model.Package, gitspec *sources.Git, repo util.GitRepo) e
 		if err := repo.SetRemoteUrl(remote.Name, remote.Url); err != nil {
 			return err
 		}
-		if err := repo.Fetch(remote.Depth, remote.Name, remote.Fetch...); err != nil {
+		if err := repo.Fetch(remote.Depth, remote.Name, false, remote.Fetch...); err != nil {
 			return err
 		}
 		if err := repo.ConfigFetch(remote.Name, remote.Fetch...); err != nil {

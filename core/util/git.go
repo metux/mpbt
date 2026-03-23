@@ -21,10 +21,14 @@ func (g GitRepo) SetRemoteUrl(remote string, url string) error {
 	return ExecCmd("<git>", []string{"git", "config", "remote." + remote + ".url", url}, g.Dir)
 }
 
-func (g GitRepo) Fetch(depth int, remote string, refs ...string) error {
+func (g GitRepo) Fetch(depth int, remote string, force bool, refs ...string) error {
 	c1 := []string{"git", "fetch"}
 	if depth > 0 {
 		c1 = append(c1, fmt.Sprintf("--depth=%d", depth))
+	}
+
+	if force {
+		c1 = append(c1, "--force")
 	}
 
 	c1 = append(c1, remote)
