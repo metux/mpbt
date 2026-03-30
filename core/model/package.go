@@ -246,7 +246,7 @@ func (pkg *Package) MarkStatBuilt() error {
 }
 
 func (pkg *Package) GetGitRepo() util.GitRepo {
-	return util.GitRepo{Dir: pkg.GetSourceDir()}
+	return util.GitRepo{Dir: pkg.GetSourceDir(), Name: pkg.GetName()}
 }
 
 func (pkg Package) GetBinpkgTarball() string {
