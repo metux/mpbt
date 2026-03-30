@@ -48,6 +48,10 @@ func clonePackage(pkg *model.Package, gitspec *sources.Git, repo util.GitRepo) e
 		return err
 	}
 
+	if err := addConfig(pkg, repo, gitspec.Config); err != nil {
+		return err
+	}
+
 	for _, remote := range gitspec.Remotes {
 		log.Printf("[%s] adding remote %s -- %+v\n", pkg.GetName(), remote.Name, remote)
 		if err := repo.SetRemoteUrl(remote.Name, remote.Url); err != nil {
@@ -59,10 +63,6 @@ func clonePackage(pkg *model.Package, gitspec *sources.Git, repo util.GitRepo) e
 		if err := repo.ConfigFetch(remote.Name, remote.Fetch...); err != nil {
 			return err
 		}
-	}
-
-	if err := addConfig(pkg, repo, gitspec.Config); err != nil {
-		return err
 	}
 
 	if err := repo.SimpleCheckout(gitspec.Ref); err != nil {
