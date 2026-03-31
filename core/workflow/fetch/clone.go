@@ -16,7 +16,6 @@ func addConfig(pkg *model.Package, repo util.GitRepo, config map[api.Key]string)
 	}
 
 	for idx, val := range config {
-		log.Printf("[%s] adding git config: key=%s val=%s\n", pkg.GetName(), idx, val)
 		if err := repo.ConfigSet(string(idx), val); err != nil {
 			return nil
 		}
@@ -53,7 +52,6 @@ func clonePackage(pkg *model.Package, gitspec *sources.Git, repo util.GitRepo) e
 	}
 
 	for _, remote := range gitspec.Remotes {
-		log.Printf("[%s] adding remote %s -- %+v\n", pkg.GetName(), remote.Name, remote)
 		if err := repo.SetRemoteUrl(remote.Name, remote.Url); err != nil {
 			return err
 		}
