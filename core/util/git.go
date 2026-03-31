@@ -6,7 +6,7 @@ import (
 )
 
 type GitRepo struct {
-	Dir string
+	Dir  string
 	Name string
 }
 
