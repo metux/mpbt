@@ -63,7 +63,7 @@ func clonePackage(pkg *model.Package, gitspec *sources.Git, repo util.GitRepo) e
 		}
 	}
 
-	if err := repo.SimpleCheckout(gitspec.Ref); err != nil {
+	if err := repo.SimpleCheckout(gitspec.Ref, gitspec.LocalBranch); err != nil {
 		return err
 	}
 

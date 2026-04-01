@@ -132,6 +132,7 @@ func (pkg *Package) GetGit() *sources.Git {
 		Ref:             api.GetStr(ent, "ref"),
 		Remotes:         make(map[string]sources.GitRemote),
 		PostCheckoutCmd: api.GetStrList(ent, "post-checkout-cmd"),
+		LocalBranch:     api.GetStr(ent, "local-branch"),
 		Config:          api.GetStrMap(ent, "config"),
 	}
 
