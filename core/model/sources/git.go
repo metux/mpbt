@@ -22,7 +22,8 @@ type GitRemote struct {
 type Git struct {
 	Remotes map[string]GitRemote
 
-	Ref string
+	Ref         string
+	LocalBranch string
 
 	PostCheckoutCmd util.StringList
 	Config          map[api.Key]string

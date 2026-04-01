@@ -50,8 +50,13 @@ func (g GitRepo) ConfigSet(name string, value string) error {
 	return ExecCmd(g.Name, []string{"git", "config", name, value}, g.Dir)
 }
 
-func (g GitRepo) SimpleCheckout(refname string) error {
-	return ExecCmd(g.Name, []string{"git", "checkout", refname}, g.Dir)
+func (g GitRepo) SimpleCheckout(refname string, localbranch string) error {
+	c1 := []string{"git", "checkout", refname}
+	if localbranch != "" {
+		c1 = append(c1, "-b", localbranch)
+	}
+
+	return ExecCmd(g.Name, c1, g.Dir)
 }
 
 func (g GitRepo) GetCurrentRev() string {
