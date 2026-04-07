@@ -4,7 +4,7 @@ include ../../make.conf
 EXECUTABLE := mpbt-builder
 
 compile:
-	$(GO) build $(GOTAGS) .
+	GOOS=linux GOARCH=386 CGO_ENABLED=0 $(GO) build $(GOTAGS) -trimpath -ldflags="-s -w" .
 
 clean:
 	rm -f $(EXECUTABLE)
