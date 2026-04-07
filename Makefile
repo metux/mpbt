@@ -1,5 +1,9 @@
 include make.conf
 
+CGO_ENABLED=0
+
+export CGO_ENABLED
+
 compile:
 	$(MAKE) -C cmd
 	for d in $(SUBDIRS) ; do $(MAKE) -C $$d compile ; done

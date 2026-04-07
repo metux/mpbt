@@ -2,6 +2,7 @@
 package util
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"os"
@@ -24,13 +25,23 @@ func ExecCmdEnv(prefix string, cmdline []string, wd string, env []string) error 
 }
 
 func ExecOut(cmdline []string, wd string) string {
+
+	var stdout bytes.Buffer
+	stdout.Grow(4096)
+
 	cmd := exec.Command(cmdline[0], cmdline[1:]...)
 	cmd.Dir = wd
-	out, err := cmd.Output()
-	if err != nil {
-		fmt.Println("Exec error:", err)
+	cmd.Stdout = &stdout
+// cmd.Stderr = nil
+	if err := cmd.Start(); err != nil {
+		fmt.Println("Exec error 1: ", err)
+		return ""
 	}
-	return strings.TrimSpace(string(out))
+	if err := cmd.Wait(); err != nil {
+		fmt.Println("Exec error 2: ", err)
+		return ""
+	}
+	return strings.TrimSpace(stdout.String())
 }
 
 func ExecRetcode(cmdline []string, wd string) int {

@@ -21,6 +21,16 @@ func SysPackage(pkg *model.Package, cf api.Entry) error {
 	// FIXME: pull this from config or env ?
 	pkgconfig_cmd := []string{"pkg-config", "--modversion"}
 
+	if (true) {
+		start := time.Now()
+		out := util.ExecOut([]string{"/bin/echo", "wurst"}, "")
+		if out == "" {
+			return fmt.Errorf("/bin/echo: %s", name)
+		}
+		elapsed := time.Now().Sub(start)
+		log.Printf("[%s] /bin/echo result: %s [%d usec]\n", name, out, elapsed)
+	}
+
 	for _, pn := range pkg.GetStrList(model.Package_Key_PkgConfig) {
 		start := time.Now()
 		out := util.ExecOut(append(pkgconfig_cmd, pn), "")
