@@ -4,6 +4,7 @@ package build
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/metux/go-magicdict/api"
 	"github.com/metux/mpbt/core/model"
@@ -21,11 +22,13 @@ func SysPackage(pkg *model.Package, cf api.Entry) error {
 	pkgconfig_cmd := []string{"pkg-config", "--modversion"}
 
 	for _, pn := range pkg.GetStrList(model.Package_Key_PkgConfig) {
+		start := time.Now()
 		out := util.ExecOut(append(pkgconfig_cmd, pn), "")
 		if out == "" {
 			return fmt.Errorf("[%s] missing pkg-config package: %s", name, pn)
 		}
-		log.Printf("[%s] pkg-config probe result: %s\n", name, out)
+		elapsed := time.Now().Sub(start)
+		log.Printf("[%s] pkg-config probe result: %s [%d usec]\n", name, out, elapsed)
 	}
 
 	pkg.SetBool("@pkg-config-found", true)
