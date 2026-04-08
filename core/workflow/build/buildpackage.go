@@ -45,10 +45,6 @@ func BuildWithBuilder(pkg *model.Package, cf api.Entry, b model.IBuilder) error 
 
 	pkgName := pkg.GetName()
 
-	if pkg.CheckStatBuilt() {
-		return nil
-	}
-
 	log.Printf("[%s] building ...\n", pkgName)
 
 	if err := b.RunPrepare(); err != nil {
