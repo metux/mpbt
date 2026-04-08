@@ -24,7 +24,7 @@ func CreateTarballGz(sourceDir, targetFile string) error {
 
 	cmd := exec.Command("tar",
 		"-C", absDir,
-		"-cvzf", absTarget,
+		"-czf", absTarget,
 		".",
 	)
 
