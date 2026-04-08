@@ -14,10 +14,15 @@ func buildPackage(prj *model.Project, name string) error {
 		return fmt.Errorf("Cant resolve component %s\n", name)
 	}
 
+	// make sure dependency packages are already built
 	for _, dep := range pkg.GetAllDeps() {
 		if err := buildPackage(prj, dep); err != nil {
 			return err
 		}
+	}
+
+	if pkg.CheckStatBuilt() {
+		return nil
 	}
 
 	return BuildPackage(pkg, prj.Solution.GetPackageConfig(pkg.GetName()))
