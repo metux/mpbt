@@ -46,13 +46,18 @@ type Package struct {
 
 type PackageMap = map[string]*Package
 
-func (pkg *Package) LoadYaml(fn string) error {
+func (pkg *Package) LoadYaml(fn string, name string) error {
 	d, err := magic.YamlLoad(fn, "")
 	if err != nil {
 		return err
 	}
 	pkg.MagicDict = d
+	pkg.InitVars(fn, name)
 
+	return nil
+}
+
+func (pkg *Package) InitVars(fn string, name string) {
 	// init some presets
 	pkg.SetStr(Package_Key_Filename, fn)
 	pkg.SetDefaultStr(Package_Key_SourceDir, "${"+Package_Key_Project+"::"+Project_Key_SourceRoot+"}/${name}")
@@ -65,7 +70,9 @@ func (pkg *Package) LoadYaml(fn string) error {
 	pkg.SetStr("@binary-image", "${@PROJECT::@workdir}/install/${name}/image")
 	pkg.SetStr(Package_Key_BinaryTarball, "${@PROJECT::@workdir}/tarball/${name}.tar.gz")
 
-	return nil
+	pkg.SetDefaultStr(Package_Key_Name, name)
+	pkg.SetDefaultStr(Package_Key_Basename, filepath.Base(name))
+	pkg.SetDefaultStr(Package_Key_Slug, util.SanitizeFilename(name))
 }
 
 func (c Package) GetAllDeps() util.StringList {
@@ -257,11 +264,8 @@ func (pkg Package) GetBinpkgTarball() string {
 
 func LoadPackageYaml(fn string, name string) (*Package, error) {
 	pkg := Package{}
-	if err := pkg.LoadYaml(fn); err != nil {
+	if err := pkg.LoadYaml(fn, name); err != nil {
 		return nil, err
 	}
-	pkg.SetDefaultStr(Package_Key_Name, name)
-	pkg.SetDefaultStr(Package_Key_Basename, filepath.Base(name))
-	pkg.SetDefaultStr(Package_Key_Slug, util.SanitizeFilename(name))
 	return &pkg, nil
 }
