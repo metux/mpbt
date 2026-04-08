@@ -37,3 +37,34 @@ func CreateTarballGz(sourceDir, targetFile string) error {
 
 	return nil
 }
+
+func UnpackTarballGz(tarFile string, targetDir string) error {
+	absDir, err := filepath.Abs(targetDir)
+	if err != nil {
+		return fmt.Errorf("absolute path failed: %w", err)
+	}
+
+	absTar, err := filepath.Abs(tarFile)
+	if err != nil {
+		return fmt.Errorf("absolute tarfile path failed: %w", err)
+	}
+
+	if err := os.MkdirAll(absDir, 0755); err != nil {
+		return fmt.Errorf("creating target directory failed: %w", err)
+	}
+
+	cmd := exec.Command("tar",
+		"-C", absDir,
+		"-xzf", absTar,
+		".",
+	)
+
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("tar command failed: %w", err)
+	}
+
+	return nil
+}

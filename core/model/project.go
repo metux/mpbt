@@ -16,6 +16,7 @@ import (
 const (
 	Project_Key_InstallPrefix = "@installprefix"
 	Project_Key_SourceRoot    = "@sourceroot"
+	Project_Key_SysrootPrefix = "@sysrootprefix"
 	Project_Key_Homedir       = "@homedir"
 	Project_Key_Workdir       = "@workdir"
 	Project_Key_Machine       = "@machine"
@@ -154,6 +155,7 @@ func (prj *Project) Init() {
 	prj.SetRoot(".")
 	prj.SetDefaultStr(Project_Key_Workdir, "${"+Project_Key_RootDir+"}/WORK")
 	prj.SetDefaultStr(Project_Key_SourceRoot, "${"+Project_Key_Workdir+"}/sources")
+	prj.SetDefaultStr(Project_Key_SysrootPrefix, "${"+Project_Key_Workdir+"}/sysroot")
 	prj.SetDefaultStr(Project_Key_InstallPrefix, "${"+Project_Key_Workdir+"}/DESTDIR")
 	prj.SetDefaultInt(Project_Key_Parallel, runtime.NumCPU())
 
@@ -188,6 +190,10 @@ func (prj *Project) SetSourceRoot(dir string) {
 
 func (prj *Project) GetSourceRoot() string {
 	return prj.GetStr(Project_Key_SourceRoot)
+}
+
+func (prj *Project) GetSysrootPrefix() string {
+	return prj.GetStr(Project_Key_SysrootPrefix)
 }
 
 func (prj *Project) PushEnv() {

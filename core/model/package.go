@@ -33,6 +33,8 @@ const (
 	Package_Key_Destdir       = "@destdir"
 	Package_Key_BinaryTarball = "@binary-tarball"
 	Package_Key_PkgConfig     = "pkg-config"
+	Package_Key_Scope         = "scope"
+	Package_Key_Sysroot       = "@sysroot"
 
 	Package_Default_BuildDir = "__BUILD"
 )
@@ -65,6 +67,7 @@ func (pkg *Package) InitVars(fn string, name string) {
 	pkg.SetDefaultStr(Package_Key_Parallel, "${"+Package_Key_Solution+"::"+Solution_Key_Parallel+"}")
 	pkg.SetDefaultStr(Package_Key_StatDir, "${"+Package_Key_Project+"::"+Project_Key_Workdir+"}/stat")
 	pkg.SetDefaultStr(Package_Key_BuildDir, "${"+Package_Key_Project+"::"+Project_Key_Workdir+"}/build/${"+Package_Key_Name+"}")
+	pkg.SetDefaultStr(Package_Key_Sysroot, "${"+Package_Key_Project+"::"+Project_Key_SysrootPrefix+"}/${"+Package_Key_Name+"}")
 
 	// private, should not be used directly in user configs
 	pkg.SetStr("@binary-image", "${@PROJECT::@workdir}/install/${name}/image")
@@ -73,6 +76,7 @@ func (pkg *Package) InitVars(fn string, name string) {
 	pkg.SetDefaultStr(Package_Key_Name, name)
 	pkg.SetDefaultStr(Package_Key_Basename, filepath.Base(name))
 	pkg.SetDefaultStr(Package_Key_Slug, util.SanitizeFilename(name))
+	pkg.SetDefaultStr(Package_Key_Scope, "target")
 }
 
 func (c Package) GetAllDeps() util.StringList {
@@ -260,6 +264,10 @@ func (pkg *Package) GetGitRepo() util.GitRepo {
 
 func (pkg Package) GetBinpkgTarball() string {
 	return pkg.GetStr(Package_Key_BinaryTarball)
+}
+
+func (pkg Package) GetScope() string {
+	return pkg.GetStr(Package_Key_Scope)
 }
 
 func LoadPackageYaml(fn string, name string) (*Package, error) {

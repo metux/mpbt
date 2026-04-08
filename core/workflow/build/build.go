@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/metux/mpbt/core/model"
+	"github.com/metux/mpbt/core/workflow/sysroot"
 )
 
 func buildPackage(prj *model.Project, name string) error {
@@ -23,6 +24,11 @@ func buildPackage(prj *model.Project, name string) error {
 
 	if pkg.CheckStatBuilt() {
 		return nil
+	}
+
+	// deploy dependencies into this package's sysroot
+	if err := sysroot.DeploySysroot(prj, pkg); err != nil {
+		return err
 	}
 
 	return BuildPackage(pkg, prj.Solution.GetPackageConfig(pkg.GetName()))
