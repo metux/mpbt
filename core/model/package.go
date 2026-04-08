@@ -134,6 +134,7 @@ func (pkg *Package) GetGit() *sources.Git {
 		PostCheckoutCmd: api.GetStrList(ent, "post-checkout-cmd"),
 		LocalBranch:     api.GetStr(ent, "local-branch"),
 		Config:          api.GetStrMap(ent, "config"),
+		ForceCheckout:   api.GetBool(ent, "force-checkout", false),
 	}
 
 	if origin := sources.LoadGitRemote(ent, "origin"); origin.Url != "" {
