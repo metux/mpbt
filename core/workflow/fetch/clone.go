@@ -40,6 +40,18 @@ func updatePackage(pkg *model.Package, gitspec *sources.Git, repo util.GitRepo) 
 	return nil
 }
 
+func doCheckout(pkg *model.Package, gitspec *sources.Git, repo util.GitRepo) error {
+	if err := repo.SimpleCheckout(gitspec.Ref, gitspec.LocalBranch); err != nil {
+		return err
+	}
+
+	if len(gitspec.PostCheckoutCmd) > 0 {
+		return util.ExecCmd(pkg.GetName(), gitspec.PostCheckoutCmd, pkg.GetSourceDir())
+	}
+
+	return nil
+}
+
 func clonePackage(pkg *model.Package, gitspec *sources.Git, repo util.GitRepo) error {
 	log.Printf("[%s] cloning package\n", pkg.GetName())
 
@@ -63,15 +75,7 @@ func clonePackage(pkg *model.Package, gitspec *sources.Git, repo util.GitRepo) e
 		}
 	}
 
-	if err := repo.SimpleCheckout(gitspec.Ref, gitspec.LocalBranch); err != nil {
-		return err
-	}
-
-	if len(gitspec.PostCheckoutCmd) > 0 {
-		return util.ExecCmd(pkg.GetName(), gitspec.PostCheckoutCmd, pkg.GetSourceDir())
-	}
-
-	return nil
+	return doCheckout(pkg, gitspec, repo)
 }
 
 func FetchPackage(pkg *model.Package, update bool) error {
@@ -89,7 +93,16 @@ func FetchPackage(pkg *model.Package, update bool) error {
 	}
 
 	if update {
-		return updatePackage(pkg, gitspec, repo)
+		if err := updatePackage(pkg, gitspec, repo); err != nil {
+			return err
+		}
+	}
+
+	if gitspec.ForceCheckout {
+		log.Printf("[%s] force to checkout again\n", pkg.GetName())
+		if err := doCheckout(pkg, gitspec, repo); err != nil {
+			return err
+		}
 	}
 
 	return nil

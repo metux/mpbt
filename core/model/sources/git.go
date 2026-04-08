@@ -25,6 +25,9 @@ type Git struct {
 	Ref         string
 	LocalBranch string
 
+	// force fresh checkout on each fetch run
+	ForceCheckout bool
+
 	PostCheckoutCmd util.StringList
 	Config          map[api.Key]string
 }
