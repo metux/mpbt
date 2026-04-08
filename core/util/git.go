@@ -3,6 +3,7 @@ package util
 
 import (
 	"fmt"
+	"log"
 )
 
 type GitRepo struct {
@@ -22,20 +23,31 @@ func (g GitRepo) SetRemoteUrl(remote string, url string) error {
 	return ExecCmd(g.Name, []string{"git", "config", "remote." + remote + ".url", url}, g.Dir)
 }
 
-func (g GitRepo) Fetch(depth int, remote string, force bool, refs ...string) error {
-	c1 := []string{"git", "fetch"}
-	if depth > 0 {
-		c1 = append(c1, fmt.Sprintf("--depth=%d", depth))
+func (g GitRepo) Fetch(depth int, remote string, force bool, retries int, refs ...string) error {
+	var err error
+
+	for x := 0; x < retries; x++ {
+		c1 := []string{"git", "fetch"}
+		if depth > 0 {
+			c1 = append(c1, fmt.Sprintf("--depth=%d", depth))
+		}
+
+		if force {
+			c1 = append(c1, "--force")
+		}
+
+		c1 = append(c1, remote)
+		c1 = append(c1, refs...)
+
+		err = ExecCmd(g.Name, c1, g.Dir)
+		if err == nil {
+			return nil
+		}
+
+		log.Printf("attempt %d of %d failed. retrying\n", x, retries)
 	}
 
-	if force {
-		c1 = append(c1, "--force")
-	}
-
-	c1 = append(c1, remote)
-	c1 = append(c1, refs...)
-
-	return ExecCmd(g.Name, c1, g.Dir)
+	return err
 }
 
 func (g GitRepo) ConfigFetch(remote string, refs ...string) error {
