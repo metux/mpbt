@@ -4,18 +4,23 @@ package fetch
 import (
 	"log"
 
-	"github.com/metux/go-magicdict/api"
 	"github.com/metux/mpbt/core/model"
 	"github.com/metux/mpbt/core/model/sources"
 	"github.com/metux/mpbt/core/util"
 )
 
-func addConfig(pkg *model.Package, repo util.GitRepo, config map[api.Key]string) error {
-	if config == nil {
+func addConfig(pkg *model.Package, repo util.GitRepo, gitspec *sources.Git) error {
+	for _, val := range gitspec.Remotes {
+		if val.TagOpt != "" {
+			repo.ConfigSet("remote."+val.Name+".tagOpt", val.TagOpt)
+		}
+	}
+
+	if (gitspec.Config == nil) {
 		return nil
 	}
 
-	for idx, val := range config {
+	for idx, val := range gitspec.Config {
 		if err := repo.ConfigSet(string(idx), val); err != nil {
 			return nil
 		}
@@ -27,7 +32,7 @@ func addConfig(pkg *model.Package, repo util.GitRepo, config map[api.Key]string)
 func updatePackage(pkg *model.Package, gitspec *sources.Git, repo util.GitRepo) error {
 	log.Printf("[%s] updating package ...\n", pkg.GetName())
 
-	if err := addConfig(pkg, repo, gitspec.Config); err != nil {
+	if err := addConfig(pkg, repo, gitspec); err != nil {
 		return err
 	}
 
@@ -59,7 +64,7 @@ func clonePackage(pkg *model.Package, gitspec *sources.Git, repo util.GitRepo) e
 		return err
 	}
 
-	if err := addConfig(pkg, repo, gitspec.Config); err != nil {
+	if err := addConfig(pkg, repo, gitspec); err != nil {
 		return err
 	}
 
