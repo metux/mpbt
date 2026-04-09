@@ -17,6 +17,9 @@ type GitRemote struct {
 
 	// List of remote refs to fetch
 	Fetch util.StringList
+
+	// additional tag options
+	TagOpt string
 }
 
 type Git struct {
@@ -38,5 +41,6 @@ func LoadGitRemote(ent api.Entry, name string) GitRemote {
 		Url:   api.GetStr(ent, "url"),
 		Depth: api.GetInt(ent, "depth", 0),
 		Fetch: api.GetStrList(ent, "fetch"),
+		TagOpt: api.GetStr(ent, "tagopt"),
 	}
 }
