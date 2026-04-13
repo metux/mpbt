@@ -39,6 +39,15 @@ depgraph:
 	dot -Tpdf depgraph.dot > depgraph.pdf
 	sfdp -Tsvg -Goverlap=prism depgraph.dot -o depgraph.svg
 
+autopick:
+	$(MAKE) -C cmd
+	./cmd/mpbt-builder/mpbt-builder \
+            -root . \
+            -workdir WORK \
+            -solution cf/xlibre/solutions/devuan.yaml \
+            -project-define xlibre_git=git@github.com:X11Libre \
+            autopick
+
 run2:
 	$(GO) run scripts/test-build-xlibre.go
 

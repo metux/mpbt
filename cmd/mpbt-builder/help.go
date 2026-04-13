@@ -14,5 +14,6 @@ func helppage() {
 	fmt.Printf("    build           pull sources (once) and run build\n")
 	fmt.Printf("    fetch           pull sources only\n")
 	fmt.Printf("    depgraph        generate dependency graph (.dot file)\n")
+	fmt.Printf("    autopick        run autopick on repos that have it activated\n")
 	os.Exit(1)
 }

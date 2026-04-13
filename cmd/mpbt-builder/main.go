@@ -50,6 +50,8 @@ func main() {
 		frontend.RunFetch(Config)
 	} else if cmd == "depgraph" {
 		frontend.RunDepGraph(Config)
+	} else if cmd == "autopick" {
+		frontend.RunAutoPick(Config)
 	} else {
 		helppage()
 	}
